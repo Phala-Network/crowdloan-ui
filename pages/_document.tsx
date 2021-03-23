@@ -1,10 +1,12 @@
-import Document, { DocumentContext } from 'next/document'
+import Document, { DocumentContext, DocumentInitialProps } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import { CssBaseline } from '@geist-ui/react'
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext): Promise<any> {
+  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
+    const geistUiSyles = CssBaseline.flush()
 
     try {
       ctx.renderPage = () =>
@@ -20,6 +22,7 @@ class MyDocument extends Document {
           <>
             {initialProps.styles}
             {sheet.getStyleElement()}
+            {geistUiSyles}
           </>
         ),
       }
