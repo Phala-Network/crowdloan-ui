@@ -4,15 +4,7 @@ import Section from '@/components/Section'
 import { Grid } from '@geist-ui/react'
 import { NextPage } from 'next'
 import React from 'react'
-import { css } from 'styled-components'
-
-const style__StakeActionSection = css`
-  background: linear-gradient(106.53deg, rgba(209, 255, 82, 0.2) 0%, rgba(100, 238, 172, 0.2) 100%), #222222;
-`
-
-const StakeActionSection = () => <Section className="StakeActionSection" xs={24} md={12} lg={8} innerStyle={style__StakeActionSection}>
-  Stake Action
-</Section>
+import StakeActionSection from '@/components/StakeActionSection'
 
 const StakeInfoSection = () => <Section className="StakeInfoSection" xs={24} md={12} lg={8}>
   Stake Info

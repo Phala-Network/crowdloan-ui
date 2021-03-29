@@ -9,21 +9,26 @@ interface PageBaseOptions {
 const PageWrapper = styled.div`
   min-width: 100vw;
   min-height: calc(100vh - 120px);
-  padding: 92px 0 42px;
+  padding: 76px 0 42px;
   margin: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
 `
 const GridWrapper = styled.div`
-  margin: 0 120px;
-  max-width: 1400px;
+  padding: 0 120px;
+  max-width: 1600px;
+  width: 100%;
   @media (min-width: 0px) and (max-width: 540px) {
-    margin: 0 12px;
+    padding: 0 12px;
   }
   @media (min-width: 540px) and (max-width: 960px) {
-    margin: 0 40px;
+    padding: 0 40px;
   }
   @media (min-width: 960px) and (max-width: 1280px) {
-    margin: 0 80px;
+    padding: 0 80px;
   }
+
 `
 
 const PageBase: React.FC<PageBaseOptions> = ({ children }): JSX.Element => {
