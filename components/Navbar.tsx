@@ -12,14 +12,12 @@ const NavbarWrapper = styled.div`
   width: 100%;
   left: 0;
   top: 0;
-  background: ${props => props.theme.bl01};
+  background: ${(props) => props.theme.bl01};
   box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.1);
 `
 
 const Navbar: React.FC = () => {
-  return <NavbarWrapper>
-    1
-  </NavbarWrapper>
+  return <NavbarWrapper>1</NavbarWrapper>
 }
 
 export default Navbar

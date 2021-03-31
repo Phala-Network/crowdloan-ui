@@ -16,7 +16,7 @@ const SectionWrapper = styled.div<SectionInnerOptions>`
   width: 100%;
   display: flex;
   padding: 16px;
-  ${props => props.innerStyle}
+  ${(props) => props.innerStyle}
 `
 
 const Section: React.FC<React.PropsWithChildren<SectionOptions>> = ({
@@ -26,9 +26,7 @@ const Section: React.FC<React.PropsWithChildren<SectionOptions>> = ({
 }) => {
   return (
     <Grid {...props}>
-      <SectionWrapper innerStyle={innerStyle}>
-        {children}
-      </SectionWrapper>
+      <SectionWrapper innerStyle={innerStyle}>{children}</SectionWrapper>
     </Grid>
   )
 }
