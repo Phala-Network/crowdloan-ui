@@ -16,14 +16,13 @@ const NavbarWrapper = styled.div`
   top: 0;
   background: ${(props) => props.theme.bl01};
   box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.1);
+  color: ${props => props.theme.wh01}
 `
 
 const Navbar: React.FC = () => {
   const i18n = useI18n<AppLocale>()
   const { t } = i18n
-  return <NavbarWrapper>
-    Current Language: {t('locale')}
-  </NavbarWrapper>
+  return <NavbarWrapper>Current Language: {t('locale')}</NavbarWrapper>
 }
 
 export default Navbar
