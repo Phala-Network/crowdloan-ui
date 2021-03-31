@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components"
 import Section from '@/components/Section'
+import SectionTitle from "./SectionTitle"
 
 const style__StakeActionSection = css`
   background: linear-gradient(106.53deg, rgba(209, 255, 82, 0.2) 0%, rgba(100, 238, 172, 0.2) 100%), #222222;
@@ -37,23 +38,31 @@ const StakeActionInfoWrapper = styled.div`
       flex: none;
     }
     & > .left, & > .right {
-      height: 100px;
       width: auto;
       flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: flex-start;
+      place-content: flex-start;
+    }
+    & > .right {
+      text-align: right;
+      align-items: flex-end;
+
     }
   }
 `
 
 const StakeActionSection: React.FC = () => <Section className="StakeActionSection" xs={24} md={12} lg={8} innerStyle={style__StakeActionSection}>
-  Stake Action
   <StakeActionInfoWrapper>
+    <SectionTitle title="输入质押量" desc="余额: 123.123123" />
+    <SectionTitle title="计算" />
     <div className="Calculator">
       <div className="left">1</div>
       <div className="center">VS</div>
       <div className="right">2</div>
     </div>
-
-    1234
+    <SectionTitle title="为PHA质押的额外收益" desc="最高$ 3,000.00" descClassName="text desc title" />
   </StakeActionInfoWrapper>
 </Section>
 
