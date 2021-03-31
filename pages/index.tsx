@@ -1,36 +1,23 @@
 import Navbar from '@/components/Navbar'
+import styled, { css } from 'styled-components'
 import PageBase from '@/components/PageBase'
 import Section from '@/components/Section'
 import { Grid } from '@geist-ui/react'
 import { GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
+import StakeInfoSection from '@/components/StakeInfoSection'
+import RankSection from '@/components/RankSection'
+import AuctionChartSection from '@/components/AuctionChartSection'
+import PriceChartSection from '@/components/PriceChartSection'
 import { I18nProps } from 'next-rosetta'
 import { AppLocale } from 'i18n'
 
-const StakeInfoSection = () => (
-  <Section className="StakeInfoSection" xs={24} md={12} lg={8}>
-    Stake Info
-  </Section>
-)
-
-const AuctionChartSection = () => (
-  <Section className="AuctionChartSection" xs={24} md={12} lg={24}>
-    AuctionChartSection
-  </Section>
-)
-
-const PriceChartSection = () => (
-  <Section className="PriceChartSection" xs={24} md={12} lg={24}>
-    PriceChartSection
-  </Section>
-)
-
-const RankSection = () => (
-  <Section className="RankSection" xs={24}>
-    Rank
-  </Section>
-)
+const StyledContainer = styled(Grid.Container)`
+   .item {
+    width:100%;
+  }
+`
 
 const Home: NextPage = () => {
   return (
@@ -39,11 +26,11 @@ const Home: NextPage = () => {
       <PageBase>
         <StakeActionSection />
         <StakeInfoSection />
-        <Grid xs={24} md={24} lg={8}>
-          <Grid.Container gap={1} direction="row">
-            <AuctionChartSection />
+        <Grid xs={24} md={24} lg={8} >
+          <StyledContainer gap={1} direction="row" style={{width: "100%"}} >
+            <AuctionChartSection  />
             <PriceChartSection />
-          </Grid.Container>
+          </StyledContainer>
         </Grid>
         <RankSection />
       </PageBase>
