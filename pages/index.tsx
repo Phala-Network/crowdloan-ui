@@ -2,9 +2,11 @@ import Navbar from '@/components/Navbar'
 import PageBase from '@/components/PageBase'
 import Section from '@/components/Section'
 import { Grid } from '@geist-ui/react'
-import { NextPage } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
+import { I18nProps } from 'next-rosetta'
+import { AppLocale } from 'i18n'
 
 const StakeInfoSection = () => (
   <Section className="StakeInfoSection" xs={24} md={12} lg={8}>
@@ -50,3 +52,11 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getStaticProps: GetStaticProps<I18nProps<AppLocale>> = async (
+  context
+) => {
+  const locale = context.locale || context.defaultLocale
+  const { default: table } = await import(`../i18n/${locale}.json`)
+  return { props: { table, locale } }
+}

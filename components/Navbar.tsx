@@ -1,3 +1,5 @@
+import { AppLocale } from '@/i18n'
+import { useI18n } from 'next-rosetta'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -17,7 +19,11 @@ const NavbarWrapper = styled.div`
 `
 
 const Navbar: React.FC = () => {
-  return <NavbarWrapper>1</NavbarWrapper>
+  const i18n = useI18n<AppLocale>()
+  const { t } = i18n
+  return <NavbarWrapper>
+    Current Language: {t('locale')}
+  </NavbarWrapper>
 }
 
 export default Navbar
