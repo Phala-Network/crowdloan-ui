@@ -1,11 +1,10 @@
 import Section from '@/components/Section'
 import { Loading } from '@geist-ui/react'
-import * as echarts from 'echarts'
-import { ECharts } from 'echarts'
+import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
-import { APIEndpoints } from '../utils/Configuration'
+import type { GetPriceResponse } from '@/utils/request'
 
 const PriceChart = styled.div`
   width: 100%;
@@ -81,167 +80,182 @@ const PriceChart = styled.div`
   }
 `
 
-type EndpointResponse = {
-    price: string
-    stake: string
-    reward: string
-    kline: {
-        timestamp: number
-        value: number
-    }[]
+type PriceChartSectionProps = {
+  ksmInitialData: GetPriceResponse
+  phaInitialData: GetPriceResponse
 }
 
-const fetchData = async (currency: string): Promise<EndpointResponse> => {
-    const req = await fetch(APIEndpoints.getPrices + currency)
-    const json = await req.json()
-    if (json.success !== true) { throw new Error('Response is not success') }
-    return json.data as EndpointResponse
+const defaultChartOptions = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+    },
+  },
+  xAxis: {
+    type: 'time',
+    splitLine: {
+      show: false,
+    },
+  },
+  yAxis: [
+    {
+      type: 'value',
+      name: 'KSM',
+      splitLine: { show: false },
+    },
+    {
+      type: 'value',
+      name: 'PHA',
+      splitLine: { show: false },
+    },
+  ],
+  series: [
+    {
+      name: 'KSM',
+      type: 'line',
+      lineStyle: { color: '#eb5757' },
+      showSymbol: false,
+      hoverAnimation: false,
+      yAxisIndex: 0,
+      data: [],
+    },
+    {
+      name: 'PHA',
+      type: 'line',
+      lineStyle: { color: '#d1ff52' },
+      showSymbol: false,
+      hoverAnimation: false,
+      yAxisIndex: 1,
+      data: [],
+    },
+  ],
 }
 
-type PriceChartSectionProps = { ksmInitialData: EndpointResponse, phaInitialData: EndpointResponse }
+const PriceChartSection: React.FC<PriceChartSectionProps> = (
+  props: PriceChartSectionProps
+) => {
+  const { data: ksmQueryData, error: ksmQueryError } = useQuery(
+    ['getPrice', { currency: 'KSM' }],
+    { refetchInterval: 60 * 1000, initialData: props.ksmInitialData }
+  )
+  const ksmData = React.useMemo<GetPriceResponse | undefined>(
+    () => ksmQueryData,
+    [ksmQueryData]
+  )
 
-const PriceChartSection: React.FC<PriceChartSectionProps> = (props: PriceChartSectionProps) => {
-    const priceChartElement = React.useRef<HTMLDivElement>(undefined)
-    const priceChart = React.useRef<ECharts>()
+  const { data: phaQueryData, error: phaQueryError } = useQuery(
+    ['getPrice', { currency: 'PHA' }],
+    { refetchInterval: 60 * 1000, initialData: props.phaInitialData }
+  )
+  const phaData = React.useMemo<GetPriceResponse | undefined>(
+    () => phaQueryData,
+    [phaQueryData]
+  )
 
-    const { data: ksmQueryData, error: ksmQueryError } = useQuery(
-        'ksmPrices',
-        async () => await fetchData('KSM'),
-        { refetchInterval: 60 * 1000, initialData: props.ksmInitialData }
-    )
-    const ksmData = React.useMemo<EndpointResponse | undefined>(() => ksmQueryData, [ksmQueryData])
+  const chartOptions = React.useMemo(() => {
+    if (ksmQueryError) {
+      console.error('[PriceChart] Read KSM prices failed: ', ksmQueryError)
+    }
 
-    const { data: phaQueryData, error: phaQueryError } = useQuery(
-        'phaPrices',
-        async () => await fetchData('PHA'),
-        { refetchInterval: 60 * 1000, initialData: props.phaInitialData }
-    )
-    const phaData = React.useMemo<EndpointResponse | undefined>(() => phaQueryData, [phaQueryData])
+    if (phaQueryError) {
+      console.error('[PriceChart] Read PHA prices failed: ', ksmQueryError)
+    }
 
-    React.useEffect(() => {
-        // initialize price chart using echarts
+    return Object.assign({}, defaultChartOptions, {
+      series: [
+        {
+          name: 'KSM',
+          type: 'line',
+          lineStyle: { color: '#eb5757' },
+          showSymbol: false,
+          hoverAnimation: false,
+          yAxisIndex: 0,
+          data:
+            ksmData?.kline?.map?.((point) => [
+              point.timestamp * 1000,
+              point.value,
+            ]) ?? [],
+        },
+        {
+          name: 'PHA',
+          type: 'line',
+          lineStyle: { color: '#d1ff52' },
+          showSymbol: false,
+          hoverAnimation: false,
+          yAxisIndex: 1,
+          data:
+            phaData?.kline?.map?.((point) => [
+              point.timestamp * 1000,
+              point.value,
+            ]) ?? [],
+        },
+      ],
+    })
+  }, [ksmData, phaData])
 
-        if (priceChart.current === undefined && priceChartElement.current !== undefined) {
-            priceChart.current = echarts.init(priceChartElement.current)
-            priceChart.current.setOption({
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross'
-                    },
-                },
-                xAxis: {
-                    type: 'time',
-                    splitLine: {
-                        show: false,
-                    },
-                },
-                yAxis: [
-                    {
-                        type: 'value',
-                        name: 'KSM',
-                        splitLine: { show: false }
-                    }, {
-                        type: 'value',
-                        name: 'PHA',
-                        splitLine: { show: false }
-                    }
-                ],
-                series: [
-                    {
-                        name: 'KSM',
-                        type: 'line',
-                        lineStyle: { color: '#eb5757' },
-                        showSymbol: false,
-                        hoverAnimation: false,
-                        yAxisIndex: 0,
-                        data: []
-                    },
-                    {
-                        name: 'PHA',
-                        type: 'line',
-                        lineStyle: { color: '#d1ff52' },
-                        showSymbol: false,
-                        hoverAnimation: false,
-                        yAxisIndex: 1,
-                        data: []
-                    }
-                ],
-            })
-        }
-    }, [priceChart, priceChartElement])
+  return (
+    <Section xs={24} md={12} lg={24} className="">
+      <PriceChart>
+        <div className="Amounts">
+          <div className="Amount Re">
+            <span className="Title">KSM</span>
+            <div className="Detail">
+              <div className="Item">
+                <span className="Text">Price</span>
+                <span className="Number">
+                  ${ksmData?.price ?? <Loading size="mini" />}
+                </span>
+              </div>
+              <div className="Item">
+                <span className="Text">Stake</span>
+                <span className="Number">
+                  {ksmData?.stake === undefined ? (
+                    <Loading size="mini" />
+                  ) : (
+                    ((ksmData.stake as unknown) as number) * 100
+                  )}
+                  %
+                </span>
+              </div>
+              <div className="Item">
+                <span className="Text">Reward</span>
+                <span className="Number">
+                  {ksmData?.reward === undefined ? (
+                    <Loading size="mini" />
+                  ) : (
+                    ((ksmData.reward as unknown) as number) * 100
+                  )}
+                  %
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="Amount Yg">
+            <span className="Title">PHA</span>
+            <div className="Detail">
+              <div className="Item">
+                <span className="Text">Price</span>
+                <span className="Number">
+                  ${phaData?.price ?? <Loading size="mini" />}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    React.useEffect(() => {
-        // re-render data
-
-        if (ksmQueryError) {
-            console.error('[PriceChart] Read KSM prices failed: ', ksmQueryError)
-        }
-
-        if (phaQueryError) {
-            console.error('[PriceChart] Read PHA prices failed: ', ksmQueryError)
-        }
-
-        priceChart.current.setOption({
-            series: [
-                {
-                    data: ksmData?.kline?.map?.((point) => [point.timestamp * 1000, point.value]) ?? []
-                },
-                {
-                    data: phaData?.kline?.map?.((point) => [point.timestamp * 1000, point.value]) ?? []
-                }
-            ]
-        })
-    }, [ksmData, phaData])
-
-    return (
-        <Section xs={24} md={12} lg={24} className="">
-            <PriceChart>
-                <div className="Amounts">
-                    <div className="Amount Re">
-                        <span className="Title">KSM</span>
-                        <div className="Detail">
-                            <div className="Item">
-                                <span className="Text">Price</span>
-                                <span className="Number">${ksmData?.price ?? <Loading size="mini" />}</span>
-                            </div>
-                            <div className="Item">
-                                <span className="Text">Stake</span>
-                                <span className="Number">{
-                                    ksmData?.stake === undefined
-                                        ? <Loading size="mini" />
-                                        : (ksmData.stake as unknown as number) * 100
-                                }%</span>
-                            </div>
-                            <div className="Item">
-                                <span className="Text">Reward</span>
-                                <span className="Number">{
-                                    ksmData?.reward === undefined
-                                        ? <Loading size="mini" />
-                                        : (ksmData.reward as unknown as number) * 100
-                                }%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="Amount Yg">
-                        <span className="Title">PHA</span>
-                        <div className="Detail">
-                            <div className="Item">
-                                <span className="Text">Price</span>
-                                <span className="Number">${phaData?.price ?? <Loading size="mini" />}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div ref={priceChartElement} style={{ width: '100%', height: 240 }} />
-            </PriceChart>
-        </Section>
-    )
+        <ReactECharts
+          option={chartOptions}
+          style={{
+            height: '270px',
+            width: '100%',
+            marginTop: '-20px',
+            marginBottom: '-40px'
+          }}
+        />
+      </PriceChart>
+    </Section>
+  )
 }
 
 export default PriceChartSection
-
-export async function getStaticProps(): Promise<PriceChartSectionProps> {
-    return { ksmInitialData: await fetchData('KSM'), phaInitialData: await fetchData('PHA') }
-}

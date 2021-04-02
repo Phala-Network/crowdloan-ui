@@ -21,8 +21,10 @@ const NavbarWrapper = styled.div`
   color: ${(props) => props.theme.wh01};
   background-image: url('/logo.svg');
   background-repeat: no-repeat;
+  background-size: auto 40px;
   background-position-y: center;
   background-position-x: 24px;
+  backdrop-filter: blur(8px);
 `
 const Menu = styled.ul`
   display: flex;
@@ -33,53 +35,52 @@ const Menu = styled.ul`
     font-size: 14px;
     line-height: 20px;
     color: rgba(255, 255, 255, 0.9);
-    margin:0;
-    margin-left:24px;
+    margin: 0;
+    margin-left: 24px;
 
     &:before {
-      content:"";
+      content: '';
     }
   }
 
   & .Connect.btn {
     width: 80px;
     height: 30px;
-    background: #D1FF52;
+    background: #d1ff52;
     border-radius: 4px;
     padding: 0;
-    border:none;
+    border: none;
 
     &:hover {
       color: rgba(0, 0, 0, 0.5);
-      background: #D1FF52;
+      background: #d1ff52;
     }
   }
 
-  & .Dropdown{
-
+  & .Dropdown {
     & button {
       font-size: 14px;
       line-height: 20px;
-      min-width:auto;
-      background-color:transparent;
+      min-width: auto;
+      background-color: transparent;
       padding: 0;
       padding-right: 2px;
       color: rgba(255, 255, 255, 0.9);
 
       &:hover {
-        background-color:transparent;
+        background-color: transparent;
       }
     }
     &.btn-dropdown {
-      border:none;
+      border: none;
 
       & details {
-       background-color: transparent;
+        background-color: transparent;
 
-       & summary {
-        border-left:none;
-        background-color:transparent;
-       }
+        & summary {
+          border-left: none;
+          background-color: transparent;
+        }
       }
     }
   }
@@ -87,23 +88,32 @@ const Menu = styled.ul`
 const Navbar: React.FC = () => {
   // const i18n = useI18n<AppLocale>()
   // const { t } = i18n
-  return <NavbarWrapper>
-    <Menu>
-      <li><Link>关于Phala</Link></li>
-      <li><Link>了解卡槽拍卖</Link></li>
-      <li><Link style={{color: '#D1FF52'}}>邀请奖励</Link></li>
-      <li>
-        <ButtonDropdown size="mini" className="Dropdown">
-          <ButtonDropdown.Item >中文</ButtonDropdown.Item>
-          <ButtonDropdown.Item main>English</ButtonDropdown.Item>
-        </ButtonDropdown>
-      </li>
-      <li>
-       <Button size="mini" className="Connect">连接钱包</Button>
-      </li>
-    </Menu>
-
-  </NavbarWrapper>
+  return (
+    <NavbarWrapper>
+      <Menu>
+        <li>
+          <Link>关于Phala</Link>
+        </li>
+        <li>
+          <Link>了解卡槽拍卖</Link>
+        </li>
+        <li>
+          <Link style={{ color: '#D1FF52' }}>邀请奖励</Link>
+        </li>
+        <li>
+          <ButtonDropdown size="mini" className="Dropdown">
+            <ButtonDropdown.Item>中文</ButtonDropdown.Item>
+            <ButtonDropdown.Item main>English</ButtonDropdown.Item>
+          </ButtonDropdown>
+        </li>
+        <li>
+          <Button size="mini" className="Connect">
+            连接钱包
+          </Button>
+        </li>
+      </Menu>
+    </NavbarWrapper>
+  )
 }
 
 export default Navbar

@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid } from '@geist-ui/react'
-import { GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
@@ -13,8 +13,8 @@ import { I18nProps } from 'next-rosetta'
 import { AppLocale } from 'i18n'
 
 const StyledContainer = styled(Grid.Container)`
-   .item {
-    width:100%;
+  .item {
+    width: 100%;
   }
 `
 
@@ -25,10 +25,13 @@ const Home: NextPage = () => {
       <PageBase>
         <StakeActionSection />
         <StakeInfoSection />
-        <Grid xs={24} md={24} lg={8} >
-          <StyledContainer gap={1} direction="row" >
+        <Grid xs={24} md={24} lg={8}>
+          <StyledContainer gap={1} direction="row">
             <AuctionChartSection />
-            <PriceChartSection ksmInitialData={undefined} phaInitialData={undefined} />
+            <PriceChartSection
+              ksmInitialData={undefined}
+              phaInitialData={undefined}
+            />
           </StyledContainer>
         </Grid>
         <RankSection />
@@ -39,9 +42,9 @@ const Home: NextPage = () => {
 
 export default Home
 
-export const getStaticProps: GetStaticProps<I18nProps<AppLocale>> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<
+  I18nProps<AppLocale>
+> = async (context) => {
   const locale = context.locale || context.defaultLocale
   const { default: table } = await import(`../i18n/${locale}.json`)
   return { props: { table, locale } }

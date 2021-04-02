@@ -149,8 +149,12 @@ const AuctionChartSection: React.FC = () => {
 
   return (
     <Section
-      xs={24} md={12} lg={24}
-      className="" innerStyle={style__AuctionChartSection}>
+      xs={24}
+      md={12}
+      lg={24}
+      className=""
+      innerStyle={style__AuctionChartSection}
+    >
       <AuctionChart>
         <div className="ChartTitle">
           <span className="Text">质押奖池:</span>
@@ -172,7 +176,7 @@ const AuctionChartSection: React.FC = () => {
           </div>
         </div>
 
-        <div id='AuctionChart' style={{ width: '100%', height: 240 }}/>
+        <div id="AuctionChart" style={{ width: '100%', height: 190 }} />
       </AuctionChart>
     </Section>
   )
