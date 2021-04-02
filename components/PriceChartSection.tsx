@@ -121,7 +121,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (props: PriceChartSe
     React.useEffect(() => {
         // initialize price chart using echarts
 
-        if (priceChart.current === undefined) {
+        if (priceChart.current === undefined && priceChartElement.current !== undefined) {
             priceChart.current = echarts.init(priceChartElement.current)
             priceChart.current.setOption({
                 tooltip: {
@@ -169,7 +169,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (props: PriceChartSe
                 ],
             })
         }
-    })
+    }, [priceChart, priceChartElement])
 
     React.useEffect(() => {
         // re-render data
@@ -185,10 +185,10 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (props: PriceChartSe
         priceChart.current.setOption({
             series: [
                 {
-                    data: ksmData?.kline?.map((point) => [point.timestamp * 1000, point.value]) ?? []
+                    data: ksmData?.kline?.map?.((point) => [point.timestamp * 1000, point.value]) ?? []
                 },
                 {
-                    data: phaData?.kline?.map((point) => [point.timestamp * 1000, point.value]) ?? []
+                    data: phaData?.kline?.map?.((point) => [point.timestamp * 1000, point.value]) ?? []
                 }
             ]
         })
