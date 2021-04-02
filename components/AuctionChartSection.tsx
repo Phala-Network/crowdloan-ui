@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import * as echarts from 'echarts'
-import { Grid } from '@geist-ui/react'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -173,7 +172,7 @@ const AuctionChartSection: React.FC = () => {
           </div>
         </div>
 
-        <div id="AuctionChart" style={{ width: '100%', height: 240 }}></div>
+        <div id='AuctionChart' style={{ width: '100%', height: 240 }}/>
       </AuctionChart>
     </Section>
   )
