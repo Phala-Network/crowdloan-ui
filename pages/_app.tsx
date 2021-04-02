@@ -16,7 +16,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
         </WithTheme>
       </I18nProvider>
     </Web3Provider>
-
   )
 }
 
