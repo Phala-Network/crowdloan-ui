@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Input, Button, Table, Pagination } from '@geist-ui/react'
+import { Table, Pagination } from '@geist-ui/react'
 
 const style__Rank = css`
   background: transparent;

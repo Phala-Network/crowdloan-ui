@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
-import Section from '@/components/Section'
 import { Grid } from '@geist-ui/react'
 import { GetStaticProps, NextPage } from 'next'
 import React from 'react'

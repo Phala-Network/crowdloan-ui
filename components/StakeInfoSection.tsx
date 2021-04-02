@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Input, Button, Table } from '@geist-ui/react'
+import { Table } from '@geist-ui/react'
 import * as echarts from 'echarts'
 
 const style__StakeInfoSection = css`

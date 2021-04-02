@@ -1,5 +1,5 @@
-import { AppLocale } from '@/i18n'
-import { useI18n } from 'next-rosetta'
+// import { AppLocale } from '@/i18n'
+// import { useI18n } from 'next-rosetta'
 import React from 'react'
 import styled from 'styled-components'
 import { ButtonDropdown, Link, Button } from '@geist-ui/react'
@@ -84,8 +84,8 @@ const Menu = styled.ul`
   }
 `
 const Navbar: React.FC = () => {
-  const i18n = useI18n<AppLocale>()
-  const { t } = i18n
+  // const i18n = useI18n<AppLocale>()
+  // const { t } = i18n
   return <NavbarWrapper>
     <Menu>
       <li><Link>关于Phala</Link></li>
@@ -101,7 +101,7 @@ const Navbar: React.FC = () => {
        <Button size="mini" className="Connect">连接钱包</Button>
       </li>
     </Menu>
-  
+
   </NavbarWrapper>
 }
 
