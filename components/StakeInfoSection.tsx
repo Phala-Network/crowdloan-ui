@@ -1,8 +1,11 @@
-import * as React from 'react'
-import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import { Table } from '@geist-ui/react'
 import * as echarts from 'echarts'
+import { ECharts } from 'echarts'
+import * as React from 'react'
+import { useQuery } from 'react-query'
+import styled, { css } from 'styled-components'
+import { APIEndpoints } from '../utils/Configuration'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -142,106 +145,141 @@ const Detail = styled.div`
   }
 `
 
-const data = [
-  { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-]
+interface StakeInfoResponse {
+    points: {
+        timestamp: number
+        value: number
+    }[]
+}
+
+async function fetchStakeInfo(address: string | null) {
+    const req = await fetch(APIEndpoints.getSchedules + (address === null ? '' : `?address=${address}`))
+    const json = await req.json()
+    if (json.success !== true) { throw new Error('Response is not success') }
+    return json.data as StakeInfoResponse
+}
 
 const StakeInfoSection: React.FC = () => {
-  React.useEffect(() => {
-    const chartDom = document.getElementById('StakeInfoChart')
-    const myChart = echarts.init(chartDom)
-    const option = {
-      xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          data: [150, 230, 224, 218],
-          type: 'line',
-          lineStyle: {
-            color: '#D1FF52',
-          },
-          itemStyle: {
-            borderColor: '#D1FF52',
-            borderWidth: 2,
-          },
-        },
-      ],
-      title: {
-        text: '结算发放',
-        subtext:
-          '如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。',
-        left: '0',
-        top: 0,
-        textStyle: {
-          fontSize: 14,
-          color: 'rgba(255, 255, 255, 0.9)',
-        },
-        subtextStyle: {
-          fontSize: 12,
-          color: 'rgba(255, 255, 255, 0.5)',
-          width: 400,
-          height: 40,
-          lineHeight: 16,
-          overflow: 'break',
-        },
-      },
-    }
+    const [address] = React.useState<string | null>('51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN')
 
-    myChart.setOption(option)
-  }, [])
+    const { data: queryData } = useQuery(['stakeInfo', address], async () => await fetchStakeInfo(address), {
+        refetchInterval: 60 * 1000
+    })
 
-  return (
-    <Section xs={24} md={12} lg={8} innerStyle={style__StakeInfoSection}>
-      <Amount>
-        <div className="Amounts">
-          <div className="Amount Gr">
-            <span className="Title">质押总量</span>
-            <p className="Number">
-              1,000.00 <span className="Unit">KSM</span>
-            </p>
-          </div>
-          <div className="Amount Yg">
-            <span className="Title">质押总量</span>
-            <p className="Number">
-              1,000.00 <span className="Unit">KSM</span>
-            </p>
-          </div>
-        </div>
-        <Inviter>
-          <div className="Item">
-            <span className="Text">邀请人数</span>
-            <span className="Number">2 人</span>
-          </div>
-          <div className="Item">
-            <span className="Text">邀请人数</span>
-            <span className="Number">223.00 PHA</span>
-          </div>
-        </Inviter>
-      </Amount>
+    const chartData = React.useMemo(() => queryData?.points?.map((point) => [point.timestamp * 1000, point.value]) ?? [], [queryData])
 
-      <Detail>
-        <div className="Title">
-          <span>质押明细</span>
-          <a href="">查看全部</a>
-        </div>
+    const tableData = []
 
-        <Table data={data} className="Table">
-          <Table.Column prop="property" label="时间" />
-          <Table.Column prop="description" label="您的质押" />
-          <Table.Column prop="type" label="您的奖励" />
-        </Table>
-      </Detail>
+    const rewardChartElement = React.useRef<HTMLDivElement>()
+    const rewardChart = React.useRef<ECharts>()
 
-      <div id="StakeInfoChart" style={{ width: '100%', height: 300 }}></div>
-    </Section>
-  )
+    React.useEffect(() => {
+        if (rewardChart.current === undefined && rewardChartElement.current !== undefined) {
+            rewardChart.current = echarts.init(rewardChartElement.current)
+            rewardChart.current.setOption({
+                xAxis: {
+                    type: 'time',
+                    // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [
+                    {
+                        data: [],
+                        type: 'line',
+                        lineStyle: {
+                            color: '#D1FF52',
+                        },
+                        itemStyle: {
+                            borderColor: '#D1FF52',
+                            borderWidth: 2,
+                        },
+                    },
+                ],
+                title: {
+                    text: '结算发放',
+                    subtext: '如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。',
+                    left: 0,
+                    textStyle: {
+                        fontSize: 14,
+                        color: 'rgba(255, 255, 255, 0.9)',
+                    },
+                    subtextStyle: {
+                        fontSize: 12,
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        width: 400,
+                        height: 40,
+                        lineHeight: 16,
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'line'
+                    }
+                }
+            })
+        }
+    }, [rewardChart, rewardChartElement])
+
+    React.useEffect(() => {
+        if (rewardChart.current !== undefined) {
+            rewardChart.current.setOption({
+                series: [
+                    {
+                        data: chartData
+                    }
+                ]
+            })
+        }
+    }, [chartData, rewardChart])
+
+    return (
+        <Section className="" xs={24} md={12} lg={8} innerStyle={style__StakeInfoSection}>
+            <Amount>
+                <div className="Amounts">
+                    <div className="Amount Gr">
+                        <span className="Title">您的质押总量</span>
+                        <p className="Number">
+                            1,000.00 <span className="Unit">KSM</span>
+                        </p>
+                    </div>
+                    <div className="Amount Yg">
+                        <span className="Title">您的总奖励</span>
+                        <p className="Number">
+                            1,000.00 <span className="Unit">PHA</span>
+                        </p>
+                    </div>
+                </div>
+                <Inviter>
+                    <div className="Item">
+                        <span className="Text">邀请人数</span>
+                        <span className="Number">2 人</span>
+                    </div>
+                    <div className="Item">
+                        <span className="Text">邀请人数</span>
+                        <span className="Number">223.00 PHA</span>
+                    </div>
+                </Inviter>
+            </Amount>
+
+            <Detail>
+                <div className="Title">
+                    <span>质押明细</span>
+                    <a href="">查看全部</a>
+                </div>
+
+                <Table data={tableData} className="Table">
+                    <Table.Column prop="property" label="时间" />
+                    <Table.Column prop="description" label="您的质押" />
+                    <Table.Column prop="type" label="您的奖励" />
+                </Table>
+            </Detail>
+
+            <div ref={rewardChartElement} style={{ width: '100%', height: 300 }}></div>
+        </Section>
+    )
 }
 
 export default StakeInfoSection
