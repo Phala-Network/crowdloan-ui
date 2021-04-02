@@ -26,9 +26,9 @@ const Home: NextPage = () => {
         <StakeActionSection />
         <StakeInfoSection />
         <Grid xs={24} md={24} lg={8} >
-          <StyledContainer gap={1} direction="row" style={{width: "100%"}} >
-            <AuctionChartSection  />
-            <PriceChartSection />
+          <StyledContainer gap={1} direction="row" style={{ width: "100%" }} >
+            <AuctionChartSection />
+            <PriceChartSection ksmInitialData={undefined} phaInitialData={undefined} />
           </StyledContainer>
         </Grid>
         <RankSection />

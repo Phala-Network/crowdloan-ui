@@ -90,12 +90,12 @@ function randomData() {
 }
 const oneDay = 24 * 3600 * 1000
 let value = Math.random() * 1000
-let now = +new Date(1997, 9, 3)
+let now = new Date(1997, 9, 3)
 
 const AuctionChartSection: React.FC = () => {
   React.useEffect(() => {
     const chartDom = document.getElementById('AuctionChart')
-    const myChart = echarts.init(chartDom)
+    const myChart = echarts.init(chartDom as HTMLDivElement)
     const data = []
     for (let i = 0; i < 1000; i++) {
       data.push(randomData())
@@ -145,11 +145,11 @@ const AuctionChartSection: React.FC = () => {
       ],
     }
 
-    myChart.setOption(option)
+    myChart.setOption(option as any) // TODO: fix this type error
   }, [])
 
   return (
-    <Section innerStyle={style__AuctionChartSection}>
+    <Section className="" innerStyle={style__AuctionChartSection}>
       <AuctionChart>
         <div className="ChartTitle">
           <span className="Text">质押奖池:</span>

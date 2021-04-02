@@ -155,7 +155,7 @@ const TableWrap = styled.div`
 `
 
 const RankSection: React.FC = () => (
-  <Section xs={24} md={24} lg={24} innerStyle={style__Rank}>
+  <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
     <TableWrap>
       <Table data={data} className="Table">
         <Table.Column prop="rank" label="排名" />
