@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import * as echarts from 'echarts'
+import { Grid } from '@geist-ui/react'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -25,7 +26,6 @@ const AuctionChart = styled.div`
 
   .Amounts {
     display: flex;
-
     .Amount {
       width: 50%;
       position: relative;
@@ -149,7 +149,9 @@ const AuctionChartSection: React.FC = () => {
   }, [])
 
   return (
-    <Section className="" innerStyle={style__AuctionChartSection}>
+    <Section
+      xs={24} md={12} lg={24}
+      className="" innerStyle={style__AuctionChartSection}>
       <AuctionChart>
         <div className="ChartTitle">
           <span className="Text">质押奖池:</span>

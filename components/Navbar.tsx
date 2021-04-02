@@ -11,6 +11,7 @@ const NavbarWrapper = styled.div`
   align-items: center;
   padding: 0px 16px;
   position: fixed;
+  z-index: 100;
   height: 60px;
   width: 100%;
   left: 0;
