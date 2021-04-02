@@ -172,12 +172,18 @@ const StakeActionInputWrapper = styled.div`
 
   & .text {
     color: rgba(255, 255, 255, 0.9);
+    font-style: normal;
+    font-weight: normal;
     font-size: 16px;
+    line-height: 22px;
   }
 
   & .balance {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 16px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 17px;
   }
 
   & .InputWrap {

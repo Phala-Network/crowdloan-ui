@@ -25,7 +25,6 @@ const AuctionChart = styled.div`
 
   .Amounts {
     display: flex;
-
     .Amount {
       width: 50%;
       position: relative;
@@ -149,7 +148,9 @@ const AuctionChartSection: React.FC = () => {
   }, [])
 
   return (
-    <Section className="" innerStyle={style__AuctionChartSection}>
+    <Section
+      xs={24} md={12} lg={24}
+      className="" innerStyle={style__AuctionChartSection}>
       <AuctionChart>
         <div className="ChartTitle">
           <span className="Text">质押奖池:</span>
@@ -171,7 +172,7 @@ const AuctionChartSection: React.FC = () => {
           </div>
         </div>
 
-        <div id="AuctionChart" style={{ width: '100%', height: 240 }}></div>
+        <div id='AuctionChart' style={{ width: '100%', height: 240 }}/>
       </AuctionChart>
     </Section>
   )

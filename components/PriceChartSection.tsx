@@ -195,7 +195,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (props: PriceChartSe
     }, [ksmData, phaData])
 
     return (
-        <Section className="">
+        <Section xs={24} md={12} lg={24} className="">
             <PriceChart>
                 <div className="Amounts">
                     <div className="Amount Re">
