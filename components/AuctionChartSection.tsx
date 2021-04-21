@@ -1,7 +1,8 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import * as echarts from 'echarts'
+import ReactECharts from 'echarts-for-react'
+import * as dayjs from 'dayjs'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -82,7 +83,7 @@ function randomData() {
   return {
     name: now.toString(),
     value: [
-      [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+      now.getTime(),
       Math.round(value),
     ],
   }
@@ -92,41 +93,68 @@ let value = Math.random() * 1000
 let now = new Date(1997, 9, 3)
 
 const AuctionChartSection: React.FC = () => {
-  React.useEffect(() => {
-    const chartDom = document.getElementById('AuctionChart')
-    const myChart = echarts.init(chartDom as HTMLDivElement)
-    const data = []
-    for (let i = 0; i < 1000; i++) {
-      data.push(randomData())
-    }
+  const data = []
+  for (let i = 0; i < 1000; i++) {
+    data.push(randomData())
+  }
 
-    const option = {
+  const chartOptions = React.useMemo(() => {
+    return Object.assign({}, {
       tooltip: {
         trigger: 'axis',
         formatter: function (params) {
-          params = params[0]
-          const date = new Date(params.name)
-          return (
-            date.getDate() +
-            '/' +
-            (date.getMonth() + 1) +
-            '/' +
-            date.getFullYear() +
-            ' : ' +
-            params.value[1]
-          )
-        },
+            return (
+              dayjs(params[0].value[1]).format('YYYY/MM/DD HH:mm:ss') +
+              '<br/>' +
+              params[0].value[0] + ' KSM'
+            )
+          },
         axisPointer: {
+          type: 'cross',
+          snap: true,
           animation: false,
+          lineStyle: {
+            color: 'rgba(209, 255, 82, 0.5)',
+          },
+          crossStyle: {
+            color: 'rgba(209, 255, 82, 0.5)',
+          },
+          label: {
+            show: false,
+          },
         },
+        borderWidth: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        textStyle: {
+          color: 'rgba(255, 255, 255, 0.9)',
+          fontSize: 12, 
+        },
+        extraCssText: 'border-radius: 2px; padding: 4px 8px; backdrop-filter: blur(10px);',
+      },
+      grid: {
+        top: '0',
+        left: '0',
+        bottom: '10%',
+        right: '0',
       },
       xAxis: {
         type: 'time',
         splitLine: {
           show: false,
         },
+        axisLabel: {
+          formatter: function (params) {
+            const date = new Date(params)
+            return (
+              (date.getMonth() + 1).toString().padStart(2, '0') +
+              '.' +
+              date.getDate().toString().padStart(2, '0')
+            )
+          },
+        },
       },
       yAxis: {
+        show: false,
         type: 'value',
         boundaryGap: [0, '100%'],
         splitLine: {
@@ -139,13 +167,19 @@ const AuctionChartSection: React.FC = () => {
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
+          itemStyle: {
+            normal: {
+              color: '#d1ff52',
+              borderColor: 'rgba(255, 255, 255, 0.9)',
+              borderWidth: 1,
+            }
+          },
           data: data,
+          lineStyle: { color: '#d1ff52' },
         },
       ],
-    }
-
-    myChart.setOption(option as any) // TODO: fix this type error
-  }, [])
+    })
+  }, [data])
 
   return (
     <Section
@@ -176,7 +210,13 @@ const AuctionChartSection: React.FC = () => {
           </div>
         </div>
 
-        <div id="AuctionChart" style={{ width: '100%', height: 190 }} />
+        <ReactECharts
+          option={chartOptions}
+          style={{
+            height: '190px',
+            width: '100%',
+          }}
+        />
       </AuctionChart>
     </Section>
   )

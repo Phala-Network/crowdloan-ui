@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import { Table, Pagination } from '@geist-ui/react'
+import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
 
 const style__Rank = css`
   background: transparent;
@@ -96,6 +97,24 @@ const TableWrap = styled.div`
   .Table {
     margin-top: 4px;
 
+    thead {
+      th {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    tbody {
+      tr:last-of-type {
+        td:first-of-type {
+          border-bottom-left-radius: 5px;
+        }
+        td:last-of-type {
+          border-bottom-right-radius: 5px;
+        }
+      }
+    }
+
     th {
       background: #222222;
       border: none !important;
@@ -166,7 +185,10 @@ const RankSection: React.FC = () => (
         <Table.Column prop="inviters" label="质押量" />
         <Table.Column prop="inviterReward" label="邀请奖励" />
       </Table>
-      <Pagination count={10} initialPage={1} />
+      <Pagination count={10} initialPage={1}>
+        <Pagination.Next><ChevronRight /></Pagination.Next>
+        <Pagination.Previous><ChevronLeft /></Pagination.Previous>
+      </Pagination>
     </TableWrap>
   </Section>
 )
