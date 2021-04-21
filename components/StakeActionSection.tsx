@@ -11,6 +11,7 @@ const style__StakeActionSection = css`
     #222222;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `
 
 const StakeActionInfoWrapper = styled.div`
@@ -25,6 +26,7 @@ const StakeActionInfoWrapper = styled.div`
     background-position: center;
     display: flex;
     border-radius: 8px;
+    overflow: hidden;
     align-items: center;
     padding: 21px 16px;
     & > .center {
@@ -74,6 +76,7 @@ const StakeActionInfoWrapper = styled.div`
         line-height: 39px !important;
         color: rgba(255, 255, 255, 0.9) !important;
         font-weight: 600;
+        text-align: right;
       }
     }
   }
@@ -123,6 +126,7 @@ const StakeActionInfoWrapper = styled.div`
     }
 
     & input {
+      margin-left: 0;
       font-size: 14px !important;
       line-height: 24px !important;
       color: rgba(255, 255, 255, 0.9) !important;
@@ -199,6 +203,9 @@ const StakeActionInputWrapper = styled.div`
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     word-break: keep-all;
+    &:focus-within {
+      box-shadow: inset 0px 0px 0px 1px rgba(209, 255, 82, 0.5);
+    }
   }
 
   // override
@@ -210,6 +217,7 @@ const StakeActionInputWrapper = styled.div`
     line-height: 50px !important;
     color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 600;
+    caret-color: #D1FF52;
   }
 
   & .Label {
@@ -286,6 +294,12 @@ const StakeActionForm = styled.div`
     border: none;
     width: 100%;
     margin-top: 20px;
+    &:focus {
+      background: #d1ff52;
+    }
+    &:hover {
+      background: rgba(209, 255, 82, 0.8);
+    }
   }
 `
 
@@ -303,7 +317,7 @@ const StakeActionSection: React.FC = () => (
         <span className="balance">余额: 123.1231239</span>
       </div>
       <div className="InputWrap">
-        <Input className="Input" />
+        <Input className="Input" placeholder="0.0" />
         <div className="InputPostfix">
           <span className="Label">最大</span>
           <span className="Unit">KSM</span>

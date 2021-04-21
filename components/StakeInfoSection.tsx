@@ -1,7 +1,6 @@
 import Section from '@/components/Section'
 import { Table } from '@geist-ui/react'
-import * as echarts from 'echarts'
-import { ECharts } from 'echarts'
+import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
 import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
@@ -95,6 +94,8 @@ const Inviter = styled.div`
 `
 
 const Detail = styled.div`
+  margin-bottom: 20px;
+
   & .Title {
     display: flex;
     justify-content: space-between;
@@ -112,6 +113,33 @@ const Detail = styled.div`
   & .Table {
     margin-top: 4px;
 
+    .link-icon {
+      display: inline-block;
+      width: 13px;
+      height: 9px;
+      margin-left: 3px;
+      background-image: url(/link-icon.svg);
+      background-size: cover;
+    }
+
+    thead {
+      th {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    tbody {
+      tr:last-of-type {
+        td:first-of-type {
+          border-bottom-left-radius: 5px;
+        }
+        td:last-of-type {
+          border-bottom-right-radius: 5px;
+        }
+      }
+    }
+
     th {
       background: #222222;
       border: none !important;
@@ -122,6 +150,7 @@ const Detail = styled.div`
     tr {
       font-size: 12px;
       line-height: 17px;
+      background: #1a1a1a;
 
       &.hover {
         &:hover {
@@ -141,9 +170,42 @@ const Detail = styled.div`
       &:nth-child(even) {
         background: #222222;
       }
+
     }
   }
 `
+
+const Chart = styled.div`
+  & .title {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  & .info {
+    font-size: 12px;
+    line-height: 17px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+`
+
+const oneDay = 24 * 3600 * 1000
+let value = Math.random() * 1000 + 800
+let now = new Date(1997, 9, 3)
+function randomData() {
+  now = new Date(+now + oneDay)
+  value = value + Math.random() * 21 - 10
+  return {
+    name: now.toString(),
+    value: [
+      now.getTime(),
+      Math.round(value),
+    ],
+  }
+}
+const data = []
+for (let i = 0; i < 30; i++) {
+  data.push(randomData())
+}
 
 const StakeInfoSection: React.FC = () => {
   const [address] = React.useState<string | null>(
@@ -166,76 +228,114 @@ const StakeInfoSection: React.FC = () => {
     [queryData]
   )
 
-  const tableData = []
+  const tableData = [
+    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+  ]
+  const icon = (_: any, rowData: any) => {
+    return <span>{rowData.rowValue.description}<i className="link-icon"></i></span>
+  }
+  tableData.forEach(i => i['descriptionIcon'] = icon )
 
-  const rewardChartElement = React.useRef<HTMLDivElement>()
-  const rewardChart = React.useRef<ECharts>()
+  // const rewardChartElement = React.useRef<HTMLDivElement>()
+  // const rewardChart = React.useRef<ECharts>()
 
-  React.useEffect(() => {
-    if (
-      rewardChart.current === undefined &&
-      rewardChartElement.current !== undefined
-    ) {
-      rewardChart.current = echarts.init(rewardChartElement.current)
-      rewardChart.current.setOption({
-        xAxis: {
-          type: 'time',
-          // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  const chartOptions = React.useMemo(() => {
+    return Object.assign({}, {
+      tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+          params = params[0]
+          const date = new Date(params.name)
+          return (
+            date.getDate() +
+            '/' +
+            (date.getMonth() + 1) +
+            '/' +
+            date.getFullYear() +
+            ' : ' +
+            params.value[1]
+          )
         },
-        yAxis: {
-          type: 'value',
+        axisPointer: {
+          animation: false,
         },
-        series: [
-          {
-            data: [],
-            type: 'line',
-            lineStyle: {
-              color: '#D1FF52',
-            },
-            itemStyle: {
-              borderColor: '#D1FF52',
-              borderWidth: 2,
-            },
-          },
-        ],
-        title: {
-          text: '结算发放',
-          subtext:
-            '如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。',
-          left: 0,
-          textStyle: {
-            fontSize: 14,
-            color: 'rgba(255, 255, 255, 0.9)',
-          },
-          subtextStyle: {
-            fontSize: 12,
-            color: 'rgba(255, 255, 255, 0.5)',
-            width: 400,
-            height: 40,
-            lineHeight: 16,
-          },
+      },
+      xAxis: {
+        type: 'time',
+        boundaryGap: [0, 0],
+        splitLine: {
+          show: false,
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'line',
+        axisTick: {
+          interval: 2,
+          show: false
+        },
+        axisLabel: {
+          // showMinLabel: true,
+          // showMaxLabel: true,
+          formatter: function (params) {
+            const date = new Date(params)
+            return (
+              date.getFullYear() +
+              '.' +
+              (date.getMonth() + 1) +
+              '.' +
+              date.getDate()
+            )
           },
         },
-      })
-    }
-  }, [rewardChart, rewardChartElement])
+        axisLine: {
+          show: false,
+        },
+      },
+      yAxis: {
+        type: 'value',
+        // boundaryGap: [0, '100%'],
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: 'rgba(255, 255, 255, 0.1)',
+          },
+        },
+      },
+      grid: {
+        top: '10%',
+        left: '12%',
+        bottom: '10%',
+        right: '10%',
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: true,
+          hoverAnimation: false,
+          lineStyle: { color: '#d1ff52' },
+          itemStyle: {
+            normal: {
+              color: '#d1ff52',
+              borderColor: 'rgba(255, 255, 255, 0.9)',
+              borderWidth: 1,
+            }
+          },
+          data: data,
+        },
+      ],
+    })
+  }, [data])
 
-  React.useEffect(() => {
-    if (rewardChart.current !== undefined) {
-      rewardChart.current.setOption({
-        series: [
-          {
-            data: chartData,
-          },
-        ],
-      })
-    }
-  }, [chartData, rewardChart])
+  // React.useEffect(() => {
+  //   if (rewardChart.current !== undefined) {
+  //     rewardChart.current.setOption({
+  //       series: [
+  //         {
+  //           data: chartData,
+  //         },
+  //       ],
+  //     })
+  //   }
+  // }, [chartData, rewardChart])
 
   return (
     <Section
@@ -280,15 +380,23 @@ const StakeInfoSection: React.FC = () => {
 
         <Table data={tableData} className="Table">
           <Table.Column prop="property" label="时间" />
-          <Table.Column prop="description" label="您的质押" />
+          <Table.Column prop="descriptionIcon" label="您的质押" />
           <Table.Column prop="type" label="您的奖励" />
         </Table>
       </Detail>
 
-      <div
-        ref={rewardChartElement}
-        style={{ width: '100%', height: 300 }}
-      ></div>
+
+      <Chart>
+        <span className="title">结算发放</span>
+        <div className="info">如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。</div>
+        <ReactECharts
+          option={chartOptions}
+          style={{
+            height: '179px',
+            width: '100%',
+          }}
+        />
+      </Chart>
     </Section>
   )
 }
