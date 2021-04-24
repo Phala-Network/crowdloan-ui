@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 const style__AuctionChartSection = css`
   display: flex;

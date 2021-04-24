@@ -104,17 +104,6 @@ const TableWrap = styled.div`
       }
     }
 
-    tbody {
-      tr:last-of-type {
-        td:first-of-type {
-          border-bottom-left-radius: 5px;
-        }
-        td:last-of-type {
-          border-bottom-right-radius: 5px;
-        }
-      }
-    }
-
     th {
       background: #222222;
       border: none !important;
@@ -156,11 +145,26 @@ const TableWrap = styled.div`
       }
     }
   }
+`
 
-  & > nav {
-    margin-top: 24px !important;
+const TableFooter = styled.div`
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  height: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+  align-items: center;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  & > .left {
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  & nav {
     text-align: right;
-
+    li { margin-bottom: 0; }
     & button {
       color: rgba(255, 255, 255, 0.9);
       font-size: 14px;
@@ -185,10 +189,13 @@ const RankSection: React.FC = () => (
         <Table.Column prop="inviters" label="质押量" />
         <Table.Column prop="inviterReward" label="邀请奖励" />
       </Table>
-      <Pagination count={10} initialPage={1}>
-        <Pagination.Next><ChevronRight /></Pagination.Next>
-        <Pagination.Previous><ChevronLeft /></Pagination.Previous>
-      </Pagination>
+      <TableFooter>
+        <div className="left">我的排名：</div>
+        <Pagination count={10} initialPage={1}>
+          <Pagination.Next><ChevronRight /></Pagination.Next>
+          <Pagination.Previous><ChevronLeft /></Pagination.Previous>
+        </Pagination>
+      </TableFooter>
     </TableWrap>
   </Section>
 )
