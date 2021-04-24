@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Input, Button } from '@geist-ui/react'
+import { Input, Button, Tooltip } from '@geist-ui/react'
+import { AlertCircleFill, ChevronRight } from '@geist-ui/react-icons'
+
 
 const style__StakeActionSection = css`
   background: linear-gradient(
@@ -85,6 +87,11 @@ const StakeActionInfoWrapper = styled.div`
     font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 12px;
+    line-height: 16px;
+    .tooltip {
+      margin-left: 5px;
+      vertical-align: middle;
+    }
   }
 
   & .Rate {
@@ -106,6 +113,9 @@ const StakeActionInfoWrapper = styled.div`
     line-height: 17px;
     color: rgba(255, 255, 255, 0.5);
     margin-top: 12px;
+    i {
+      vertical-align: sub;
+    }
   }
 
   // override
@@ -161,6 +171,13 @@ const StakeActionInfoWrapper = styled.div`
       text-align: right;
       color: rgba(255, 255, 255, 0.9);
     }
+  }
+
+  & .alert-circle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-image: url('/alert.svg');
   }
 `
 
@@ -245,6 +262,7 @@ const StakeActionInputWrapper = styled.div`
     display: flex;
     align-items: center;
   }
+
 `
 
 const StakeActionForm = styled.div`
@@ -325,7 +343,28 @@ const StakeActionSection: React.FC = () => (
       </div>
     </StakeActionInputWrapper>
     <StakeActionInfoWrapper>
-      <div className="Title">计算</div>
+      <div className="Title">
+        计算
+        <Tooltip text={<div>
+                        可获得的PHA：预估可获得的奖励<br/>
+                        PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑<br/>
+                        为PHA质押的收益=可获得的PHA*PHA价格<br/>
+                        KSM抵押收益：质押的KSM*KSM价格<br/>
+                        额外收益=质押收益-抵押收益<br/>
+                        预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算<br/>
+                        <a>
+                          查看更多详情
+                          <span><ChevronRight size={16}/></span>
+                        </a>
+                      </div>}
+                 type="dark"
+                 placement="bottomStart"
+                 hideArrow={true}
+                 offset={4}
+                 portalClassName="TooltipText">
+          <i className="alert-circle"/>
+        </Tooltip>
+      </div>
       <div className="Calculator">
         <div className="left">
           <div className="Rate">Phala质押年化</div>
@@ -345,7 +384,7 @@ const StakeActionSection: React.FC = () => (
           <Input label="$" className="PriceInput" />
           <div className="Price">KSM抵押奖励</div>
           <div className="Amount">13,374PHA</div>
-          <div className="Price">KSM抵押收益</div>
+          <div className="Price">KSM抵押收益 <i className="alert-circle"/></div>
           <div className="Amount">$ 5,345.00</div>
         </div>
       </div>
