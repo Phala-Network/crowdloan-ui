@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
 import dayjs from 'dayjs'
+import { useI18n } from 'next-rosetta'
+import { AppLocale } from '@/i18n'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -92,7 +94,8 @@ const oneDay = 24 * 3600 * 1000
 let value = Math.random() * 1000
 let now = new Date(1997, 9, 3)
 
-const AuctionChartSection: React.FC = () => {
+const AuctionChartSection: React.FC = (props) => {
+  const { t } = useI18n<AppLocale>()
   const data = []
   for (let i = 0; i < 1000; i++) {
     data.push(randomData())
@@ -191,19 +194,19 @@ const AuctionChartSection: React.FC = () => {
     >
       <AuctionChart>
         <div className="ChartTitle">
-          <span className="Text">质押奖池:</span>
+          <span className="Text">{t('stakingRewardPool')}:</span>
           <span className="Amount">100,000,000PHA</span>
         </div>
 
         <div className="Amounts">
           <div className="Amount Wh">
-            <span className="Title">质押总量</span>
+            <span className="Title">{t('stakingTotal')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
-            <span className="Title">质押总量</span>
+            <span className="Title">{t('stakingTotal')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">KSM</span>
             </p>

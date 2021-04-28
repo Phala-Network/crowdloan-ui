@@ -5,6 +5,8 @@ import * as React from 'react'
 import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
 import { GetScheduleResponse } from '@/utils/request'
+import { useI18n } from 'next-rosetta'
+import { AppLocale } from '@/i18n'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -208,6 +210,7 @@ for (let i = 0; i < 30; i++) {
 }
 
 const StakeInfoSection: React.FC = () => {
+  const { t } = useI18n<AppLocale>()
   const [address] = React.useState<string | null>(
     '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
   )
@@ -348,13 +351,13 @@ const StakeInfoSection: React.FC = () => {
       <Amount>
         <div className="Amounts">
           <div className="Amount Gr">
-            <span className="Title">您的质押总量</span>
+            <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
-            <span className="Title">您的总奖励</span>
+            <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">PHA</span>
             </p>
@@ -362,11 +365,11 @@ const StakeInfoSection: React.FC = () => {
         </div>
         <Inviter>
           <div className="Item">
-            <span className="Text">邀请人数</span>
+            <span className="Text">{t('participantsIntroduced')}</span>
             <span className="Number">2 人</span>
           </div>
           <div className="Item">
-            <span className="Text">邀请人数</span>
+            <span className="Text">{t('affiliationReward')}</span>
             <span className="Number">223.00 PHA</span>
           </div>
         </Inviter>
@@ -374,21 +377,21 @@ const StakeInfoSection: React.FC = () => {
 
       <Detail>
         <div className="Title">
-          <span>质押明细</span>
-          <a href="">查看全部</a>
+          <span>{t('contributeDetails')}</span>
+          <a href="">{t('more')}</a>
         </div>
 
         <Table data={tableData} className="Table">
-          <Table.Column prop="property" label="时间" />
-          <Table.Column prop="descriptionIcon" label="您的质押" />
-          <Table.Column prop="type" label="您的奖励" />
+          <Table.Column prop="property" label={t('time')} />
+          <Table.Column prop="descriptionIcon" label={t('yourContribute')} />
+          <Table.Column prop="type" label={t('yourReward')} />
         </Table>
       </Detail>
 
 
       <Chart>
-        <span className="title">结算发放</span>
-        <div className="info">如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。</div>
+        <span className="title">{t('rewardVest')}</span>
+        <div className="info">{t('rewardVestTip')}</div>
         <ReactECharts
           option={chartOptions}
           style={{

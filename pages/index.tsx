@@ -12,7 +12,7 @@ import PriceChartSection from '@/components/PriceChartSection'
 
 import BlackModal from '@/components/BlackModal'
 
-import { I18nProps } from 'next-rosetta'
+import { useI18n, I18nProps } from "next-rosetta";
 import { AppLocale } from 'i18n'
 
 const StyledContainer = styled(Grid.Container)`
@@ -22,6 +22,7 @@ const StyledContainer = styled(Grid.Container)`
 `
 
 const Home: NextPage = () => {
+  const { t } = useI18n<AppLocale>();
   return (
     <>
       <Navbar />

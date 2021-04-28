@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import { Table, Pagination } from '@geist-ui/react'
 import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
+import { useI18n, I18nProps } from "next-rosetta";
+import { AppLocale } from 'i18n'
 
 const style__Rank = css`
   background: transparent;
@@ -177,27 +179,28 @@ const TableFooter = styled.div`
   }
 `
 
-const RankSection: React.FC = () => (
-  <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
+const RankSection: React.FC = () => {
+  const { t } = useI18n<AppLocale>()
+
+  return (<Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
     <TableWrap>
       <Table data={data} className="Table">
-        <Table.Column prop="rank" label="排名" />
-        <Table.Column prop="account" label="KSM账户" />
-        <Table.Column prop="amount" label="质押量" />
-        <Table.Column prop="reward" label="质押奖励" />
-        <Table.Column prop="amount" label="邀请人数" />
-        <Table.Column prop="inviters" label="质押量" />
-        <Table.Column prop="inviterReward" label="邀请奖励" />
+        <Table.Column prop="rank" label={t('rank')} />
+        <Table.Column prop="account" label={t('KSMAccount')} />
+        <Table.Column prop="inviters" label={t('contribute')} />
+        <Table.Column prop="amount" label={t('contributeReward')} />
+        <Table.Column prop="reward" label={t('participantsIntroduced')} />
+        <Table.Column prop="inviterReward" label={t('affiliationReward')} />
       </Table>
       <TableFooter>
-        <div className="left">我的排名：</div>
+        <div className="left">{t('myRanking')}：</div>
         <Pagination count={10} initialPage={1}>
           <Pagination.Next><ChevronRight /></Pagination.Next>
           <Pagination.Previous><ChevronLeft /></Pagination.Previous>
         </Pagination>
       </TableFooter>
     </TableWrap>
-  </Section>
-)
+  </Section>)
+}
 
 export default RankSection
