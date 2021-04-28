@@ -1,19 +1,42 @@
-import React, { useRef } from 'react'
+import React, { useContext, useMemo, useRef } from 'react'
 import dynamic from 'next/dynamic'
-import { ExtentionContext, _defaultContextValue } from './common'
+import {
+  ExtentionContext,
+  _defaultContextValue,
+  ExtensionContextValue,
+  AccountModal,
+} from './common'
+import { useModal } from '@geist-ui/react'
 
 const _Web3Provider = dynamic(() => import('./dynamic'))
 
 const Web3Provider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(() => typeof window !== 'undefined')
+  const accountModal = useModal()
 
-  return hasWindow ? (
-    <_Web3Provider>{children}</_Web3Provider>
-  ) : (
-    <ExtentionContext.Provider value={_defaultContextValue}>
-      {children}
-    </ExtentionContext.Provider>
+  const value = useMemo(
+    () => ({
+      ..._defaultContextValue,
+      accountModal,
+      openModal: () => accountModal.setVisible(true),
+    }),
+    [accountModal]
+  )
+
+  return (
+    <>
+      {hasWindow ? (
+        <_Web3Provider modal={accountModal}>{children}</_Web3Provider>
+      ) : (
+        <ExtentionContext.Provider value={value}>
+          <AccountModal isEnabled={true} modal={accountModal} />
+          {children}
+        </ExtentionContext.Provider>
+      )}
+    </>
   )
 }
+
+export const useWeb3 = (): ExtensionContextValue => useContext(ExtentionContext)
 
 export default Web3Provider

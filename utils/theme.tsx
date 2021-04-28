@@ -30,7 +30,7 @@ const _palette = {
   background: '#222222',
 }
 
-const phalaTheme = Themes.createFromLight({
+const phalaTheme = Themes.createFromDark({
   type: 'phala',
   palette: _palette,
   breakpoints,

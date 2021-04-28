@@ -2,7 +2,9 @@
 // import { useI18n } from 'next-rosetta'
 import React from 'react'
 import styled from 'styled-components'
-import { ButtonDropdown, Link, Button } from '@geist-ui/react'
+import { Link, Button } from '@geist-ui/react'
+import { useWeb3 } from '@/utils/web3'
+import { User } from '@geist-ui/react-icons'
 
 const NavbarWrapper = styled.div`
   display: flex;
@@ -50,9 +52,12 @@ const Menu = styled.ul`
     border-radius: 4px;
     padding: 0;
     border: none;
+    color: rgba(0, 0, 0, 0.9);
 
-    &:hover {
-      color: rgba(0, 0, 0, 0.5);
+    &:hover,
+    &:focus,
+    &:active {
+      color: rgba(0, 0, 0, 0.7);
       background: #d1ff52;
     }
   }
@@ -101,18 +106,39 @@ const Navbar: React.FC = () => {
           <Link style={{ color: '#D1FF52' }}>邀请奖励</Link>
         </li>
         <li>
-          <ButtonDropdown size="mini" className="Dropdown">
-            <ButtonDropdown.Item>中文</ButtonDropdown.Item>
-            <ButtonDropdown.Item main>English</ButtonDropdown.Item>
-          </ButtonDropdown>
+          <Link>English</Link>
         </li>
         <li>
-          <Button size="mini" className="Connect">
-            连接钱包
-          </Button>
+          <ConnectWallet />
         </li>
       </Menu>
     </NavbarWrapper>
+  )
+}
+
+const ConnectWallet = () => {
+  const { openModal, currentAccount } = useWeb3()
+  if (currentAccount) {
+    return (
+      <Button
+        size="small"
+        onClick={() => openModal()}
+        auto
+        type="default"
+        icon={<User />}
+      >
+        {false ||
+          `${currentAccount.address.slice(
+            0,
+            5
+          )}...${currentAccount.address.slice(-5)}`}
+      </Button>
+    )
+  }
+  return (
+    <Button size="mini" onClick={() => openModal()} className="Connect">
+      连接钱包
+    </Button>
   )
 }
 

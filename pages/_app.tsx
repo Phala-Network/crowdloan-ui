@@ -9,16 +9,16 @@ import { RequestProvider } from '@/utils/request'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
   return (
-    <RequestProvider>
-      <Web3Provider>
-        <I18nProvider table={pageProps.table}>
-          <GlobalStyle />
-          <WithTheme>
+    <WithTheme>
+      <I18nProvider table={pageProps.table}>
+        <RequestProvider>
+          <Web3Provider>
+            <GlobalStyle />
             <Component {...pageProps} />
-          </WithTheme>
-        </I18nProvider>
-      </Web3Provider>
-    </RequestProvider>
+          </Web3Provider>
+        </RequestProvider>
+      </I18nProvider>
+    </WithTheme>
   )
 }
 

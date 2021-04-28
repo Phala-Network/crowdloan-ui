@@ -1,13 +1,18 @@
 import React, { useCallback, useMemo, useEffect, useState } from 'react'
+import type { useModal } from '@geist-ui/react'
 
 import {
   ExtensionContextValue,
   ExtentionContext,
   ERR_POLKADOT_WEB3_NOT_INJECTED,
   POLKADOT_WEB3_APP_NAME,
+  AccountModal,
 } from './common'
+import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
 
-const _Web3Provider: React.FC = ({ children }) => {
+const _Web3Provider: React.FC<{
+  modal: ReturnType<typeof useModal>
+}> = ({ children, modal }) => {
   const [extensionModule, setExtensionModule] = useState({
     isWeb3Injected: null,
     web3AccountsSubscribe: null,
@@ -24,6 +29,11 @@ const _Web3Provider: React.FC = ({ children }) => {
   const enable = useCallback(() => setEnableCount(enableCount + 1), [
     enableCount,
   ])
+
+  const [
+    currentAccount,
+    setCurrentAccount,
+  ] = useState<InjectedAccountWithMeta | null>()
 
   const [extensions, setExtensions] = useState<
     ExtensionContextValue['extensions']
@@ -56,7 +66,6 @@ const _Web3Provider: React.FC = ({ children }) => {
           setError(undefined)
           setExtensions(_extensions)
           unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
-            console.log(injectedAccounts)
             setAccounts(injectedAccounts)
           })
         }
@@ -73,12 +82,21 @@ const _Web3Provider: React.FC = ({ children }) => {
       isEnabled,
       extensions,
       accounts,
+      accountModal: modal,
+      openModal: () => modal.setVisible(true),
+      currentAccount,
     }),
-    []
+    [enable, error, isEnabled, extensions, accounts, modal, currentAccount]
   )
 
   return (
     <ExtentionContext.Provider value={contextValue}>
+      <AccountModal
+        modal={modal}
+        accounts={accounts}
+        setCurrentAccount={setCurrentAccount}
+        isEnabled={isEnabled}
+      />
       {children}
     </ExtentionContext.Provider>
   )
