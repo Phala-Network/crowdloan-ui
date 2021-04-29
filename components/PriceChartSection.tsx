@@ -250,7 +250,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
             height: '270px',
             width: '100%',
             marginTop: '-20px',
-            marginBottom: '-40px'
+            marginBottom: '-40px',
           }}
         />
       </PriceChart>

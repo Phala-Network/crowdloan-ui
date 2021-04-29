@@ -5,6 +5,8 @@ import * as React from 'react'
 import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
 import { GetScheduleResponse } from '@/utils/request'
+import { useI18n } from 'next-rosetta'
+import { AppLocale } from '@/i18n'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -170,7 +172,6 @@ const Detail = styled.div`
       &:nth-child(even) {
         background: #222222;
       }
-
     }
   }
 `
@@ -196,10 +197,7 @@ function randomData() {
   value = value + Math.random() * 21 - 10
   return {
     name: now.toString(),
-    value: [
-      now.getTime(),
-      Math.round(value),
-    ],
+    value: [now.getTime(), Math.round(value)],
   }
 }
 const data = []
@@ -208,16 +206,14 @@ for (let i = 0; i < 30; i++) {
 }
 
 const StakeInfoSection: React.FC = () => {
+  const { t } = useI18n<AppLocale>()
   const [address] = React.useState<string | null>(
     '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
   )
 
-  const { data: queryData } = useQuery(
-    ['getSchedule', { address }],
-    {
-      refetchInterval: 60 * 1000,
-    }
-  )
+  const { data: queryData } = useQuery(['getSchedule', { address }], {
+    refetchInterval: 60 * 1000,
+  })
 
   const chartData = React.useMemo(
     () =>
@@ -234,95 +230,103 @@ const StakeInfoSection: React.FC = () => {
     { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
   ]
   const icon = (_: any, rowData: any) => {
-    return <span>{rowData.rowValue.description}<i className="link-icon"></i></span>
+    return (
+      <span>
+        {rowData.rowValue.description}
+        <i className="link-icon"></i>
+      </span>
+    )
   }
-  tableData.forEach(i => i['descriptionIcon'] = icon )
+  tableData.forEach((i) => (i['descriptionIcon'] = icon))
 
   // const rewardChartElement = React.useRef<HTMLDivElement>()
   // const rewardChart = React.useRef<ECharts>()
 
   const chartOptions = React.useMemo(() => {
-    return Object.assign({}, {
-      tooltip: {
-        trigger: 'axis',
-        formatter: function (params) {
-          params = params[0]
-          const date = new Date(params.name)
-          return (
-            date.getDate() +
-            '/' +
-            (date.getMonth() + 1) +
-            '/' +
-            date.getFullYear() +
-            ' : ' +
-            params.value[1]
-          )
-        },
-        axisPointer: {
-          animation: false,
-        },
-      },
-      xAxis: {
-        type: 'time',
-        boundaryGap: [0, 0],
-        splitLine: {
-          show: false,
-        },
-        axisTick: {
-          interval: 2,
-          show: false
-        },
-        axisLabel: {
-          // showMinLabel: true,
-          // showMaxLabel: true,
+    return Object.assign(
+      {},
+      {
+        tooltip: {
+          trigger: 'axis',
           formatter: function (params) {
-            const date = new Date(params)
+            params = params[0]
+            const date = new Date(params.name)
             return (
-              date.getFullYear() +
-              '.' +
+              date.getDate() +
+              '/' +
               (date.getMonth() + 1) +
-              '.' +
-              date.getDate()
+              '/' +
+              date.getFullYear() +
+              ' : ' +
+              params.value[1]
             )
           },
-        },
-        axisLine: {
-          show: false,
-        },
-      },
-      yAxis: {
-        type: 'value',
-        // boundaryGap: [0, '100%'],
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: 'rgba(255, 255, 255, 0.1)',
+          axisPointer: {
+            animation: false,
           },
         },
-      },
-      grid: {
-        top: '10%',
-        left: '12%',
-        bottom: '10%',
-        right: '10%',
-      },
-      series: [
-        {
-          type: 'line',
-          showSymbol: true,
-          hoverAnimation: false,
-          lineStyle: { color: '#d1ff52' },
-          itemStyle: {
-            normal: {
-              color: '#d1ff52',
-              borderColor: 'rgba(255, 255, 255, 0.9)',
-              borderWidth: 1,
-            }
+        xAxis: {
+          type: 'time',
+          boundaryGap: [0, 0],
+          splitLine: {
+            show: false,
           },
-          data: data,
+          axisTick: {
+            interval: 2,
+            show: false,
+          },
+          axisLabel: {
+            // showMinLabel: true,
+            // showMaxLabel: true,
+            formatter: function (params) {
+              const date = new Date(params)
+              return (
+                date.getFullYear() +
+                '.' +
+                (date.getMonth() + 1) +
+                '.' +
+                date.getDate()
+              )
+            },
+          },
+          axisLine: {
+            show: false,
+          },
         },
-      ],
-    })
+        yAxis: {
+          type: 'value',
+          // boundaryGap: [0, '100%'],
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(255, 255, 255, 0.1)',
+            },
+          },
+        },
+        grid: {
+          top: '10%',
+          left: '12%',
+          bottom: '10%',
+          right: '10%',
+        },
+        series: [
+          {
+            type: 'line',
+            showSymbol: true,
+            hoverAnimation: false,
+            lineStyle: { color: '#d1ff52' },
+            itemStyle: {
+              normal: {
+                color: '#d1ff52',
+                borderColor: 'rgba(255, 255, 255, 0.9)',
+                borderWidth: 1,
+              },
+            },
+            data: data,
+          },
+        ],
+      }
+    )
   }, [data])
 
   // React.useEffect(() => {
@@ -348,13 +352,13 @@ const StakeInfoSection: React.FC = () => {
       <Amount>
         <div className="Amounts">
           <div className="Amount Gr">
-            <span className="Title">您的质押总量</span>
+            <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
-            <span className="Title">您的总奖励</span>
+            <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">PHA</span>
             </p>
@@ -362,11 +366,11 @@ const StakeInfoSection: React.FC = () => {
         </div>
         <Inviter>
           <div className="Item">
-            <span className="Text">邀请人数</span>
+            <span className="Text">{t('participantsIntroduced')}</span>
             <span className="Number">2 人</span>
           </div>
           <div className="Item">
-            <span className="Text">邀请人数</span>
+            <span className="Text">{t('affiliationReward')}</span>
             <span className="Number">223.00 PHA</span>
           </div>
         </Inviter>
@@ -374,21 +378,20 @@ const StakeInfoSection: React.FC = () => {
 
       <Detail>
         <div className="Title">
-          <span>质押明细</span>
-          <a href="">查看全部</a>
+          <span>{t('contributeDetails')}</span>
+          <a href="">{t('more')}</a>
         </div>
 
         <Table data={tableData} className="Table">
-          <Table.Column prop="property" label="时间" />
-          <Table.Column prop="descriptionIcon" label="您的质押" />
-          <Table.Column prop="type" label="您的奖励" />
+          <Table.Column prop="property" label={t('time')} />
+          <Table.Column prop="descriptionIcon" label={t('yourContribute')} />
+          <Table.Column prop="type" label={t('yourReward')} />
         </Table>
       </Detail>
 
-
       <Chart>
-        <span className="title">结算发放</span>
-        <div className="info">如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。</div>
+        <span className="title">{t('rewardVest')}</span>
+        <div className="info">{t('rewardVestTip')}</div>
         <ReactECharts
           option={chartOptions}
           style={{

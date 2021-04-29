@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import axios, { AxiosResponse } from 'axios'
 
 interface requestFunctions {
-  getPrice,
+  getPrice
   getSchedule
 }
 
@@ -51,24 +51,19 @@ const apiUrls = {
 
 const requestFunctions = {
   getPrice: async ({ currency }: GetPriceOptions) => {
-    const res = await axios.get(
-      apiUrls.getPrice,
-      {
-        params: { currency },
-      })
+    const res = await axios.get(apiUrls.getPrice, {
+      params: { currency },
+    })
     checkResponse(res)
     return res.data.data
   },
   getSchedule: async ({ address }: GetScheduleOptions) => {
-    const res = await axios.get(
-      apiUrls.getSchedule,
-      {
-        params: address ? { address } : null,
-      }
-    )
+    const res = await axios.get(apiUrls.getSchedule, {
+      params: address ? { address } : null,
+    })
     checkResponse(res)
     return res.data.data
-  }
+  },
 }
 
 const queryFn = async ({ queryKey }): Promise<unknown> => {

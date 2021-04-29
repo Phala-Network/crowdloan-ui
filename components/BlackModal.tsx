@@ -1,14 +1,12 @@
 import { Modal } from '@geist-ui/react'
 import React from 'react'
-import styled from 'styled-components'
 import { X } from '@geist-ui/react-icons'
 
-
 const BlackModal: React.FC = (props) => {
-  let HeaderChilden = []
-  let ContentChildren = []
-  let ActionChildren = []
-  React.Children.forEach(props.children, item => {
+  const HeaderChilden = []
+  const ContentChildren = []
+  const ActionChildren = []
+  React.Children.forEach(props.children, (item) => {
     if (!React.isValidElement(item)) {
       ContentChildren.push(item)
     } else if (item.type === Modal.Title || item.type === Modal.Subtitle) {
@@ -22,11 +20,13 @@ const BlackModal: React.FC = (props) => {
   })
 
   return (
-    <Modal {...{...props, children:[]}} wrapClassName="BlackModal">
+    <Modal {...{ ...props, children: [] }} wrapClassName="BlackModal">
       <div className="modal-header">
         {HeaderChilden}
         <span className="close">
-          <Modal.Action onClick={({ close }) => close()}><X size={16} /></Modal.Action>
+          <Modal.Action onClick={({ close }) => close()}>
+            <X size={16} />
+          </Modal.Action>
         </span>
       </div>
       <div className="modal-content">{ContentChildren}</div>

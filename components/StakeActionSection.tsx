@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import { Input, Button, Tooltip, useInput } from '@geist-ui/react'
-import { ChevronRight } from '@geist-ui/react-icons'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
 import { useCallback } from 'react'
 import { usePolkadotApi } from '@/utils/polkadot'
 import Demical from 'decimal.js'
+import { ChevronRight } from '@geist-ui/react-icons'
+import { useI18n } from 'next-rosetta'
+import { AppLocale } from '@/i18n'
 
 const style__StakeActionSection = css`
   background: linear-gradient(
@@ -325,6 +327,7 @@ const StakeActionForm = styled.div`
 `
 
 const StakeActionSection: React.FC = () => {
+  const { t } = useI18n<AppLocale>()
   const { currentAccount, currentInjector } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
@@ -373,9 +376,9 @@ const StakeActionSection: React.FC = () => {
     >
       <StakeActionInputWrapper>
         <div className="wrap">
-          <span className="text">输入质押量</span>
+          <span className="text">{t('enterAnContributeAmount')}</span>
           <span className="balance">
-            余额: {balance ? balance.toHuman() : '...'}
+            {t('balance')}: {balance ? balance.toHuman() : '...'}
           </span>
         </div>
         <div className="InputWrap">
@@ -386,14 +389,14 @@ const StakeActionSection: React.FC = () => {
             {...stakeInput.bindings}
           />
           <div className="InputPostfix">
-            <span className="Label">最大</span>
+            <span className="Label">{t('max')}</span>
             <span className="Unit">KSM</span>
           </div>
         </div>
       </StakeActionInputWrapper>
       <StakeActionInfoWrapper>
         <div className="Title">
-          计算
+          {t('calculate')}
           <Tooltip
             text={
               <div>
@@ -428,45 +431,42 @@ const StakeActionSection: React.FC = () => {
         </div>
         <div className="Calculator">
           <div className="left">
-            <div className="Rate">Phala质押年化</div>
+            <div className="Rate">{t('phalaStakeAPY')}</div>
             <div className="RateNum">21%</div>
-            <div className="Price">PHA价格</div>
+            <div className="Price">{t('phaPrice')}</div>
             <Input label="$" className="PriceInput" />
-            <div className="Price">为PHA质押奖励</div>
+            <div className="Price">{t('contributingReward')}</div>
             <div className="Amount">13,374PHA</div>
-            <div className="Price">为Phala质押收益</div>
+            <div className="Price">{t('contributingIncome')}</div>
             <div className="Amount">$ 5,345.00</div>
           </div>
           <div className="center">VS</div>
           <div className="right">
-            <div className="Rate">KSM质押年化</div>
+            <div className="Rate">{t('KSMAPY')}</div>
             <Input className="KSMRateInput" />
-            <div className="Price">KSM价格</div>
+            <div className="Price">{t('KSMPrice')}</div>
             <Input label="$" className="PriceInput" />
-            <div className="Price">KSM抵押奖励</div>
+            <div className="Price">{t('stakingReward')}</div>
             <div className="Amount">13,374PHA</div>
             <div className="Price">
-              KSM抵押收益 <i className="alert-circle" />
+              {t('stakingIncome')} <i className="alert-circle" />
             </div>
             <div className="Amount">$ 5,345.00</div>
           </div>
         </div>
 
         <div className="Extra">
-          <span className="ExtraTitle">为PHA质押的额外收益</span>
-          <span className="ExtraAmount">最高$ 3,000.00</span>
+          <span className="ExtraTitle">{t('moreIncome')}</span>
+          <span className="ExtraAmount">{t('max')}$ 3,000.00</span>
         </div>
       </StakeActionInfoWrapper>
       <StakeActionForm>
         <div className="InviterWrap">
-          邀请人
-          <Input
-            className="InviterInput"
-            placeholder="填写邀请人获得PHA奖励(选填)"
-          />
+          {t('introducer')}
+          <Input className="InviterInput" placeholder={t('fillIntroducer')} />
         </div>
         <Button className="ActionBtn" onClick={tryContribute}>
-          质押
+          {t('stake')}
         </Button>
       </StakeActionForm>
     </Section>
