@@ -49,6 +49,10 @@ const _Web3Provider: React.FC<{
 
   useEffect(() => {
     ;(async () => {
+      if (typeof window === 'undefined') {
+        console.log(11111)
+        return
+      }
       setExtensionModule(await import('@polkadot/extension-dapp'))
       enable()
     })()

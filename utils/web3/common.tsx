@@ -23,7 +23,7 @@ export type ExtensionContextValue = {
   extensions: InjectedExtension[]
   accounts: InjectedAccountWithMeta[]
   currentAccount?: InjectedAccountWithMeta
-  currentInjector?
+  currentInjector?: InjectedExtension
   openModal?: () => any
   accountModal?
 }

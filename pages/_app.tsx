@@ -1,17 +1,37 @@
-import React from 'react'
-import { AppProps } from 'next/app'
+import React, { useMemo } from 'react'
 import { WithTheme } from '@/utils/theme'
 import 'inter-ui/inter.css'
 import GlobalStyle from '@/utils/GlobalStyle'
 import { I18nProvider } from 'next-rosetta'
-import Web3Provider from '@/utils/web3'
+
 import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
+import { AppProps } from 'next/dist/next-server/lib/router/router'
+import { loadGetInitialProps } from 'next/dist/next-server/lib/utils'
+import dynamic from 'next/dynamic'
 
-const MyApp: React.FC<AppProps> = ({
-  Component,
-  pageProps,
-}): JSX.Element | null => {
+type _App = React.FC<AppProps> & {
+  getInitialProps
+}
+
+const MyApp: _App = ({ isError, Component, pageProps }) => {
+  const Web3Provider = useMemo(() => {
+    if (!isError) {
+      return dynamic(() => import('@/utils/web3'))
+    }
+  }, [isError])
+
+  if (isError) {
+    return (
+      <WithTheme>
+        <I18nProvider table={pageProps.table}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </I18nProvider>
+      </WithTheme>
+    )
+  }
+
   return (
     <WithTheme>
       <I18nProvider table={pageProps.table}>
@@ -26,6 +46,12 @@ const MyApp: React.FC<AppProps> = ({
       </I18nProvider>
     </WithTheme>
   )
+}
+
+MyApp.getInitialProps = async ({ Component, ctx }) => {
+  const isError = ctx.pathname === '/_error'
+  const pageProps = await loadGetInitialProps(Component, ctx)
+  return { pageProps, isError }
 }
 
 export default MyApp
