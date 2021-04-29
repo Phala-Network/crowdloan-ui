@@ -1,8 +1,12 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Input, Button, Tooltip } from '@geist-ui/react'
-import { AlertCircleFill, ChevronRight } from '@geist-ui/react-icons'
-
+import { Input, Button, Tooltip, useInput } from '@geist-ui/react'
+import { ChevronRight } from '@geist-ui/react-icons'
+import { useWeb3 } from '@/utils/web3'
+import { useBalance } from '@/utils/polkadot/hooks'
+import { useCallback } from 'react'
+import { usePolkadotApi } from '@/utils/polkadot'
+import Demical from 'decimal.js'
 
 const style__StakeActionSection = css`
   background: linear-gradient(
@@ -234,7 +238,7 @@ const StakeActionInputWrapper = styled.div`
     line-height: 50px !important;
     color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 600;
-    caret-color: #D1FF52;
+    caret-color: #d1ff52;
   }
 
   & .Label {
@@ -262,7 +266,6 @@ const StakeActionInputWrapper = styled.div`
     display: flex;
     align-items: center;
   }
-
 `
 
 const StakeActionForm = styled.div`
@@ -321,90 +324,153 @@ const StakeActionForm = styled.div`
   }
 `
 
-const StakeActionSection: React.FC = () => (
-  <Section
-    className="StakeActionSection"
-    xs={24}
-    md={12}
-    lg={8}
-    innerStyle={style__StakeActionSection}
-  >
-    <StakeActionInputWrapper>
-      <div className="wrap">
-        <span className="text">输入质押量</span>
-        <span className="balance">余额: 123.1231239</span>
-      </div>
-      <div className="InputWrap">
-        <Input className="Input" placeholder="0.0" />
-        <div className="InputPostfix">
-          <span className="Label">最大</span>
-          <span className="Unit">KSM</span>
-        </div>
-      </div>
-    </StakeActionInputWrapper>
-    <StakeActionInfoWrapper>
-      <div className="Title">
-        计算
-        <Tooltip text={<div>
-                        可获得的PHA：预估可获得的奖励<br/>
-                        PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑<br/>
-                        为PHA质押的收益=可获得的PHA*PHA价格<br/>
-                        KSM抵押收益：质押的KSM*KSM价格<br/>
-                        额外收益=质押收益-抵押收益<br/>
-                        预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算<br/>
-                        <a>
-                          查看更多详情
-                          <span><ChevronRight size={16}/></span>
-                        </a>
-                      </div>}
-                 type="dark"
-                 placement="bottomStart"
-                 hideArrow={true}
-                 offset={4}
-                 portalClassName="TooltipText">
-          <i className="alert-circle"/>
-        </Tooltip>
-      </div>
-      <div className="Calculator">
-        <div className="left">
-          <div className="Rate">Phala质押年化</div>
-          <div className="RateNum">21%</div>
-          <div className="Price">PHA价格</div>
-          <Input label="$" className="PriceInput" />
-          <div className="Price">为PHA质押奖励</div>
-          <div className="Amount">13,374PHA</div>
-          <div className="Price">为Phala质押收益</div>
-          <div className="Amount">$ 5,345.00</div>
-        </div>
-        <div className="center">VS</div>
-        <div className="right">
-          <div className="Rate">KSM质押年化</div>
-          <Input className="KSMRateInput" />
-          <div className="Price">KSM价格</div>
-          <Input label="$" className="PriceInput" />
-          <div className="Price">KSM抵押奖励</div>
-          <div className="Amount">13,374PHA</div>
-          <div className="Price">KSM抵押收益 <i className="alert-circle"/></div>
-          <div className="Amount">$ 5,345.00</div>
-        </div>
-      </div>
+const StakeActionSection: React.FC = () => {
+  const { currentAccount, currentInjector } = useWeb3()
+  const { api, initialized, chainInfo } = usePolkadotApi()
+  const balance = useBalance(currentAccount?.address)
 
-      <div className="Extra">
-        <span className="ExtraTitle">为PHA质押的额外收益</span>
-        <span className="ExtraAmount">最高$ 3,000.00</span>
-      </div>
-    </StakeActionInfoWrapper>
-    <StakeActionForm>
-      <div className="InviterWrap">
-        邀请人
-        <Input
-          className="InviterInput"
-          placeholder="填写邀请人获得PHA奖励(选填)"
-        />
-      </div>
-      <Button className="ActionBtn">质押</Button>
-    </StakeActionForm>
-  </Section>
-)
+  const stakeInput = useInput('')
+
+  const tryContribute = useCallback(() => {
+    if (!(initialized && chainInfo)) {
+      return
+    }
+
+    const input = new Demical(parseFloat(stakeInput.state) || 0)
+    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
+    const txValue = new Demical('1' + '0'.repeat(tokenDecimals as number))
+      .mul(input)
+      .toString()
+    const tx = api.tx.crowdloan.contribute(3000, txValue, null)
+    tx.signAndSend(
+      currentAccount.address,
+      { signer: currentInjector.signer },
+      ({ status }) => {
+        if (status.isInBlock) {
+          console.log(`Completed at block hash #${status.asInBlock.toString()}`)
+        } else {
+          console.log(`Current status: ${status.type}`)
+        }
+      }
+    ).catch((error: any) => {
+      console.log(':( transaction failed', error)
+    })
+  }, [
+    stakeInput.state,
+    initialized,
+    chainInfo,
+    currentAccount,
+    currentInjector,
+  ])
+
+  return (
+    <Section
+      className="StakeActionSection"
+      xs={24}
+      md={12}
+      lg={8}
+      innerStyle={style__StakeActionSection}
+    >
+      <StakeActionInputWrapper>
+        <div className="wrap">
+          <span className="text">输入质押量</span>
+          <span className="balance">
+            余额: {balance ? balance.toHuman() : '...'}
+          </span>
+        </div>
+        <div className="InputWrap">
+          <Input
+            className="Input"
+            type="number"
+            placeholder="0"
+            {...stakeInput.bindings}
+          />
+          <div className="InputPostfix">
+            <span className="Label">最大</span>
+            <span className="Unit">KSM</span>
+          </div>
+        </div>
+      </StakeActionInputWrapper>
+      <StakeActionInfoWrapper>
+        <div className="Title">
+          计算
+          <Tooltip
+            text={
+              <div>
+                可获得的PHA：预估可获得的奖励
+                <br />
+                PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑
+                <br />
+                为PHA质押的收益=可获得的PHA*PHA价格
+                <br />
+                KSM抵押收益：质押的KSM*KSM价格
+                <br />
+                额外收益=质押收益-抵押收益
+                <br />
+                预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算
+                <br />
+                <a>
+                  查看更多详情
+                  <span>
+                    <ChevronRight size={16} />
+                  </span>
+                </a>
+              </div>
+            }
+            type="dark"
+            placement="bottomStart"
+            hideArrow={true}
+            offset={4}
+            portalClassName="TooltipText"
+          >
+            <i className="alert-circle" />
+          </Tooltip>
+        </div>
+        <div className="Calculator">
+          <div className="left">
+            <div className="Rate">Phala质押年化</div>
+            <div className="RateNum">21%</div>
+            <div className="Price">PHA价格</div>
+            <Input label="$" className="PriceInput" />
+            <div className="Price">为PHA质押奖励</div>
+            <div className="Amount">13,374PHA</div>
+            <div className="Price">为Phala质押收益</div>
+            <div className="Amount">$ 5,345.00</div>
+          </div>
+          <div className="center">VS</div>
+          <div className="right">
+            <div className="Rate">KSM质押年化</div>
+            <Input className="KSMRateInput" />
+            <div className="Price">KSM价格</div>
+            <Input label="$" className="PriceInput" />
+            <div className="Price">KSM抵押奖励</div>
+            <div className="Amount">13,374PHA</div>
+            <div className="Price">
+              KSM抵押收益 <i className="alert-circle" />
+            </div>
+            <div className="Amount">$ 5,345.00</div>
+          </div>
+        </div>
+
+        <div className="Extra">
+          <span className="ExtraTitle">为PHA质押的额外收益</span>
+          <span className="ExtraAmount">最高$ 3,000.00</span>
+        </div>
+      </StakeActionInfoWrapper>
+      <StakeActionForm>
+        <div className="InviterWrap">
+          邀请人
+          <Input
+            className="InviterInput"
+            placeholder="填写邀请人获得PHA奖励(选填)"
+          />
+        </div>
+        <Button className="ActionBtn" onClick={tryContribute}>
+          质押
+        </Button>
+      </StakeActionForm>
+    </Section>
+  )
+}
 
 export default StakeActionSection

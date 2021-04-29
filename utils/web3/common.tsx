@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Button,
   Description,
+  Loading,
 } from '@geist-ui/react'
 import { User } from '@geist-ui/react-icons'
 import type {
@@ -13,6 +14,7 @@ import type {
 } from '@polkadot/extension-inject/types'
 import { createContext } from 'react'
 import styled from 'styled-components'
+import { usePolkadotApi } from '../polkadot'
 
 export type ExtensionContextValue = {
   enable(): unknown
@@ -21,6 +23,7 @@ export type ExtensionContextValue = {
   extensions: InjectedExtension[]
   accounts: InjectedAccountWithMeta[]
   currentAccount?: InjectedAccountWithMeta
+  currentInjector?
   openModal?: () => any
   accountModal?
 }
@@ -64,18 +67,31 @@ export const AccountModal: React.FC<{
   >
   isEnabled: boolean
 }> = ({ isEnabled, modal, accounts = [], setCurrentAccount }) => {
+  const { initialized } = usePolkadotApi()
+
+  if (!initialized) {
+    return (
+      <Modal {...modal.bindings}>
+        <Modal.Title>Accounts</Modal.Title>
+        <Modal.Content>
+          <Loading />
+        </Modal.Content>
+      </Modal>
+    )
+  }
+
   return (
     <Modal {...modal.bindings}>
       <Modal.Title>Accounts</Modal.Title>
       <Modal.Subtitle>
         {accounts.length ? 'Select an account' : ''}
-      </Modal.Subtitle>
+      </Modal.Subtitle>{' '}
       {isEnabled ? (
         accounts.length ? (
           <ButtonGroup size="large" vertical>
             {accounts.map((account) => (
               <ItemButton
-                key="AccountModal"
+                key={account.address}
                 onClick={() => {
                   setCurrentAccount(account)
                   modal.setVisible(false)
@@ -99,7 +115,6 @@ export const AccountModal: React.FC<{
           {'Please allow access in the Polkadot extension.'}
         </Note>
       )}
-
       <Modal.Action passive onClick={() => modal.setVisible(false)}>
         Cancel
       </Modal.Action>

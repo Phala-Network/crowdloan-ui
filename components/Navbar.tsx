@@ -127,7 +127,7 @@ const ConnectWallet = () => {
         type="default"
         icon={<User />}
       >
-        {false ||
+        {currentAccount.meta.name ||
           `${currentAccount.address.slice(
             0,
             5

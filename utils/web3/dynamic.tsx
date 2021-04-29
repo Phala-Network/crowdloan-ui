@@ -8,7 +8,11 @@ import {
   POLKADOT_WEB3_APP_NAME,
   AccountModal,
 } from './common'
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
+import {
+  InjectedAccountWithMeta,
+  InjectedExtension,
+} from '@polkadot/extension-inject/types'
+import { web3FromSource } from '@polkadot/extension-dapp'
 
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
@@ -33,7 +37,8 @@ const _Web3Provider: React.FC<{
   const [
     currentAccount,
     setCurrentAccount,
-  ] = useState<InjectedAccountWithMeta | null>()
+  ] = useState<InjectedAccountWithMeta>()
+  const [currentInjector, setCurrentInjector] = useState<InjectedExtension>()
 
   const [extensions, setExtensions] = useState<
     ExtensionContextValue['extensions']
@@ -75,6 +80,14 @@ const _Web3Provider: React.FC<{
     return () => unsubscribe && unsubscribe()
   }, [enableCount])
 
+  useEffect(() => {
+    ;(async () => {
+      if (currentAccount?.meta.source) {
+        setCurrentInjector(await web3FromSource(currentAccount.meta.source))
+      }
+    })()
+  }, [currentAccount])
+
   const contextValue = useMemo<ExtensionContextValue>(
     () => ({
       enable,
@@ -85,8 +98,18 @@ const _Web3Provider: React.FC<{
       accountModal: modal,
       openModal: () => modal.setVisible(true),
       currentAccount,
+      currentInjector,
     }),
-    [enable, error, isEnabled, extensions, accounts, modal, currentAccount]
+    [
+      enable,
+      error,
+      isEnabled,
+      extensions,
+      accounts,
+      modal,
+      currentAccount,
+      currentInjector,
+    ]
   )
 
   return (
