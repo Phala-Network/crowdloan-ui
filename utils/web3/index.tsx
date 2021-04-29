@@ -8,8 +8,6 @@ import {
 } from './common'
 import { useModal } from '@geist-ui/react'
 
-const _Web3Provider = dynamic(() => import('./dynamic'))
-
 const Web3Provider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(() => typeof window !== 'undefined')
   const accountModal = useModal()
@@ -22,6 +20,12 @@ const Web3Provider: React.FC = ({ children }) => {
     }),
     [accountModal]
   )
+
+  const _Web3Provider = useMemo(() => {
+    if (hasWindow) {
+      return dynamic(() => import('./dynamic'))
+    }
+  }, [hasWindow])
 
   return (
     <>
