@@ -1,14 +1,42 @@
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Input, Button, Tooltip, useInput } from '@geist-ui/react'
+import {
+  Input,
+  Button,
+  Tooltip,
+  useInput,
+  useToasts,
+  useModal,
+  Modal,
+  Card,
+  Fieldset,
+  Divider,
+  Description,
+} from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { usePolkadotApi } from '@/utils/polkadot'
 import Demical from 'decimal.js'
 import { ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from 'next-rosetta'
 import { AppLocale } from '@/i18n'
+import { decodeAddress } from '@polkadot/util-crypto'
+
+const createReferrerRemark = ({ api, referrer }) => {
+  const refAcc = api.createType('AccountId', referrer)
+  const remark = api.createType('PhalaCrowdloanReferrerRemark', {
+    magic: 'CR',
+    paraId: 3000,
+    referrer: refAcc,
+    referrerHash: refAcc.hash.toHex(),
+  })
+  return api.createType('Bytes', remark.toHex())
+}
+
+const createReferrerRemarkTx = ({ api, referrer }) => {
+  return api.tx.system.remarkWithEvent(createReferrerRemark({ api, referrer }))
+}
 
 const style__StakeActionSection = css`
   background: linear-gradient(
@@ -326,45 +354,122 @@ const StakeActionForm = styled.div`
   }
 `
 
+const ModalLine = styled.p`
+  word-break: initial;
+  word-wrap: break-word;
+  text-align: left;
+  font-size: 0.9rem;
+`
+
 const StakeActionSection: React.FC = () => {
   const { t } = useI18n<AppLocale>()
-  const { currentAccount, currentInjector } = useWeb3()
+  const {
+    currentAccount,
+    currentInjector,
+    openModal: openWeb3Modal,
+  } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
 
+  const [, setToast] = useToasts()
+  const confirmModal = useModal()
   const stakeInput = useInput('')
+  const referrerInput = useInput('')
 
-  const tryContribute = useCallback(() => {
+  const [tx, setTx] = useState(null)
+  const [txPaymenInfo, setTxPaymentInfo] = useState(null)
+  useEffect(() => {
+    if (!(api && tx && currentAccount)) {
+      setTxPaymentInfo(null)
+      return
+    }
+    ;(async () => {
+      setTxPaymentInfo(await tx.paymentInfo(currentAccount.address))
+    })()
+  }, [currentAccount, tx, api, setTxPaymentInfo])
+  const [txWaiting, setTxWaiting] = useState(false)
+  const [txValue, setTxValue] = useState(null)
+
+  const tryContribute = useCallback(async () => {
+    setTxWaiting(false)
+    if (!currentAccount) {
+      openWeb3Modal()
+      return
+    }
     if (!(initialized && chainInfo)) {
       return
     }
 
-    const input = new Demical(parseFloat(stakeInput.state) || 0)
+    const contributeInputValue = new Demical(parseFloat(stakeInput.state) || 0)
     const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
-    const txValue = new Demical('1' + '0'.repeat(tokenDecimals as number))
-      .mul(input)
-      .toString()
-    const tx = api.tx.crowdloan.contribute(3000, txValue, null)
+    const txValue = api.createType(
+      'BalanceOf',
+      new Demical('1' + '0'.repeat(tokenDecimals as number))
+        .mul(contributeInputValue)
+        .toString()
+    )
+
+    if (txValue.isEmpty) {
+      setToast({
+        text: 'Invalid value.',
+        type: 'error',
+      })
+      return
+    }
+
+    setTxValue(txValue.toHuman())
+
+    const txs = []
+    if (referrerInput.state.trim()) {
+      try {
+        const referrerInputValue = decodeAddress(referrerInput.state.trim())
+        txs.push(
+          createReferrerRemarkTx({
+            api,
+            referrer: referrerInputValue,
+          })
+        )
+      } catch (error) {
+        console.warn(error)
+        setToast({
+          text: 'Invalid referrer.',
+          type: 'error',
+        })
+        return
+      }
+    }
+
+    txs.push(api.tx.crowdloan.contribute(3000, txValue, null))
+
+    setTx(api.tx.utility.batch(txs))
+    confirmModal.setVisible(true)
+  }, [
+    stakeInput.state,
+    referrerInput.state,
+    initialized,
+    chainInfo,
+    currentAccount,
+  ])
+
+  const trySubmitTx = useCallback(() => {
+    setTxWaiting(true)
     tx.signAndSend(
       currentAccount.address,
       { signer: currentInjector.signer },
       ({ status }) => {
         if (status.isInBlock) {
-          console.log(`Completed at block hash #${status.asInBlock.toString()}`)
+          setTxWaiting(false)
+          confirmModal.setVisible(false)
+          setToast({ text: 'Success', type: 'success', delay: 3000 }) // todo
         } else {
-          console.log(`Current status: ${status.type}`)
+          console.warn(`Current status: ${status.type}`)
         }
       }
     ).catch((error: any) => {
-      console.log(':( transaction failed', error)
+      setTxWaiting(false)
+      setToast({ text: error.toString(), type: 'error', delay: 5000 }) // todo
     })
-  }, [
-    stakeInput.state,
-    initialized,
-    chainInfo,
-    currentAccount,
-    currentInjector,
-  ])
+  }, [tx, txWaiting, currentAccount])
 
   return (
     <Section
@@ -374,6 +479,57 @@ const StakeActionSection: React.FC = () => {
       lg={8}
       innerStyle={style__StakeActionSection}
     >
+      <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
+        <Modal.Title>Transaction Confirmation</Modal.Title>
+        <Modal.Subtitle></Modal.Subtitle>
+        <Fieldset>
+          <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
+            <ModalLine>
+              在阁下申请与我们开始交易之前，必须小心地考虑以阁下的情况以及财务处境，使用差价合约是否适合。
+            </ModalLine>
+            <ModalLine>
+              您将在Kusama卡槽拍卖中为Khala质押{txValue}直到
+              2021年4月30日。您的PHA奖励将在___解锁__%，之后每隔___解锁__%，
+              届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
+            </ModalLine>
+          </Fieldset.Content>
+          <Divider />
+          <Fieldset.Content
+            style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
+          >
+            {referrerInput.state.trim() ? (
+              <Description
+                title="Referrer"
+                content={referrerInput.state.trim()}
+              />
+            ) : null}
+            <Divider volume={0} />
+            <Description
+              title="Contribution Value"
+              content={txValue || '...'}
+            />
+            <Divider volume={0} />
+            <Description
+              title="Estimated Fee"
+              content={txPaymenInfo ? txPaymenInfo.partialFee.toHuman() : '...'}
+            />
+          </Fieldset.Content>
+        </Fieldset>
+        <Modal.Action
+          passive
+          disabled={txWaiting}
+          onClick={txWaiting ? undefined : () => confirmModal.setVisible(false)}
+        >
+          Cancel
+        </Modal.Action>
+        <Modal.Action
+          loading={txWaiting}
+          disabled={txWaiting}
+          onClick={txWaiting ? undefined : trySubmitTx}
+        >
+          OK
+        </Modal.Action>
+      </Modal>
       <StakeActionInputWrapper>
         <div className="wrap">
           <span className="text">{t('enterAnContributeAmount')}</span>
@@ -463,7 +619,11 @@ const StakeActionSection: React.FC = () => {
       <StakeActionForm>
         <div className="InviterWrap">
           {t('introducer')}
-          <Input className="InviterInput" placeholder={t('fillIntroducer')} />
+          <Input
+            {...referrerInput.bindings}
+            className="InviterInput"
+            placeholder={t('fillIntroducer')}
+          />
         </div>
         <Button className="ActionBtn" onClick={tryContribute}>
           {t('stake')}

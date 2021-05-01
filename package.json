@@ -9,6 +9,7 @@
     "@polkadot/extension-inject": "^0.37.3-17",
     "@polkadot/types": "^4.7.2",
     "@polkadot/util": "^6.3.1",
+    "@polkadot/util-crypto": "^6.3.1",
     "@types/echarts": "^4.9.6",
     "@types/styled-components": "^5.1.9",
     "@web3-react/abstract-connector": "^6.0.7",

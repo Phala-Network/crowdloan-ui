@@ -10,6 +10,7 @@ import {
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import { typesChain, typesBundle } from '@polkadot/apps-config/api'
 import type { ChainProperties } from '@polkadot/types/interfaces'
+import types from './types.json'
 
 export type PolkadotApiContextValue = {
   api?: ApiPromise
@@ -45,6 +46,7 @@ const _PolkadotApiProvider: React.FC = ({ children }) => {
         provider: wsProvider,
         typesBundle,
         typesChain,
+        types,
       })
       setApi(_api)
       await _api.isReady
