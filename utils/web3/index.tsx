@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useRef } from 'react'
-import dynamic from 'next/dynamic'
 import {
   ExtentionContext,
   _defaultContextValue,
@@ -7,6 +6,7 @@ import {
   AccountModal,
 } from './common'
 import { useModal } from '@geist-ui/react'
+import _Web3Provider from './dynamic'
 
 const Web3Provider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(() => typeof window !== 'undefined')
@@ -20,12 +20,6 @@ const Web3Provider: React.FC = ({ children }) => {
     }),
     [accountModal]
   )
-
-  const _Web3Provider = useMemo(() => {
-    if (hasWindow) {
-      return dynamic(() => import('./dynamic'))
-    }
-  }, [hasWindow])
 
   return (
     <>
