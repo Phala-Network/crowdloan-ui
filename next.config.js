@@ -11,6 +11,9 @@ const baseConfig = {
     autoPrerender: false,
   },
   target: 'serverless',
+  future: {
+    webpack5: false,
+  },
 }
 
 module.exports = (phase) => {

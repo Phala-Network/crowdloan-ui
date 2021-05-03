@@ -48,10 +48,4 @@ const MyApp: _App = ({ isError, Component, pageProps }) => {
   )
 }
 
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  const isError = ctx.pathname === '/_error'
-  const pageProps = await loadGetInitialProps(Component, ctx)
-  return { pageProps, isError }
-}
-
 export default MyApp
