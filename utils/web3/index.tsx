@@ -6,7 +6,9 @@ import {
   AccountModal,
 } from './common'
 import { useModal } from '@geist-ui/react'
-import _Web3Provider from './dynamic'
+import dynamic from 'next/dynamic'
+
+const _Web3Provider = dynamic(() => import('./dynamic'), { ssr: false })
 
 const Web3Provider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(() => typeof window !== 'undefined')

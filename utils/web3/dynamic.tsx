@@ -13,17 +13,15 @@ import {
   InjectedExtension,
 } from '@polkadot/extension-inject/types'
 import { web3FromSource } from '@polkadot/extension-dapp'
+import {
+  isWeb3Injected,
+  web3AccountsSubscribe,
+  web3Enable,
+} from '@polkadot/extension-dapp'
 
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
 }> = ({ children, modal }) => {
-  const [extensionModule, setExtensionModule] = useState({
-    isWeb3Injected: null,
-    web3AccountsSubscribe: null,
-    web3Enable: null,
-  })
-  const { isWeb3Injected, web3AccountsSubscribe, web3Enable } = extensionModule
-
   const [isEnabled, setIsEnabled] = useState<
     ExtensionContextValue['isEnabled']
   >(false)
@@ -52,7 +50,6 @@ const _Web3Provider: React.FC<{
       if (typeof window === 'undefined') {
         return
       }
-      setExtensionModule(await import('@polkadot/extension-dapp'))
       enable()
     })()
   }, [])
