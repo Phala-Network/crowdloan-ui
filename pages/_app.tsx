@@ -7,12 +7,9 @@ import { I18nProvider } from 'next-rosetta'
 import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils'
 import dynamic from 'next/dynamic'
 
-type _App = React.FC<AppProps> & {
-  getInitialProps
-}
+type _App = React.FC<AppProps>
 
 const MyApp: _App = ({ isError, Component, pageProps }) => {
   const Web3Provider = useMemo(() => {
