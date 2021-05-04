@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Modal } from '@geist-ui/react'
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
@@ -102,9 +102,9 @@ const Home: NextPage = () => {
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps<
-  I18nProps<AppLocale>
-> = async (context) => {
+export const getStaticProps: GetStaticProps<I18nProps<AppLocale>> = async (
+  context
+) => {
   const locale = context.locale || context.defaultLocale
   const { default: table } = await import(`../i18n/${locale}.json`)
   return { props: { table, locale } }
