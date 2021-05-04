@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Modal } from '@geist-ui/react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
 import RankSection from '@/components/RankSection'
@@ -19,7 +19,7 @@ const StyledContainer = styled(Grid.Container)`
   }
 `
 
-const Home: React.FC = () => {
+const _Home: React.FC = () => {
   const { t } = useI18n()
   return (
     <>
@@ -96,6 +96,13 @@ const Home: React.FC = () => {
       </BlackModal>
     </>
   )
+}
+
+const Home: React.FC = () => {
+  const hasWindow = useMemo(() => typeof window !== 'undefined', [
+    typeof window !== 'undefined',
+  ])
+  return hasWindow ? <_Home /> : null
 }
 
 export default Home

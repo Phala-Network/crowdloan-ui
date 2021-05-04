@@ -9,6 +9,7 @@ const path = require('path')
 module.exports = {
   /* Your site config here */
   plugins: [
+    `gatsby-plugin-typescript`,
     {
       resolve: 'gatsby-plugin-root-import',
       options: {
@@ -22,7 +23,6 @@ module.exports = {
         languages: [`en`, `zh`],
         defaultLanguage: `en`,
         redirect: true,
-        // redirectComponent: require.resolve(`./src/components/redirect.js`),
       },
     },
     `gatsby-plugin-styled-jsx`,

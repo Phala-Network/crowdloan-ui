@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Balance, AccountId } from '@polkadot/types/interfaces'
 import { usePolkadotApi } from '.'
 
