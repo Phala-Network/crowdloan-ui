@@ -1,3 +1,4 @@
+import React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import {
@@ -18,8 +19,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { usePolkadotApi } from '@/utils/polkadot'
 import Demical from 'decimal.js'
 import { ChevronRight } from '@geist-ui/react-icons'
-import { useI18n } from 'next-rosetta'
-import { AppLocale } from '@/i18n'
+import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 
 const createReferrerRemark = ({ api, referrer }) => {
@@ -361,7 +361,7 @@ const ModalLine = styled.p`
 `
 
 const StakeActionSection: React.FC = () => {
-  const { t } = useI18n<AppLocale>()
+  const { t } = useI18n()
   const {
     currentAccount,
     currentInjector,

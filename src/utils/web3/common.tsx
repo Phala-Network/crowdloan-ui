@@ -12,7 +12,7 @@ import type {
   InjectedExtension,
   InjectedAccountWithMeta,
 } from '@polkadot/extension-inject/types'
-import { createContext } from 'react'
+import React, { createContext } from 'react'
 import styled from 'styled-components'
 import { usePolkadotApi } from '../polkadot'
 

@@ -108,3 +108,9 @@ dist
 
 # Local Netlify folder
 .netlify
+
+.env*
+
+# gatsby files
+.cache/
+public

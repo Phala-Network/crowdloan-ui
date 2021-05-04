@@ -1,6 +1,4 @@
-import { I18nProvider, RosettaExtended, useI18n } from 'next-rosetta'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { IntlShape, useIntl } from 'gatsby-plugin-intl'
 
 export interface AppLocale {
   locale: string
@@ -43,19 +41,12 @@ export interface AppLocale {
   rewardVestTip: string
 }
 
-const _useI18n = (): RosettaExtended<AppLocale> => useI18n<AppLocale>()
-
-const _I18nProvider: React.FC = ({ children }) => {
-  const { locale } = useRouter()
-  const [table, setTable] = useState(null)
-
-  useEffect(() => {
-    ;(async () => {
-      setTable(await import(`@/i18n/${locale}.json`))
-    })()
-  }, [locale])
-
-  return <I18nProvider table={table}>{children}</I18nProvider>
+const _useI18n = (): IntlShape & { t: (id: string) => string } => {
+  const intl = useIntl()
+  return {
+    t: (id) => intl.formatMessage({ id }),
+    ...intl,
+  }
 }
 
 export const localeNames = {
@@ -63,5 +54,4 @@ export const localeNames = {
   en: 'English',
 }
 
-export default _I18nProvider
 export { _useI18n as useI18n }

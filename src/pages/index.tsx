@@ -2,7 +2,6 @@ import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Modal } from '@geist-ui/react'
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
@@ -12,8 +11,7 @@ import PriceChartSection from '@/components/PriceChartSection'
 
 import BlackModal from '@/components/BlackModal'
 
-import { useI18n } from 'next-rosetta'
-import { AppLocale } from 'i18n'
+import { useI18n } from '@/i18n'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -21,8 +19,8 @@ const StyledContainer = styled(Grid.Container)`
   }
 `
 
-const Home: NextPage = () => {
-  const { t } = useI18n<AppLocale>()
+const Home: React.FC = () => {
+  const { t } = useI18n()
   return (
     <>
       <Navbar />

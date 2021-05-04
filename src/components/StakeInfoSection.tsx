@@ -5,8 +5,7 @@ import * as React from 'react'
 import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
 import { GetScheduleResponse } from '@/utils/request'
-import { useI18n } from 'next-rosetta'
-import { AppLocale } from '@/i18n'
+import { useI18n } from '@/i18n'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -206,7 +205,7 @@ for (let i = 0; i < 30; i++) {
 }
 
 const StakeInfoSection: React.FC = () => {
-  const { t } = useI18n<AppLocale>()
+  const { t } = useI18n()
   const [address] = React.useState<string | null>(
     '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
   )

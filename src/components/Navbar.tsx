@@ -1,12 +1,11 @@
-import { AppLocale, localeNames } from '@/i18n'
-import { useI18n } from 'next-rosetta'
-import React from 'react'
+import { localeNames } from '@/i18n'
+import { useI18n } from '@/i18n'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Link, Button } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { User } from '@geist-ui/react-icons'
-import { useRouter } from 'next/router'
-import NextLink from 'next/link'
+import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
 
 const NavbarWrapper = styled.div`
   display: flex;
@@ -93,8 +92,8 @@ const Menu = styled.ul`
   }
 `
 const Navbar: React.FC = () => {
-  const { t } = useI18n<AppLocale>()
-  const { locale, locales, asPath } = useRouter()
+  const { t } = useI18n()
+  const { locale } = useContext(IntlContext)
 
   return (
     <NavbarWrapper>
@@ -108,12 +107,10 @@ const Navbar: React.FC = () => {
         <li>
           <Link style={{ color: '#D1FF52' }}>{t('affiliationProgram')}</Link>
         </li>
-        {locales?.map((loc) =>
+        {Object.keys(localeNames).map((loc) =>
           locale === loc ? null : (
             <li key={loc}>
-              <NextLink href={asPath} locale={loc}>
-                <Link>{localeNames[loc]}</Link>
-              </NextLink>
+              <Link onClick={() => changeLocale(loc)}>{localeNames[loc]}</Link>
             </li>
           )
         )}

@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useCallback,
   useContext,
@@ -19,7 +19,13 @@ export type PolkadotApiContextValue = {
   chainInfo?: ChainProperties
 }
 
-export const PolkadotApiContext = createContext<PolkadotApiContextValue>(null)
+const _defaultValue: PolkadotApiContextValue = {
+  api: null,
+  initialized: false,
+}
+export const PolkadotApiContext = createContext<PolkadotApiContextValue>(
+  _defaultValue
+)
 
 const _PolkadotApiProvider: React.FC = ({ children }) => {
   const [initCount, setInitCount] = useState<number>(-1)
@@ -79,11 +85,6 @@ const _PolkadotApiProvider: React.FC = ({ children }) => {
 
 export const usePolkadotApi = (): PolkadotApiContextValue =>
   useContext(PolkadotApiContext)
-
-const _defaultValue: PolkadotApiContextValue = {
-  api: null,
-  initialized: false,
-}
 
 export const PolkadotApiProvider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(typeof window !== 'undefined')

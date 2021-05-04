@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
 import dayjs from 'dayjs'
-import { useI18n } from 'next-rosetta'
-import { AppLocale } from '@/i18n'
+import { useI18n } from '@/i18n'
+
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -92,7 +92,7 @@ let value = Math.random() * 1000
 let now = new Date(1997, 9, 3)
 
 const AuctionChartSection: React.FC = () => {
-  const { t } = useI18n<AppLocale>()
+  const { t } = useI18n()
   const data = []
   for (let i = 0; i < 1000; i++) {
     data.push(randomData())

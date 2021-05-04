@@ -1,9 +1,9 @@
+import React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import { Table, Pagination } from '@geist-ui/react'
 import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
-import { useI18n } from 'next-rosetta'
-import { AppLocale } from 'i18n'
+import { useI18n } from '@/i18n'
 
 const style__Rank = css`
   background: transparent;
@@ -182,7 +182,7 @@ const TableFooter = styled.div`
 `
 
 const RankSection: React.FC = () => {
-  const { t } = useI18n<AppLocale>()
+  const { t } = useI18n()
 
   return (
     <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
