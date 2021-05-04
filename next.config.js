@@ -7,9 +7,6 @@ const baseConfig = {
     locales: ['en', 'zh'],
     defaultLocale: 'en',
   },
-  devIndicators: {
-    autoPrerender: false,
-  },
   target: 'serverless',
   future: {
     webpack5: false,

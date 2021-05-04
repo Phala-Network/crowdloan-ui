@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { WithTheme } from '@/utils/theme'
 import 'inter-ui/inter.css'
 import GlobalStyle from '@/utils/GlobalStyle'
@@ -7,28 +7,10 @@ import { I18nProvider } from 'next-rosetta'
 import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
-import dynamic from 'next/dynamic'
-
+import Web3Provider from '@/utils/web3'
 type _App = React.FC<AppProps>
 
-const MyApp: _App = ({ isError, Component, pageProps }) => {
-  const Web3Provider = useMemo(() => {
-    if (!isError) {
-      return dynamic(() => import('@/utils/web3'))
-    }
-  }, [isError])
-
-  if (isError) {
-    return (
-      <WithTheme>
-        <I18nProvider table={pageProps.table}>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </I18nProvider>
-      </WithTheme>
-    )
-  }
-
+const MyApp: _App = ({ Component, pageProps }) => {
   return (
     <WithTheme>
       <I18nProvider table={pageProps.table}>

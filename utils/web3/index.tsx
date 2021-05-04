@@ -8,10 +8,11 @@ import {
 import { useModal } from '@geist-ui/react'
 import dynamic from 'next/dynamic'
 
-const _Web3Provider = dynamic(() => import('./dynamic'), { ssr: false })
-
 const Web3Provider: React.FC = ({ children }) => {
-  const { current: hasWindow } = useRef(() => typeof window !== 'undefined')
+  const { current: hasWindow } = useRef(typeof window !== 'undefined')
+  const { current: _Web3Provider } = useRef(
+    hasWindow ? dynamic(() => import('./dynamic'), { ssr: false }) : null
+  )
   const accountModal = useModal()
 
   const value = useMemo(
