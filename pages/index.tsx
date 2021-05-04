@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Modal } from '@geist-ui/react'
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
@@ -12,7 +12,7 @@ import PriceChartSection from '@/components/PriceChartSection'
 
 import BlackModal from '@/components/BlackModal'
 
-import { useI18n, I18nProps } from 'next-rosetta'
+import { useI18n } from 'next-rosetta'
 import { AppLocale } from 'i18n'
 
 const StyledContainer = styled(Grid.Container)`
@@ -101,11 +101,3 @@ const Home: NextPage = () => {
 }
 
 export default Home
-
-export const getStaticProps: GetStaticProps<I18nProps<AppLocale>> = async (
-  context
-) => {
-  const locale = context.locale || context.defaultLocale
-  const { default: table } = await import(`../i18n/${locale}.json`)
-  return { props: { table, locale } }
-}

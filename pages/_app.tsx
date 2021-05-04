@@ -2,8 +2,7 @@ import React from 'react'
 import { WithTheme } from '@/utils/theme'
 import 'inter-ui/inter.css'
 import GlobalStyle from '@/utils/GlobalStyle'
-import { I18nProvider } from 'next-rosetta'
-
+import I18nProvider from '@/i18n'
 import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
@@ -14,7 +13,7 @@ type _App = React.FC<AppProps>
 const MyApp: _App = ({ Component, pageProps }) => {
   return (
     <WithTheme>
-      <I18nProvider table={pageProps.table}>
+      <I18nProvider>
         <RequestProvider>
           <PolkadotApiProvider>
             <Web3Provider>

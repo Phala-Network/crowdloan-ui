@@ -1,4 +1,6 @@
-import { RosettaExtended, useI18n } from 'next-rosetta'
+import { I18nProvider, RosettaExtended, useI18n } from 'next-rosetta'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 export interface AppLocale {
   locale: string
@@ -43,4 +45,23 @@ export interface AppLocale {
 
 const _useI18n = (): RosettaExtended<AppLocale> => useI18n<AppLocale>()
 
+const _I18nProvider: React.FC = ({ children }) => {
+  const { locale } = useRouter()
+  const [table, setTable] = useState(null)
+
+  useEffect(() => {
+    ;(async () => {
+      setTable(await import(`@/i18n/${locale}.json`))
+    })()
+  }, [locale])
+
+  return <I18nProvider table={table}>{children}</I18nProvider>
+}
+
+export const localeNames = {
+  zh: '中文',
+  en: 'English',
+}
+
+export default _I18nProvider
 export { _useI18n as useI18n }
