@@ -8,6 +8,7 @@ import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
 import Web3Provider from '@/utils/web3'
+
 type _App = React.FC<AppProps>
 
 const MyApp: _App = ({ Component, pageProps }) => {

@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 const Web3Provider: React.FC = ({ children }) => {
   const { current: hasWindow } = useRef(typeof window !== 'undefined')
   const { current: _Web3Provider } = useRef(
-    hasWindow ? dynamic(() => import('./dynamic'), { ssr: false }) : null
+    hasWindow ? dynamic(() => import('./dynamic')) : null
   )
   const accountModal = useModal()
 
