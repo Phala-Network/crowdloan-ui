@@ -22,7 +22,7 @@ module.exports = {
         path: `${__dirname}/src/i18n`,
         languages: [`en`, `zh`],
         defaultLanguage: `en`,
-        redirect: true,
+        redirect: false,
       },
     },
     `gatsby-plugin-styled-jsx`,
