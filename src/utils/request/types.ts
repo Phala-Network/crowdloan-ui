@@ -102,3 +102,20 @@ export type GetContributionsResponse = {
     promotionRewardAmount?: number
   }
 }
+
+export type GetContributorsOptions = {
+  campaignId: number
+  page?: number
+  perPage?: number
+}
+export type GetContributorsResponse = {
+  contributors: {
+    address: string
+    amount: number
+    rewardAmount: number
+    referralsCount: number
+    promotionRewardAmount: number
+  }[]
+  pagination: PaginationField
+  meta: {}
+}
