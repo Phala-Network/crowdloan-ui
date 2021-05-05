@@ -78,3 +78,23 @@ export type GetAnnouncementsResponse = {
   pagination: PaginationField
   meta: {}
 }
+
+export type GetContributionsOptions = {
+  campaignId: number
+  contributor?: string
+  referrer?: string
+}
+export type GetContributionsResponse = {
+  contributions: {
+    address: string
+    amount: number
+    rewardAmount: number
+    promotionRewardAmount: number
+    timestamp: string
+  }[]
+  pagination: PaginationField
+  meta: {
+    referralsCount?: number
+    promotionRewardAmount?: number
+  }
+}
