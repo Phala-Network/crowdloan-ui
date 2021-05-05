@@ -8,6 +8,9 @@ import type { GetPriceResponse } from '@/utils/request'
 
 const PriceChart = styled.div`
   width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  place-content: space-between;
 
   .Amounts {
     display: flex;
@@ -57,6 +60,7 @@ const PriceChart = styled.div`
         color: rgba(255, 255, 255, 0.9);
         display: inline-flex;
         flex-flow: row nowrap;
+        height: 28px;
       }
 
       .Text {
@@ -98,24 +102,42 @@ const defaultChartOptions = {
     trigger: 'axis',
     axisPointer: {
       type: 'cross',
+      xAxisIndex: 'all',
     },
+  },
+  axisPointer: {
+    link: { xAxisIndex: 'all' },
   },
   xAxis: {
     type: 'time',
     splitLine: {
-      show: false,
+      show: true,
+      lineStyle: {
+        opacity: 0.1,
+        type: 'dashed',
+      },
     },
+    splitNumber: 20,
   },
+  grid: [
+    {
+      left: '30px',
+      right: '24px',
+      bottom: '24px',
+    },
+  ],
   yAxis: [
     {
       type: 'value',
       name: 'KSM',
       splitLine: { show: false },
+      axisPointer: { show: false },
     },
     {
       type: 'value',
       name: 'PHA',
       splitLine: { show: false },
+      axisPointer: { show: false },
     },
   ],
   series: [
@@ -254,10 +276,13 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
         <ReactECharts
           option={chartOptions}
           style={{
-            height: '270px',
-            width: 'calc(100% + 50px)',
-            margin: '-10px -25px -40px',
+            height: 'auto',
+            minHeight: '270px',
+            flex: 1,
+            width: '100%',
+            margin: '-10px auto 0',
           }}
+          opts={{ renderer: 'svg' }}
         />
       </PriceChart>
     </Section>

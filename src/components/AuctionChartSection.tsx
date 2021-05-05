@@ -14,6 +14,12 @@ const style__AuctionChartSection = css`
 `
 
 const AuctionChart = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  place-content: space-between;
+
   .ChartTitle {
     font-size: 16px;
     line-height: 22px;
@@ -147,16 +153,22 @@ const AuctionChartSection: React.FC = () => {
           extraCssText:
             'border-radius: 2px; padding: 4px 8px; backdrop-filter: blur(10px);',
         },
-        grid: {
-          top: '0',
-          left: '0',
-          bottom: '10%',
-          right: '0',
-        },
+        grid: [
+          {
+            top: '20px',
+            left: '6px',
+            right: '6px',
+            bottom: '24px',
+          },
+        ],
         xAxis: {
           type: 'time',
           splitLine: {
-            show: false,
+            show: true,
+            lineStyle: {
+              opacity: 0.1,
+              type: 'dashed',
+            },
           },
           axisLabel: {
             formatter: function (params) {
@@ -230,9 +242,13 @@ const AuctionChartSection: React.FC = () => {
         <ReactECharts
           option={chartOptions}
           style={{
-            height: '190px',
+            height: 'auto',
+            minHeight: '180px',
+            flex: 1,
             width: '100%',
+            margin: '0 auto 0',
           }}
+          opts={{ renderer: 'svg' }}
         />
       </AuctionChart>
     </Section>

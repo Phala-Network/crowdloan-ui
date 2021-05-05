@@ -9,7 +9,7 @@ import { useI18n } from '@/i18n'
 
 const style__StakeInfoSection = css`
   display: flex;
-  flex-direction: column;
+  flex-flow: column wrap;
 `
 
 const Amount = styled.div`
@@ -77,6 +77,7 @@ const Amount = styled.div`
 
 const Inviter = styled.div`
   margin-top: 16px;
+  width: 100%;
 
   & .Item {
     display: flex;
@@ -176,6 +177,10 @@ const Detail = styled.div`
 `
 
 const Chart = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+
   & .title {
     font-size: 14px;
     line-height: 20px;
@@ -264,6 +269,14 @@ const StakeInfoSection: React.FC = () => {
             animation: false,
           },
         },
+        grid: [
+          {
+            top: '20px',
+            left: '30px',
+            right: '24px',
+            bottom: '30px',
+          },
+        ],
         xAxis: {
           type: 'time',
           boundaryGap: [0, 0],
@@ -294,20 +307,16 @@ const StakeInfoSection: React.FC = () => {
         },
         yAxis: {
           type: 'value',
-          // boundaryGap: [0, '100%'],
           splitLine: {
             show: true,
             lineStyle: {
-              color: 'rgba(255, 255, 255, 0.1)',
+              color: 'white',
+              opacity: 0.1,
+              type: 'dashed',
             },
           },
         },
-        grid: {
-          top: '10%',
-          left: '12%',
-          bottom: '10%',
-          right: '10%',
-        },
+
         series: [
           {
             type: 'line',
@@ -394,9 +403,13 @@ const StakeInfoSection: React.FC = () => {
         <ReactECharts
           option={chartOptions}
           style={{
-            height: '179px',
+            height: 'auto',
+            minHeight: '180px',
+            flex: 1,
             width: '100%',
+            margin: '0 auto 0',
           }}
+          opts={{ renderer: 'svg' }}
         />
       </Chart>
     </Section>
