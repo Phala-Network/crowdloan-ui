@@ -119,3 +119,27 @@ export type GetContributorsResponse = {
   pagination: PaginationField
   meta: {}
 }
+
+export type GetContributorOptions = {
+  campaignId: number
+  contributorId: number
+}
+export type GetContributorResponse = {
+  contributor: {
+    address: string
+    amount: number
+    rewardAmount: number
+    referralsCount: number
+    promotionRewardAmount: number
+  }
+  meta: {
+    rank: number
+    referrer?: string
+    latest_contributions: {
+      amount: number
+      rewardAmount: number
+      timestamp: string
+    }[]
+    simulateReleasingCharts: [string, number][]
+  }
+}
