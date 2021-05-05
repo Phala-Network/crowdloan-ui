@@ -42,11 +42,6 @@ export type GetCampaignsResponse = {
     parachainId: string
     cap: number
     raisedAmount: number
-    milestones: {
-      estimatedAt: string
-      title: string
-      body: string
-    }[]
   }
 }
 
@@ -60,13 +55,13 @@ export type GetCampaignResponse = {
     parachainId: string
     cap: number
     raisedAmount: number
+  }
+  meta: {
     milestones: {
       estimatedAt: string
       title: string
       body: string
     }[]
-  }
-  meta: {
     estimateFirstReleasingIn: string
     estimateEndReleasingIn: string
     firstReleasingPercentage: number
@@ -79,7 +74,7 @@ export type GetCampaignResponse = {
 export type GetAnnouncementsOptions = {
   campaignId: number
   page?: number
-  per_page?: number
+  perPage?: number
 }
 export type GetAnnouncementsResponse = {
   announcements: {
@@ -147,7 +142,7 @@ export type GetContributorResponse = {
   meta: {
     rank: number
     referrer?: string
-    latest_contributions: {
+    latestContributions: {
       amount: number
       rewardAmount: number
       timestamp: string
