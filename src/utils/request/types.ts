@@ -35,6 +35,21 @@ export type GetPriceResponse = {
   stakeApr?: number
 }
 
+export type GetCampaignsResponse = {
+  campaign: {
+    id: number
+    name: string
+    parachainId: string
+    cap: number
+    raisedAmount: number
+    milestones: {
+      estimatedAt: string
+      title: string
+      body: string
+    }[]
+  }
+}
+
 export type GetCampaignOptions = {
   campaignId: number
 }
