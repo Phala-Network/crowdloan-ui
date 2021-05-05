@@ -57,10 +57,7 @@ export type GetCampaignResponse = {
     firstReleasingPercentage: number
     estimateReleasingDaysInterval: number
     estimateReleasingPercentagePerInterval: number
-    contributionChart: {
-      timestamp: string
-      amount: number
-    }[]
+    contributionChart: [string, number][]
   }
 }
 
