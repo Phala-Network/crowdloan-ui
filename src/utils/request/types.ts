@@ -36,7 +36,7 @@ export type GetPriceResponse = {
 }
 
 export type GetCampaignOptions = {
-  campaign?: number
+  campaignId: number
 }
 export type GetCampaignResponse = {
   campaign: {
