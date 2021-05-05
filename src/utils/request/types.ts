@@ -16,6 +16,13 @@ export type GetScheduleResponse = {
   }[]
 }
 
+export type PaginationField = {
+  currentPage: number
+  totalPage: number
+  totalCount: number
+  perPage: number
+}
+
 export type GetPriceOptions = {
   currency: 'KSM' | 'DOT' | 'PHA'
 }
@@ -55,4 +62,19 @@ export type GetCampaignResponse = {
       amount: number
     }[]
   }
+}
+
+export type GetAnnouncementsOptions = {
+  campaignId: number
+}
+export type GetAnnouncementsResponse = {
+  announcements: {
+    id: number
+    title: string
+    link: string
+    body: string
+    publishedAt: string
+  }[]
+  pagination: PaginationField
+  meta: {}
 }
