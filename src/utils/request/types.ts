@@ -58,7 +58,7 @@ export type GetCampaignResponse = {
   }
   meta: {
     milestones: {
-      estimatedAt: string
+      estimatesAt: string
       title: string
       body: string
     }[]
