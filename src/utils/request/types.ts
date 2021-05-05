@@ -66,6 +66,8 @@ export type GetCampaignResponse = {
 
 export type GetAnnouncementsOptions = {
   campaignId: number
+  page?: number
+  per_page?: number
 }
 export type GetAnnouncementsResponse = {
   announcements: {
@@ -83,6 +85,8 @@ export type GetContributionsOptions = {
   campaignId: number
   contributor?: string
   referrer?: string
+  page?: number
+  perPage?: number
 }
 export type GetContributionsResponse = {
   contributions: {
