@@ -23,6 +23,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.10.4",
     "decimal.js": "^10.2.1",
+    "deep-rename-keys": "^0.2.1",
     "echarts": "^5.0.2",
     "echarts-for-react": "^3.0.1",
     "gatsby": "^3.4.0",

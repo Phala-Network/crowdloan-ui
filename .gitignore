@@ -110,6 +110,7 @@ dist
 .netlify
 
 .env*
+!.env.development
 
 # gatsby files
 .cache/

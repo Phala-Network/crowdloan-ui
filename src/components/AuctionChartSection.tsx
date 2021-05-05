@@ -4,7 +4,7 @@ import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
 import dayjs from 'dayjs'
 import { useI18n } from '@/i18n'
-
+import { useQuery } from 'react-query'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -93,6 +93,18 @@ let now = new Date(1997, 9, 3)
 
 const AuctionChartSection: React.FC = () => {
   const { t } = useI18n()
+  const { current: campaignId } = React.useRef(1)
+
+  const campaign = useQuery(['getCampaign', { campaign: campaignId }], {
+    refetchInterval: 60 * 1000,
+  })
+
+  const campaignData = React.useMemo<GetPriceResponse | undefined>(
+    () => campaign.data,
+    [campaign.data]
+  )
+  console.log(campaignData)
+
   const data = []
   for (let i = 0; i < 1000; i++) {
     data.push(randomData())

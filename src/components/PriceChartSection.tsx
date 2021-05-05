@@ -55,6 +55,8 @@ const PriceChart = styled.div`
         margin: 0;
         font-weight: 600;
         color: rgba(255, 255, 255, 0.9);
+        display: inline-flex;
+        flex-flow: row nowrap;
       }
 
       .Text {
@@ -63,10 +65,15 @@ const PriceChart = styled.div`
         color: rgba(255, 255, 255, 0.5);
       }
 
+      .Detail {
+        display: flex;
+        flex-direction: row;
+      }
+
       .Item {
         display: inline-flex;
         flex-direction: column;
-        margin-left: 0.25em;
+        margin-left: 0.5em;
       }
 
       .Item:first-of-type {
@@ -76,6 +83,7 @@ const PriceChart = styled.div`
 
     .Amount:first-of-type {
       margin-left: 0;
+      min-width: 50%;
     }
   }
 `
@@ -152,7 +160,6 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
     () => phaQueryData,
     [phaQueryData]
   )
-
   const chartOptions = React.useMemo(() => {
     if (ksmQueryError) {
       console.error('[PriceChart] Read KSM prices failed: ', ksmQueryError)
@@ -171,11 +178,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,
-          data:
-            ksmData?.kline?.map?.((point) => [
-              point.timestamp * 1000,
-              point.value,
-            ]) ?? [],
+          data: ksmData?.data,
         },
         {
           name: 'PHA',
@@ -184,11 +187,7 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 1,
-          data:
-            phaData?.kline?.map?.((point) => [
-              point.timestamp * 1000,
-              point.value,
-            ]) ?? [],
+          data: phaData?.data,
         },
       ],
     })
@@ -204,29 +203,32 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
               <div className="Item">
                 <span className="Text">Price</span>
                 <span className="Number">
-                  ${ksmData?.price ?? <Loading size="mini" />}
+                  $
+                  {ksmData?.data?.length ? (
+                    ksmData.data[ksmData.data.length - 1][1]
+                  ) : (
+                    <Loading size="mini" />
+                  )}
                 </span>
               </div>
               <div className="Item">
                 <span className="Text">Stake</span>
                 <span className="Number">
-                  {ksmData?.stake === undefined ? (
-                    <Loading size="mini" />
+                  {ksmData?.stakeRatio ? (
+                    ksmData.stakeRatio + '%'
                   ) : (
-                    ((ksmData.stake as unknown) as number) * 100
+                    <Loading size="mini" />
                   )}
-                  %
                 </span>
               </div>
               <div className="Item">
                 <span className="Text">Reward</span>
                 <span className="Number">
-                  {ksmData?.reward === undefined ? (
-                    <Loading size="mini" />
+                  {ksmData?.stakeReward ? (
+                    ksmData.stakeReward + '%'
                   ) : (
-                    ((ksmData.reward as unknown) as number) * 100
+                    <Loading size="mini" />
                   )}
-                  %
                 </span>
               </div>
             </div>
@@ -237,7 +239,12 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
               <div className="Item">
                 <span className="Text">Price</span>
                 <span className="Number">
-                  ${phaData?.price ?? <Loading size="mini" />}
+                  $
+                  {phaData?.data?.length ? (
+                    phaData.data[phaData.data.length - 1][1]
+                  ) : (
+                    <Loading size="mini" />
+                  )}
                 </span>
               </div>
             </div>
@@ -248,9 +255,8 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
           option={chartOptions}
           style={{
             height: '270px',
-            width: '100%',
-            marginTop: '-20px',
-            marginBottom: '-40px',
+            width: 'calc(100% + 50px)',
+            margin: '-10px -25px -40px',
           }}
         />
       </PriceChart>

@@ -1,3 +1,0 @@
-declare interface RequestFunctions {
-  getPrices
-}

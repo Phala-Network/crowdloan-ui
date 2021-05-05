@@ -47,7 +47,7 @@ const _PolkadotApiProvider: React.FC = ({ children }) => {
     }
     let unsub
     ;(async () => {
-      const wsProvider = new WsProvider(process.env.POLKADOT_ENDPOINT)
+      const wsProvider = new WsProvider(process.env.GATSBY_POLKADOT_ENDPOINT)
       const _api = await ApiPromise.create({
         provider: wsProvider,
         typesBundle,
