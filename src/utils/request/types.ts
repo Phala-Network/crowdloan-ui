@@ -1,20 +1,10 @@
 interface requestFunctions {
-  getPrice
   getSchedule
+  getPrice
 }
 
 export type Response<T> = T
 export type queryFnOptions = [keyof requestFunctions, unknown | undefined]
-
-export type GetPriceOptions = {
-  currency: 'KSM' | 'PHA'
-}
-export type GetPriceResponse = {
-  symbol: string
-  data: [string, number][]
-  stakeRatio?: number
-  stakeReward?: number
-}
 
 export type GetScheduleOptions = {
   address?: string
@@ -24,6 +14,18 @@ export type GetScheduleResponse = {
     timestamp: number
     value: number
   }[]
+}
+
+export type GetPriceOptions = {
+  currency: 'KSM' | 'DOT' | 'PHA'
+}
+export type GetPriceResponse = {
+  symbol: string
+  price: number
+  lastUpdatedAt: string
+  data: [string, number][]
+  stakeParticipatingRate?: number
+  stakeApr?: number
 }
 
 export type GetCampaignOptions = {
