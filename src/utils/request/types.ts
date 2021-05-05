@@ -31,3 +31,28 @@ export type GetPriceResponse = {
 export type GetCampaignOptions = {
   campaign?: number
 }
+export type GetCampaignResponse = {
+  campaign: {
+    id: number
+    name: string
+    parachainId: string
+    cap: number
+    raisedAmount: number
+    milestones: {
+      estimatedAt: string
+      title: string
+      body: string
+    }[]
+  }
+  meta: {
+    estimateFirstReleasingIn: string
+    estimateEndReleasingIn: string
+    firstReleasingPercentage: number
+    estimateReleasingDaysInterval: number
+    estimateReleasingPercentagePerInterval: number
+    contributionChart: {
+      timestamp: string
+      amount: number
+    }[]
+  }
+}
