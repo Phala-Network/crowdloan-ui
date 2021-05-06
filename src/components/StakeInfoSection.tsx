@@ -187,8 +187,9 @@ const Chart = styled.div`
     color: rgba(255, 255, 255, 0.9);
   }
   & .info {
+    margin-top: 3px;
     font-size: 12px;
-    line-height: 17px;
+    line-height: 16px;
     color: rgba(255, 255, 255, 0.5);
   }
 `
@@ -409,7 +410,6 @@ const StakeInfoSection: React.FC = () => {
             width: '100%',
             margin: '0 auto 0',
           }}
-          opts={{ renderer: 'svg' }}
         />
       </Chart>
     </Section>

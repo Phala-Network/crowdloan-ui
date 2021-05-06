@@ -236,8 +236,8 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
               <div className="Item">
                 <span className="Text">Stake</span>
                 <span className="Number">
-                  {ksmData?.stakeRatio ? (
-                    ksmData.stakeRatio + '%'
+                  {typeof ksmData?.stakeParticipatingRate === 'number' ? (
+                    ksmData.stakeParticipatingRate + '%'
                   ) : (
                     <Loading size="mini" />
                   )}
@@ -246,8 +246,8 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
               <div className="Item">
                 <span className="Text">Reward</span>
                 <span className="Number">
-                  {ksmData?.stakeReward ? (
-                    ksmData.stakeReward + '%'
+                  {typeof ksmData?.stakeApr === 'number' ? (
+                    ksmData.stakeApr + '%'
                   ) : (
                     <Loading size="mini" />
                   )}
@@ -282,7 +282,6 @@ const PriceChartSection: React.FC<PriceChartSectionProps> = (
             width: '100%',
             margin: '-10px auto 0',
           }}
-          opts={{ renderer: 'svg' }}
         />
       </PriceChart>
     </Section>

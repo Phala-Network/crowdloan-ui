@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
         {Object.keys(localeNames).map((loc) =>
           locale === loc ? null : (
             <li key={loc} onClick={() => changeLocale(loc)}>
-              <Link href="#">{localeNames[loc]}</Link>
+              <Link href={null}>{localeNames[loc]}</Link>
             </li>
           )
         )}

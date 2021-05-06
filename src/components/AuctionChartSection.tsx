@@ -248,7 +248,6 @@ const AuctionChartSection: React.FC = () => {
             width: '100%',
             margin: '0 auto 0',
           }}
-          opts={{ renderer: 'svg' }}
         />
       </AuctionChart>
     </Section>
