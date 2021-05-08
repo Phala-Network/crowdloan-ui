@@ -2,9 +2,9 @@ import Section from '@/components/Section'
 import { Loading } from '@geist-ui/react'
 import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
-import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import type { GetPriceResponse } from '@/utils/request'
+import { useMeta } from '@/utils/meta'
 
 const PriceChart = styled.div`
   width: 100%;
@@ -92,11 +92,6 @@ const PriceChart = styled.div`
   }
 `
 
-type PriceChartSectionProps = {
-  ksmInitialData: GetPriceResponse
-  phaInitialData: GetPriceResponse
-}
-
 const defaultChartOptions = {
   tooltip: {
     trigger: 'axis',
@@ -129,7 +124,7 @@ const defaultChartOptions = {
   yAxis: [
     {
       type: 'value',
-      name: 'KSM',
+      name: 'Amount',
       splitLine: { show: false },
       axisPointer: { show: false },
     },
@@ -162,35 +157,17 @@ const defaultChartOptions = {
   ],
 }
 
-const PriceChartSection: React.FC<PriceChartSectionProps> = (
-  props: PriceChartSectionProps
-) => {
-  const { data: ksmQueryData, error: ksmQueryError } = useQuery(
-    ['getPrice', { currency: 'KSM' }],
-    { refetchInterval: 60 * 1000, initialData: props.ksmInitialData }
-  )
-  const ksmData = React.useMemo<GetPriceResponse | undefined>(
-    () => ksmQueryData,
-    [ksmQueryData]
-  )
+const PriceChartSection: React.FC = () => {
+  const { price } = useMeta()
 
-  const { data: phaQueryData, error: phaQueryError } = useQuery(
-    ['getPrice', { currency: 'PHA' }],
-    { refetchInterval: 60 * 1000, initialData: props.phaInitialData }
-  )
-  const phaData = React.useMemo<GetPriceResponse | undefined>(
-    () => phaQueryData,
-    [phaQueryData]
-  )
+  const ksmData = React.useMemo<GetPriceResponse>(() => price?.ksmQuery?.data, [
+    price?.ksmQuery?.data,
+  ])
+
+  const phaData = React.useMemo<GetPriceResponse>(() => price?.phaQuery?.data, [
+    price?.phaQuery?.data,
+  ])
   const chartOptions = React.useMemo(() => {
-    if (ksmQueryError) {
-      console.error('[PriceChart] Read KSM prices failed: ', ksmQueryError)
-    }
-
-    if (phaQueryError) {
-      console.error('[PriceChart] Read PHA prices failed: ', ksmQueryError)
-    }
-
     return Object.assign({}, defaultChartOptions, {
       series: [
         {

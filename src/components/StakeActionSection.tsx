@@ -398,23 +398,24 @@ const StakeActionSection: React.FC = () => {
     if (!(initialized && chainInfo)) {
       return
     }
+    const contributeInputValue = parseFloat(stakeInput.state) || 0
 
-    const contributeInputValue = new Demical(parseFloat(stakeInput.state) || 0)
-    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
-    const txValue = api.createType(
-      'BalanceOf',
-      new Demical('1' + '0'.repeat(tokenDecimals as number))
-        .mul(contributeInputValue)
-        .toString()
-    )
-
-    if (txValue.isEmpty) {
+    if (contributeInputValue <= 0) {
       setToast({
         text: 'Invalid value.',
         type: 'error',
       })
       return
     }
+
+    const contributeValue = new Demical(contributeInputValue)
+    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
+    const txValue = api.createType(
+      'BalanceOf',
+      new Demical('1' + '0'.repeat(tokenDecimals as number))
+        .mul(contributeValue)
+        .toString()
+    )
 
     setTxValue(txValue.toHuman())
 

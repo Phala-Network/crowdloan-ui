@@ -47,11 +47,12 @@ const Menu = styled.ul`
   }
 
   & .Connect.btn {
-    width: 80px;
+    font-size: 14px;
     height: 30px;
+    line-height: 32px;
     background: #d1ff52;
     border-radius: 4px;
-    padding: 0;
+    padding: 0 15px;
     border: none;
     color: rgba(0, 0, 0, 0.9);
 
@@ -124,6 +125,8 @@ const Navbar: React.FC = () => {
 
 const ConnectWallet = () => {
   const { openModal, currentAccount } = useWeb3()
+  const { t } = useI18n()
+
   if (currentAccount) {
     return (
       <Button
@@ -143,7 +146,7 @@ const ConnectWallet = () => {
   }
   return (
     <Button size="mini" onClick={() => openModal()} className="Connect">
-      连接钱包
+      {t('connectWallet')}
     </Button>
   )
 }

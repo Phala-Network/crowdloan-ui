@@ -5,6 +5,8 @@ import ReactECharts from 'echarts-for-react'
 import dayjs from 'dayjs'
 import { useI18n } from '@/i18n'
 import { useQuery } from 'react-query'
+import { useMeta } from '@/utils/meta'
+import { GetCampaignResponse } from '@/utils/request'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -99,15 +101,11 @@ let now = new Date(1997, 9, 3)
 
 const AuctionChartSection: React.FC = () => {
   const { t } = useI18n()
-  const { current: campaignId } = React.useRef(1)
+  const { campaign } = useMeta()
 
-  const campaign = useQuery(['getCampaign', { campaign: campaignId }], {
-    refetchInterval: 60 * 1000,
-  })
-
-  const campaignData = React.useMemo<GetPriceResponse | undefined>(
-    () => campaign.data,
-    [campaign.data]
+  const campaignData = React.useMemo<GetCampaignResponse>(
+    () => campaign?.data,
+    [campaign?.data]
   )
   console.log(campaignData)
 
@@ -122,36 +120,10 @@ const AuctionChartSection: React.FC = () => {
       {
         tooltip: {
           trigger: 'axis',
-          formatter: function (params) {
-            return (
-              dayjs(params[0].value[1]).format('YYYY/MM/DD HH:mm:ss') +
-              '<br/>' +
-              params[0].value[0] +
-              ' KSM'
-            )
-          },
           axisPointer: {
             type: 'cross',
-            snap: true,
-            animation: false,
-            lineStyle: {
-              color: 'rgba(209, 255, 82, 0.5)',
-            },
-            crossStyle: {
-              color: 'rgba(209, 255, 82, 0.5)',
-            },
-            label: {
-              show: false,
-            },
+            xAxisIndex: 'all',
           },
-          borderWidth: 0,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          textStyle: {
-            color: 'rgba(255, 255, 255, 0.9)',
-            fontSize: 12,
-          },
-          extraCssText:
-            'border-radius: 2px; padding: 4px 8px; backdrop-filter: blur(10px);',
         },
         grid: [
           {
@@ -170,45 +142,38 @@ const AuctionChartSection: React.FC = () => {
               type: 'dashed',
             },
           },
-          axisLabel: {
-            formatter: function (params) {
-              const date = new Date(params)
-              return (
-                (date.getMonth() + 1).toString().padStart(2, '0') +
-                '.' +
-                date.getDate().toString().padStart(2, '0')
-              )
-            },
-          },
+          // axisLabel: {
+          //   formatter: function (params) {
+          //     const date = new Date(params)
+          //     return (
+          //       (date.getMonth() + 1).toString().padStart(2, '0') +
+          //       '.' +
+          //       date.getDate().toString().padStart(2, '0')
+          //     )
+          //   },
+          // },
         },
         yAxis: {
           show: false,
+          name: 'PHA',
           type: 'value',
-          boundaryGap: [0, '100%'],
-          splitLine: {
-            show: false,
-          },
+          splitLine: { show: false },
+          axisPointer: { show: false },
         },
         series: [
           {
-            name: '模拟数据',
+            name: 'PHA',
             type: 'line',
+            lineStyle: { color: '#d1ff52' },
             showSymbol: false,
             hoverAnimation: false,
-            itemStyle: {
-              normal: {
-                color: '#d1ff52',
-                borderColor: 'rgba(255, 255, 255, 0.9)',
-                borderWidth: 1,
-              },
-            },
-            data: data,
-            lineStyle: { color: '#d1ff52' },
+            yAxisIndex: 0,
+            data: campaignData?.meta?.contributionChart,
           },
         ],
       }
     )
-  }, [data])
+  }, [campaignData?.meta?.contributionChart])
 
   return (
     <Section

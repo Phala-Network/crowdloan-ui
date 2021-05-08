@@ -5,7 +5,7 @@ import GlobalStyle from '@/utils/GlobalStyle'
 import { RequestProvider } from '@/utils/request'
 import PolkadotApiProvider from '@/utils/polkadot'
 import Web3Provider from '@/utils/web3'
-// import MetaProvider from '@/utils/meta'
+import MetaProvider from '@/utils/meta'
 
 const MyApp: React.FC = ({ children }) => {
   return (
@@ -13,8 +13,10 @@ const MyApp: React.FC = ({ children }) => {
       <RequestProvider>
         <PolkadotApiProvider>
           <Web3Provider>
-            <GlobalStyle />
-            {children}
+            <MetaProvider>
+              <GlobalStyle />
+              {children}
+            </MetaProvider>
           </Web3Provider>
         </PolkadotApiProvider>
       </RequestProvider>
