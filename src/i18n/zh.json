@@ -1,5 +1,13 @@
 {
   "locale": "中文",
+  "close": "关闭",
+  "cancel": "取消",
+  "ok": "确定",
+  "noData": "暂无数据",
+  "accounts": "账户",
+  "selectAnAccount": "选择账户",
+  "accountNoticeAddAccount": "请在Polkadot扩展中添加账户。",
+  "accountNoticeAllowAccess": "请在Polkadot扩展允许访问账户。",
   "stakingRewardPool": "质押奖池",
   "stakingTotal": "质押总量",
   "aboutKhala": "关于Phala",

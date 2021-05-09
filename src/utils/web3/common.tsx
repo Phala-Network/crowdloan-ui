@@ -1,3 +1,4 @@
+import { useI18n } from '@/i18n'
 import {
   Modal,
   useModal,
@@ -26,6 +27,7 @@ export type ExtensionContextValue = {
   currentInjector?: InjectedExtension
   openModal?: () => any
   accountModal?
+  modalBindings?
 }
 
 export const _defaultContextValue: ExtensionContextValue = {
@@ -68,11 +70,12 @@ export const AccountModal: React.FC<{
   isEnabled: boolean
 }> = ({ isEnabled, modal, accounts = [], setCurrentAccount }) => {
   const { initialized } = usePolkadotApi()
+  const { t } = useI18n()
 
   if (!initialized) {
     return (
       <Modal {...modal.bindings}>
-        <Modal.Title>Accounts</Modal.Title>
+        <Modal.Title>{t('accounts')}</Modal.Title>
         <Modal.Content>
           <Loading />
         </Modal.Content>
@@ -82,9 +85,9 @@ export const AccountModal: React.FC<{
 
   return (
     <Modal {...modal.bindings}>
-      <Modal.Title>Accounts</Modal.Title>
+      <Modal.Title>{t('accounts')}</Modal.Title>
       <Modal.Subtitle>
-        {accounts.length ? 'Select an account' : ''}
+        {accounts.length ? t('selectAnAccount') : ''}
       </Modal.Subtitle>{' '}
       {isEnabled ? (
         accounts.length ? (
@@ -106,14 +109,10 @@ export const AccountModal: React.FC<{
             ))}
           </ButtonGroup>
         ) : (
-          <Note label={false}>
-            {'Please import/create accounts in the Polkadot extension.'}
-          </Note>
+          <Note label={false}>{t('accountNoticeAddAccount')}</Note>
         )
       ) : (
-        <Note label={false}>
-          {'Please allow access in the Polkadot extension.'}
-        </Note>
+        <Note label={false}>{t('accountNoticeAllowAccess')}</Note>
       )}
       <Modal.Action passive onClick={() => modal.setVisible(false)}>
         Cancel

@@ -1,5 +1,13 @@
 {
   "locale": "English",
+  "close": "Close",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "noData": "No data",
+  "accounts": "Accounts",
+  "selectAnAccount": "Select An Account",
+  "accountNoticeAddAccount": "Please import/create accounts in the Polkadot extension.",
+  "accountNoticeAllowAccess": "Please allow access in the Polkadot extension.",
   "stakingRewardPool": "Staking Reward Pool",
   "stakingTotal": "Staking Total",
   "aboutKhala": "About Khala",

@@ -103,6 +103,7 @@ export type GetContributionsResponse = {
     rewardAmount: number
     promotionRewardAmount: number
     timestamp: string
+    time?
   }[]
   pagination: PaginationField
   meta: {

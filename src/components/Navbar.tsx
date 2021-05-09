@@ -6,6 +6,7 @@ import { Link, Button } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { User } from '@geist-ui/react-icons'
 import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
+import { AccountModal } from '@/utils/web3/common'
 
 const NavbarWrapper = styled.div`
   display: flex;
@@ -95,9 +96,11 @@ const Menu = styled.ul`
 const Navbar: React.FC = () => {
   const { t } = useI18n()
   const { locale } = useContext(IntlContext)
+  const { modalBindings } = useWeb3()
 
   return (
     <NavbarWrapper>
+      <AccountModal {...modalBindings} />
       <Menu>
         <li>
           <Link>{t('aboutKhala')}</Link>
@@ -123,7 +126,7 @@ const Navbar: React.FC = () => {
   )
 }
 
-const ConnectWallet = () => {
+export const ConnectWallet: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
   const { t } = useI18n()
 

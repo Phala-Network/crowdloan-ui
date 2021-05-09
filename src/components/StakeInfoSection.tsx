@@ -1,5 +1,5 @@
 import Section from '@/components/Section'
-import { Table } from '@geist-ui/react'
+import { Card, Modal, Table, useModal } from '@geist-ui/react'
 import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
 import styled, { css } from 'styled-components'
@@ -7,6 +7,10 @@ import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
+import { CloudOff, Plus } from '@geist-ui/react-icons'
+import { ConnectWallet } from './Navbar'
+import { useQuery } from 'react-query'
+import { GetContributionsResponse } from '@/utils/request'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -200,11 +204,65 @@ const SpaceDivider = styled.div`
   height: auto;
 `
 
+const NoticeCard = styled(Card)`
+  border: 0 !important;
+  margin-top: 12px !important;
+  background: 0 !important;
+  flex: 1;
+  height: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  place-content: center;
+  text-align: center;
+`
+
+const ContributionList: React.FC = () => {
+  const { t } = useI18n()
+  const { campaignId, dayjs } = useMeta()
+  const { currentAccount } = useWeb3()
+  const { locale } = React.useContext(IntlContext)
+  const { data } = useQuery<GetContributionsResponse>([
+    'getContributions',
+    {
+      perPage: 255,
+      page: 1,
+      contributor: currentAccount.address,
+      campaignId,
+    },
+  ])
+  const tableData = React.useMemo(() => {
+    if (!data?.contributions) {
+      return null
+    }
+    const ret = data?.contributions
+    ret.forEach((i) => {
+      i.time = dayjs(i.timestamp).locale(locale).format('lll')
+      Object.keys(i).forEach((ii) => {
+        if (typeof i[ii] === 'number') {
+          i[ii] ||= '0'
+        } else {
+          i[ii] ||= '-'
+        }
+      })
+    })
+    return ret
+  }, [data?.contributions])
+  return (
+    <Table data={tableData} className="Table">
+      <Table.Column prop="time" label={t('time')} />
+      <Table.Column prop="amount" label={t('yourContribute')} />
+      <Table.Column prop="rewardAmount" label={t('yourReward')} />
+    </Table>
+  )
+}
+
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
   const { dayjs, currentContributorQuery } = useMeta()
   const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
+  const listModal = useModal()
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -334,10 +392,20 @@ const StakeInfoSection: React.FC = () => {
 
       {currentContributorQuery?.data?.contributor?.amount ? (
         <>
+          <Modal {...listModal.bindings}>
+            <Modal.Content>
+              <ContributionList />
+            </Modal.Content>
+            <Modal.Action passive onClick={() => listModal.setVisible(false)}>
+              {t('close')}
+            </Modal.Action>
+          </Modal>
           <Detail>
             <div className="Title">
               <span>{t('contributeDetails')}</span>
-              <a href="">{t('more')}</a>
+              <a onClick={() => listModal.setVisible(true)}>
+                {t('more')} <Plus size={9} />
+              </a>
             </div>
 
             <Table data={tableData} className="Table">
@@ -363,7 +431,19 @@ const StakeInfoSection: React.FC = () => {
             />
           </Chart>
         </>
-      ) : null}
+      ) : (
+        <NoticeCard>
+          <p>
+            <CloudOff size={32} />
+          </p>
+          <p>{t('noData')}</p>
+          {currentAccount ? null : (
+            <div>
+              <ConnectWallet />
+            </div>
+          )}
+        </NoticeCard>
+      )}
     </Section>
   )
 }

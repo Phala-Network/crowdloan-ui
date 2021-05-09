@@ -6,7 +6,6 @@ import {
   ExtentionContext,
   ERR_POLKADOT_WEB3_NOT_INJECTED,
   POLKADOT_WEB3_APP_NAME,
-  AccountModal,
 } from './common'
 import {
   InjectedAccountWithMeta,
@@ -99,6 +98,13 @@ const _Web3Provider: React.FC<{
       openModal: () => modal.setVisible(true),
       currentAccount,
       currentInjector,
+      setCurrentAccount,
+      modalBindings: {
+        modal,
+        accounts,
+        setCurrentAccount,
+        isEnabled,
+      },
     }),
     [
       enable,
@@ -111,15 +117,8 @@ const _Web3Provider: React.FC<{
       currentInjector,
     ]
   )
-
   return (
     <ExtentionContext.Provider value={contextValue}>
-      <AccountModal
-        modal={modal}
-        accounts={accounts}
-        setCurrentAccount={setCurrentAccount}
-        isEnabled={isEnabled}
-      />
       {children}
     </ExtentionContext.Provider>
   )

@@ -10,6 +10,7 @@ import type {
   queryFnOptions,
   GetContributorsOptions,
   GetContributorOptions,
+  GetContributionsOptions,
 } from './types'
 
 axios.defaults.baseURL = process.env.GATSBY_BACKEND_ENDPOINT
@@ -26,6 +27,7 @@ const apiUrls = {
   getPrice: '/coin_market_charts/',
   getCampaign: '/campaigns/',
   getCampaign__contributors: '/contributors',
+  getCampaign__contributions: '/contributions',
   getSchedule: '/schedules',
 }
 
@@ -55,6 +57,24 @@ const requestFunctions = {
         params: {
           page,
           per_page: perPage,
+        },
+      }
+    )
+    return checkResponse(res)
+  },
+  getContributions: async ({
+    campaignId,
+    page = 1,
+    perPage = 10,
+    contributor,
+  }: GetContributionsOptions) => {
+    const res = await axios.get(
+      apiUrls.getCampaign + campaignId + apiUrls.getCampaign__contributions,
+      {
+        params: {
+          page,
+          per_page: perPage,
+          contributor,
         },
       }
     )
