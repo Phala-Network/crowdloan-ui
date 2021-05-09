@@ -36,5 +36,9 @@
   "yourContribute": "您的质押",
   "yourReward": "您的奖励",
   "rewardVest": "结算发放",
-  "rewardVestTip": "如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。"
+  "rewardVestTip": "如果Phala在本期拍卖中赢得卡槽，将按如下时间点及比例发放奖励。如果失败，您可以在拍卖结束后立即全部解锁您的质押。",
+  "heightestBid": "最高出价",
+  "averageBid": "平均出价",
+  "khalaBid": "当前Khala出价",
+  "phalaBid": "当前Phala出价"
 }

@@ -2,9 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
-import dayjs from 'dayjs'
 import { useI18n } from '@/i18n'
-import { useQuery } from 'react-query'
 import { useMeta } from '@/utils/meta'
 import { GetCampaignResponse } from '@/utils/request'
 
@@ -87,18 +85,6 @@ const AuctionChart = styled.div`
   }
 `
 
-function randomData() {
-  now = new Date(+now + oneDay)
-  value = value + Math.random() * 21 - 10
-  return {
-    name: now.toString(),
-    value: [now.getTime(), Math.round(value)],
-  }
-}
-const oneDay = 24 * 3600 * 1000
-let value = Math.random() * 1000
-let now = new Date(1997, 9, 3)
-
 const AuctionChartSection: React.FC = () => {
   const { t } = useI18n()
   const { campaign } = useMeta()
@@ -107,74 +93,56 @@ const AuctionChartSection: React.FC = () => {
     () => campaign?.data,
     [campaign?.data]
   )
-  console.log(campaignData)
-
-  const data = []
-  for (let i = 0; i < 1000; i++) {
-    data.push(randomData())
-  }
 
   const chartOptions = React.useMemo(() => {
-    return Object.assign(
-      {},
-      {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            xAxisIndex: 'all',
+    return {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          xAxisIndex: 'all',
+        },
+      },
+      grid: [
+        {
+          top: '20px',
+          left: '6px',
+          right: '6px',
+          bottom: '24px',
+        },
+      ],
+      xAxis: {
+        type: 'time',
+        splitLine: {
+          show: true,
+          lineStyle: {
+            opacity: 0.1,
+            type: 'dashed',
           },
         },
-        grid: [
-          {
-            top: '20px',
-            left: '6px',
-            right: '6px',
-            bottom: '24px',
-          },
-        ],
-        xAxis: {
-          type: 'time',
-          splitLine: {
-            show: true,
-            lineStyle: {
-              opacity: 0.1,
-              type: 'dashed',
-            },
-          },
-          // axisLabel: {
-          //   formatter: function (params) {
-          //     const date = new Date(params)
-          //     return (
-          //       (date.getMonth() + 1).toString().padStart(2, '0') +
-          //       '.' +
-          //       date.getDate().toString().padStart(2, '0')
-          //     )
-          //   },
-          // },
-        },
-        yAxis: {
-          show: false,
+      },
+      yAxis: {
+        show: false,
+        name: 'PHA',
+        type: 'value',
+        splitLine: { show: false },
+        axisPointer: { show: false },
+      },
+      series: [
+        {
           name: 'PHA',
-          type: 'value',
-          splitLine: { show: false },
-          axisPointer: { show: false },
+          type: 'line',
+          lineStyle: { color: '#d1ff52' },
+          showSymbol: false,
+          hoverAnimation: false,
+          yAxisIndex: 0,
+          data: campaignData?.meta?.contributionChart,
         },
-        series: [
-          {
-            name: 'PHA',
-            type: 'line',
-            lineStyle: { color: '#d1ff52' },
-            showSymbol: false,
-            hoverAnimation: false,
-            yAxisIndex: 0,
-            data: campaignData?.meta?.contributionChart,
-          },
-        ],
-      }
-    )
+      ],
+    }
   }, [campaignData?.meta?.contributionChart])
 
+  // todo: get heightest bid value
   return (
     <Section
       xs={24}
@@ -186,20 +154,27 @@ const AuctionChartSection: React.FC = () => {
       <AuctionChart>
         <div className="ChartTitle">
           <span className="Text">{t('stakingRewardPool')}:</span>
-          <span className="Amount">100,000,000PHA</span>
+          <span className="Amount">
+            {campaignData?.meta?.totalRewardAmount || '...'}
+          </span>
         </div>
 
         <div className="Amounts">
           <div className="Amount Wh">
-            <span className="Title">{t('stakingTotal')}</span>
+            <span className="Title">{t('heightestBid')}</span>
             <p className="Number">
               1,000.00 <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
-            <span className="Title">{t('stakingTotal')}</span>
+            <span className="Title">{t('phalaBid')}</span>
             <p className="Number">
-              1,000.00 <span className="Unit">KSM</span>
+              {campaignData?.meta?.contributionChart
+                ? campaignData.meta.contributionChart[
+                    campaignData.meta.contributionChart.length - 1
+                  ][1]
+                : '...'}{' '}
+              <span className="Unit">KSM</span>
             </p>
           </div>
         </div>

@@ -288,20 +288,6 @@ const StakeInfoSection: React.FC = () => {
             interval: 2,
             show: false,
           },
-          axisLabel: {
-            // showMinLabel: true,
-            // showMaxLabel: true,
-            formatter: function (params) {
-              const date = new Date(params)
-              return (
-                date.getFullYear() +
-                '.' +
-                (date.getMonth() + 1) +
-                '.' +
-                date.getDate()
-              )
-            },
-          },
           axisLine: {
             show: false,
           },
@@ -317,7 +303,6 @@ const StakeInfoSection: React.FC = () => {
             },
           },
         },
-
         series: [
           {
             type: 'line',
@@ -337,18 +322,6 @@ const StakeInfoSection: React.FC = () => {
       }
     )
   }, [data])
-
-  // React.useEffect(() => {
-  //   if (rewardChart.current !== undefined) {
-  //     rewardChart.current.setOption({
-  //       series: [
-  //         {
-  //           data: chartData,
-  //         },
-  //       ],
-  //     })
-  //   }
-  // }, [chartData, rewardChart])
 
   return (
     <Section

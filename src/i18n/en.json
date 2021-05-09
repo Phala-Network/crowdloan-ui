@@ -36,5 +36,9 @@
   "yourContribute": "Your Contribute",
   "yourReward": "Your Reward",
   "rewardVest": "Reward Vest",
-  "rewardVestTip": "If Phala wins the Slot Auction, rewards will be distributed according to the following time points and proportions. If it fails, you can unbond all your bonds immediately after the Auction ends."
+  "rewardVestTip": "If Phala wins the Slot Auction, rewards will be distributed according to the following time points and proportions. If it fails, you can unbond all your bonds immediately after the Auction ends.",
+  "heightestBid": "Highest Bid",
+  "averageBid": "Average Bid",
+  "khalaBid": "Khala Bid",
+  "phalaBid": "Phala Bid"
 }
