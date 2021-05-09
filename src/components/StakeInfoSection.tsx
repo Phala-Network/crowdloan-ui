@@ -5,6 +5,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
+import { IntlContext } from 'gatsby-plugin-intl'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -193,120 +194,92 @@ const Chart = styled.div`
   }
 `
 
+const SpaceDivider = styled.div`
+  flex: 1;
+  height: auto;
+`
+
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
-  const { currentContributorQuery } = useMeta()
-  console.log(currentContributorQuery?.data)
-  // const [address] = React.useState<string | null>(
-  //   '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
-  // )
-
-  // const { data: queryData } = useQuery(['getSchedule', { address }], {
-  //   refetchInterval: 60 * 1000,
-  // })
-
-  // const chartData = React.useMemo(
-  //   () =>
-  //     (queryData as GetScheduleResponse)?.points?.map((point) => [
-  //       point.timestamp * 1000,
-  //       point.value,
-  //     ]) ?? [],
-  //   [queryData]
-  // )
-
-  // const tableData = [
-  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  // ]
-  // const icon = (_: any, rowData: any) => {
-  //   return (
-  //     <span>
-  //       {rowData.rowValue.description}
-  //       <i className="link-icon"></i>
-  //     </span>
-  //   )
-  // }
-  // tableData.forEach((i) => (i['descriptionIcon'] = icon))
-
-  // const rewardChartElement = React.useRef<HTMLDivElement>()
-  // const rewardChart = React.useRef<ECharts>()
+  const { dayjs, currentContributorQuery } = useMeta()
+  const { locale } = React.useContext(IntlContext)
 
   const chartOptions = React.useMemo(() => {
-    return Object.assign(
-      {},
-      {
-        tooltip: {
-          trigger: 'axis',
-          formatter: function (params) {
-            params = params[0]
-            const date = new Date(params.name)
-            return (
-              date.getDate() +
-              '/' +
-              (date.getMonth() + 1) +
-              '/' +
-              date.getFullYear() +
-              ' : ' +
-              params.value[1]
-            )
-          },
-          axisPointer: {
-            animation: false,
+    return {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          animation: false,
+        },
+      },
+      grid: [
+        {
+          top: '20px',
+          left: '0px',
+          right: '6px',
+          bottom: '30px',
+        },
+      ],
+      xAxis: {
+        type: 'time',
+        splitLine: {
+          show: false,
+        },
+        axisTick: {
+          interval: 2,
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: 'white',
+            opacity: 0.1,
+            type: 'dashed',
           },
         },
-        grid: [
-          {
-            top: '20px',
-            left: '30px',
-            right: '24px',
-            bottom: '30px',
-          },
-        ],
-        xAxis: {
-          type: 'time',
-          boundaryGap: [0, 0],
-          splitLine: {
-            show: false,
-          },
-          axisTick: {
-            interval: 2,
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-        },
-        yAxis: {
-          type: 'value',
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: 'white',
-              opacity: 0.1,
-              type: 'dashed',
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: true,
+          hoverAnimation: false,
+          lineStyle: { color: '#d1ff52' },
+          itemStyle: {
+            normal: {
+              color: '#d1ff52',
+              borderColor: 'rgba(255, 255, 255, 0.9)',
+              borderWidth: 1,
             },
           },
+          data: currentContributorQuery?.data?.meta?.simulateReleasingCharts,
         },
-        series: [
-          {
-            type: 'line',
-            showSymbol: true,
-            hoverAnimation: false,
-            lineStyle: { color: '#d1ff52' },
-            itemStyle: {
-              normal: {
-                color: '#d1ff52',
-                borderColor: 'rgba(255, 255, 255, 0.9)',
-                borderWidth: 1,
-              },
-            },
-            data: [],
-          },
-        ],
-      }
-    )
-  }, [[]])
+      ],
+    }
+  }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts])
+
+  const tableData = React.useMemo(() => {
+    if (!currentContributorQuery?.data?.meta?.latestContributions) {
+      return null
+    }
+    const ret = currentContributorQuery?.data?.meta?.latestContributions
+    ret.forEach((i) => {
+      i.time = dayjs(i.timestamp).locale(locale).format('lll')
+      Object.keys(i).forEach((ii) => {
+        if (typeof i[ii] === 'number') {
+          i[ii] ||= '0'
+        } else {
+          i[ii] ||= '-'
+        }
+      })
+    })
+    return ret
+  }, [currentContributorQuery?.data?.meta?.latestContributions])
 
   return (
     <Section
@@ -321,55 +294,70 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              1,000.00 <span className="Unit">KSM</span>
+              {currentContributorQuery?.data?.contributor?.amount || 0}{' '}
+              <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
             <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
-              1,000.00 <span className="Unit">PHA</span>
+              {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
+                currentContributorQuery?.data?.contributor
+                  ?.promotionRewardAmount || 0}{' '}
+              <span className="Unit">PHA</span>
             </p>
           </div>
         </div>
         <Inviter>
           <div className="Item">
             <span className="Text">{t('participantsIntroduced')}</span>
-            <span className="Number">2 人</span>
+            <span className="Number">
+              {currentContributorQuery?.data?.contributor?.referralsCount || 0}
+            </span>
           </div>
           <div className="Item">
             <span className="Text">{t('affiliationReward')}</span>
-            <span className="Number">223.00 PHA</span>
+            <span className="Number">
+              {currentContributorQuery?.data?.contributor
+                ?.promotionRewardAmount || 0}{' '}
+              PHA
+            </span>
           </div>
         </Inviter>
       </Amount>
 
-      <Detail>
-        <div className="Title">
-          <span>{t('contributeDetails')}</span>
-          <a href="">{t('more')}</a>
-        </div>
+      {currentContributorQuery?.data?.contributor?.amount ? (
+        <>
+          <Detail>
+            <div className="Title">
+              <span>{t('contributeDetails')}</span>
+              <a href="">{t('more')}</a>
+            </div>
 
-        <Table data={[]} className="Table">
-          <Table.Column prop="property" label={t('time')} />
-          <Table.Column prop="descriptionIcon" label={t('yourContribute')} />
-          <Table.Column prop="type" label={t('yourReward')} />
-        </Table>
-      </Detail>
+            <Table data={tableData} className="Table">
+              <Table.Column prop="time" label={t('time')} />
+              <Table.Column prop="amount" label={t('yourContribute')} />
+              <Table.Column prop="rewardAmount" label={t('yourReward')} />
+            </Table>
+          </Detail>
 
-      <Chart>
-        <span className="title">{t('rewardVest')}</span>
-        <div className="info">{t('rewardVestTip')}</div>
-        <ReactECharts
-          option={chartOptions}
-          style={{
-            height: 'auto',
-            minHeight: '180px',
-            flex: 1,
-            width: '100%',
-            margin: '0 auto 0',
-          }}
-        />
-      </Chart>
+          <SpaceDivider />
+          <Chart>
+            <span className="title">{t('rewardVest')}</span>
+            <div className="info">{t('rewardVestTip')}</div>
+            <ReactECharts
+              option={chartOptions}
+              style={{
+                height: 'auto',
+                minHeight: '180px',
+                flex: 1,
+                width: '100%',
+                margin: '0 auto 0',
+              }}
+            />
+          </Chart>
+        </>
+      ) : null}
     </Section>
   )
 }

@@ -147,6 +147,7 @@ export type GetContributorResponse = {
       amount: number
       rewardAmount: number
       timestamp: string
+      time?: string
     }[]
     simulateReleasingCharts: [string, number][]
   }

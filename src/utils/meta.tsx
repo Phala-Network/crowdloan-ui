@@ -7,7 +7,15 @@ import {
 } from './request'
 import { useWeb3 } from './web3'
 
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import 'dayjs/locale/en'
+import 'dayjs/locale/zh'
+
+dayjs.extend(localizedFormat)
+
 export type AppMeta = {
+  dayjs: typeof dayjs
   campaignId: number
   price: {
     ksmQuery: UseQueryResult<GetPriceResponse>
@@ -49,6 +57,7 @@ const _MetaProvider: React.FC = ({ children }) => {
 
   const contextValue = useMemo<AppMeta>(
     (): AppMeta => ({
+      dayjs,
       campaignId,
       price: {
         ksmQuery,
