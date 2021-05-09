@@ -2,7 +2,6 @@ import { IntlShape, useIntl } from 'gatsby-plugin-intl'
 
 const _useI18n = (): IntlShape & { t: (id: string) => string } => {
   const intl = useIntl()
-  // console.log(intl)
   return {
     t: (id) => intl.formatMessage({ id }),
     ...intl,

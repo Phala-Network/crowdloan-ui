@@ -3,7 +3,6 @@ import {
   ExtentionContext,
   _defaultContextValue,
   ExtensionContextValue,
-  AccountModal,
 } from './common'
 import { useModal } from '@geist-ui/react'
 
@@ -19,6 +18,10 @@ const Web3Provider: React.FC = ({ children }) => {
       ..._defaultContextValue,
       accountModal,
       openModal: () => accountModal.setVisible(true),
+      modalBindings: {
+        isEnabled: true,
+        modal: accountModal,
+      },
     }),
     [accountModal]
   )
@@ -31,7 +34,6 @@ const Web3Provider: React.FC = ({ children }) => {
         </Suspense>
       ) : (
         <ExtentionContext.Provider value={value}>
-          <AccountModal isEnabled={true} modal={accountModal} />
           {children}
         </ExtentionContext.Provider>
       )}
