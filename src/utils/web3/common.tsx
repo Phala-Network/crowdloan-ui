@@ -115,7 +115,7 @@ export const AccountModal: React.FC<{
         <Note label={false}>{t('accountNoticeAllowAccess')}</Note>
       )}
       <Modal.Action passive onClick={() => modal.setVisible(false)}>
-        Cancel
+        {t('cancel')}
       </Modal.Action>
     </Modal>
   )

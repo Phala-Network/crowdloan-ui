@@ -25,10 +25,11 @@ const Web3Provider: React.FC = ({ children }) => {
 
   return (
     <>
-      {hasWindow ? <Suspense fallback={null}>
-        <_Web3Provider modal={accountModal}>{children}</_Web3Provider>
-      </Suspense>
-     : (
+      {hasWindow ? (
+        <Suspense fallback={null}>
+          <_Web3Provider modal={accountModal}>{children}</_Web3Provider>
+        </Suspense>
+      ) : (
         <ExtentionContext.Provider value={value}>
           <AccountModal isEnabled={true} modal={accountModal} />
           {children}
