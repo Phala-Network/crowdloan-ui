@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import { IntlContext } from 'gatsby-plugin-intl'
+import { useWeb3 } from '@/utils/web3'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -203,6 +204,7 @@ const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
   const { dayjs, currentContributorQuery } = useMeta()
   const { locale } = React.useContext(IntlContext)
+  const { currentAccount } = useWeb3()
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -294,7 +296,8 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              {currentContributorQuery?.data?.contributor?.amount || 0}{' '}
+              {currentContributorQuery?.data?.contributor?.amount ||
+                (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">KSM</span>
             </p>
           </div>
@@ -303,7 +306,9 @@ const StakeInfoSection: React.FC = () => {
             <p className="Number">
               {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
                 currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount || 0}{' '}
+                  ?.promotionRewardAmount ||
+                0 ||
+                (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">PHA</span>
             </p>
           </div>
@@ -312,14 +317,15 @@ const StakeInfoSection: React.FC = () => {
           <div className="Item">
             <span className="Text">{t('participantsIntroduced')}</span>
             <span className="Number">
-              {currentContributorQuery?.data?.contributor?.referralsCount || 0}
+              {currentContributorQuery?.data?.contributor?.referralsCount ||
+                (currentAccount ? '0' : '-')}
             </span>
           </div>
           <div className="Item">
             <span className="Text">{t('affiliationReward')}</span>
             <span className="Number">
               {currentContributorQuery?.data?.contributor
-                ?.promotionRewardAmount || 0}{' '}
+                ?.promotionRewardAmount || (currentAccount ? '0' : '-')}{' '}
               PHA
             </span>
           </div>
