@@ -8,6 +8,8 @@ import type {
   GetScheduleOptions,
   GetCampaignOptions,
   queryFnOptions,
+  GetContributorsOptions,
+  GetContributorOptions,
 } from './types'
 
 axios.defaults.baseURL = process.env.GATSBY_BACKEND_ENDPOINT
@@ -23,6 +25,7 @@ const checkResponse = (res: AxiosResponse): void => {
 const apiUrls = {
   getPrice: '/coin_market_charts/',
   getCampaign: '/campaigns/',
+  getCampaign__contributors: '/contributors',
   getSchedule: '/schedules',
 }
 
@@ -31,14 +34,54 @@ const requestFunctions = {
     const res = await axios.get(apiUrls.getPrice + currency)
     return checkResponse(res)
   },
-  getCampaign: async ({ campaign = 1 }: GetCampaignOptions) => {
-    const res = await axios.get(apiUrls.getCampaign + campaign)
+  getCampaign: async ({ campaignId = 1 }: GetCampaignOptions) => {
+    const res = await axios.get(apiUrls.getCampaign + campaignId)
     return checkResponse(res)
   },
   getSchedule: async ({ address }: GetScheduleOptions) => {
     const res = await axios.get(apiUrls.getSchedule, {
       params: address ? { address } : null,
     })
+    return checkResponse(res)
+  },
+  getRank: async ({
+    campaignId,
+    page = 1,
+    perPage = 10,
+  }: GetContributorsOptions) => {
+    const res = await axios.get(
+      apiUrls.getCampaign + campaignId + apiUrls.getCampaign__contributors,
+      {
+        params: {
+          page,
+          per_page: perPage,
+        },
+      }
+    )
+    return checkResponse(res)
+  },
+  getContributor: async ({
+    campaignId,
+    contributorId,
+  }: GetContributorOptions) => {
+    if (!contributorId) {
+      return null
+    }
+    let res
+    try {
+      res = await axios.get(
+        apiUrls.getCampaign +
+          campaignId +
+          apiUrls.getCampaign__contributors +
+          '/' +
+          contributorId
+      )
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return null
+      }
+      throw error
+    }
     return checkResponse(res)
   },
 }

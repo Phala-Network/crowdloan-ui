@@ -2,10 +2,9 @@ import Section from '@/components/Section'
 import { Table } from '@geist-ui/react'
 import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
-import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
-import { GetScheduleResponse } from '@/utils/request'
 import { useI18n } from '@/i18n'
+import { useMeta } from '@/utils/meta'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -194,55 +193,41 @@ const Chart = styled.div`
   }
 `
 
-const oneDay = 24 * 3600 * 1000
-let value = Math.random() * 1000 + 800
-let now = new Date(1997, 9, 3)
-function randomData() {
-  now = new Date(+now + oneDay)
-  value = value + Math.random() * 21 - 10
-  return {
-    name: now.toString(),
-    value: [now.getTime(), Math.round(value)],
-  }
-}
-const data = []
-for (let i = 0; i < 30; i++) {
-  data.push(randomData())
-}
-
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
-  const [address] = React.useState<string | null>(
-    '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
-  )
+  const { currentContributorQuery } = useMeta()
+  console.log(currentContributorQuery?.data)
+  // const [address] = React.useState<string | null>(
+  //   '51gcyDD5ryWMeH6SFEArATWv9y49UAUsZQRWHBwnke3KUdTN'
+  // )
 
-  const { data: queryData } = useQuery(['getSchedule', { address }], {
-    refetchInterval: 60 * 1000,
-  })
+  // const { data: queryData } = useQuery(['getSchedule', { address }], {
+  //   refetchInterval: 60 * 1000,
+  // })
 
-  const chartData = React.useMemo(
-    () =>
-      (queryData as GetScheduleResponse)?.points?.map((point) => [
-        point.timestamp * 1000,
-        point.value,
-      ]) ?? [],
-    [queryData]
-  )
+  // const chartData = React.useMemo(
+  //   () =>
+  //     (queryData as GetScheduleResponse)?.points?.map((point) => [
+  //       point.timestamp * 1000,
+  //       point.value,
+  //     ]) ?? [],
+  //   [queryData]
+  // )
 
-  const tableData = [
-    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-    { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
-  ]
-  const icon = (_: any, rowData: any) => {
-    return (
-      <span>
-        {rowData.rowValue.description}
-        <i className="link-icon"></i>
-      </span>
-    )
-  }
-  tableData.forEach((i) => (i['descriptionIcon'] = icon))
+  // const tableData = [
+  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+  //   { property: '2021.4.5 12:59', description: '300.00KSM', type: '100.00PHA' },
+  // ]
+  // const icon = (_: any, rowData: any) => {
+  //   return (
+  //     <span>
+  //       {rowData.rowValue.description}
+  //       <i className="link-icon"></i>
+  //     </span>
+  //   )
+  // }
+  // tableData.forEach((i) => (i['descriptionIcon'] = icon))
 
   // const rewardChartElement = React.useRef<HTMLDivElement>()
   // const rewardChart = React.useRef<ECharts>()
@@ -316,12 +301,12 @@ const StakeInfoSection: React.FC = () => {
                 borderWidth: 1,
               },
             },
-            data: data,
+            data: [],
           },
         ],
       }
     )
-  }, [data])
+  }, [[]])
 
   return (
     <Section
@@ -364,7 +349,7 @@ const StakeInfoSection: React.FC = () => {
           <a href="">{t('more')}</a>
         </div>
 
-        <Table data={tableData} className="Table">
+        <Table data={[]} className="Table">
           <Table.Column prop="property" label={t('time')} />
           <Table.Column prop="descriptionIcon" label={t('yourContribute')} />
           <Table.Column prop="type" label={t('yourReward')} />

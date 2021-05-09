@@ -87,7 +87,7 @@ const AuctionChart = styled.div`
 
 const AuctionChartSection: React.FC = () => {
   const { t } = useI18n()
-  const { campaign } = useMeta()
+  const { campaignQuery: campaign } = useMeta()
 
   const campaignData = React.useMemo<GetCampaignResponse>(
     () => campaign?.data,
@@ -155,7 +155,7 @@ const AuctionChartSection: React.FC = () => {
         <div className="ChartTitle">
           <span className="Text">{t('stakingRewardPool')}:</span>
           <span className="Amount">
-            {campaignData?.meta?.totalRewardAmount || '...'}
+            {campaignData?.campaign?.totalRewardAmount || '...'}
           </span>
         </div>
 

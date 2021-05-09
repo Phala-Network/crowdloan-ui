@@ -1,13 +1,20 @@
 import React, { createContext, useContext, useMemo, useRef } from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
-import { GetCampaignResponse, GetPriceResponse } from './request'
+import {
+  GetCampaignResponse,
+  GetContributorResponse,
+  GetPriceResponse,
+} from './request'
+import { useWeb3 } from './web3'
 
 export type AppMeta = {
+  campaignId: number
   price: {
     ksmQuery: UseQueryResult<GetPriceResponse>
     phaQuery: UseQueryResult<GetPriceResponse>
   }
-  campaign: UseQueryResult<GetCampaignResponse>
+  campaignQuery: UseQueryResult<GetCampaignResponse>
+  currentContributorQuery: UseQueryResult<GetContributorResponse>
 }
 
 export const MetaContext = createContext<AppMeta>(null)
@@ -15,6 +22,7 @@ export const useMeta = (): AppMeta => useContext(MetaContext)
 
 const _MetaProvider: React.FC = ({ children }) => {
   const { current: campaignId } = React.useRef(1)
+  const { currentAccount } = useWeb3()
 
   const ksmQuery = useQuery<GetPriceResponse>(
     ['getPrice', { currency: 'KSM' }],
@@ -28,22 +36,28 @@ const _MetaProvider: React.FC = ({ children }) => {
       refetchInterval: 60 * 1000,
     }
   )
-  const campaign = useQuery<GetCampaignResponse>(
-    ['getCampaign', { campaign: campaignId }],
+  const campaignQuery = useQuery<GetCampaignResponse>(
+    ['getCampaign', { campaignId }],
     {
       refetchInterval: 60 * 1000,
     }
   )
+  const currentContributorQuery = useQuery<GetContributorResponse>([
+    'getContributor',
+    { campaignId, contributorId: currentAccount?.address },
+  ])
 
   const contextValue = useMemo<AppMeta>(
     (): AppMeta => ({
+      campaignId,
       price: {
         ksmQuery,
         phaQuery,
       },
-      campaign,
+      campaignQuery,
+      currentContributorQuery,
     }),
-    [ksmQuery, phaQuery, campaign]
+    [campaignId, ksmQuery, phaQuery, campaignQuery]
   )
   return (
     <MetaContext.Provider value={contextValue}>{children}</MetaContext.Provider>

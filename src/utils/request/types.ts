@@ -54,6 +54,8 @@ export type GetCampaignResponse = {
     name: string
     parachainId: string
     cap: number
+    hardCap: number
+    totalRewardAmount: string
     raisedAmount: number
   }
   meta: {
@@ -68,7 +70,6 @@ export type GetCampaignResponse = {
     estimateReleasingDaysInterval: number
     estimateReleasingPercentagePerInterval: number
     contributionChart: [string, number][]
-    totalRewardAmount: string
   }
 }
 
@@ -86,7 +87,6 @@ export type GetAnnouncementsResponse = {
     publishedAt: string
   }[]
   pagination: PaginationField
-  meta: {}
 }
 
 export type GetContributionsOptions = {
@@ -123,9 +123,9 @@ export type GetContributorsResponse = {
     rewardAmount: number
     referralsCount: number
     promotionRewardAmount: number
+    rank?: number
   }[]
   pagination: PaginationField
-  meta: {}
 }
 
 export type GetContributorOptions = {
