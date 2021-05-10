@@ -25,7 +25,7 @@ export type ExtensionContextValue = {
   accounts: InjectedAccountWithMeta[]
   currentAccount?: InjectedAccountWithMeta
   currentInjector?: InjectedExtension
-  openModal?: () => any
+  openModal?: (callbackRef?: React.MutableRefObject<any>) => any
   accountModal?
   modalBindings?
 }
@@ -68,7 +68,16 @@ export const AccountModal: React.FC<{
     React.SetStateAction<InjectedAccountWithMeta>
   >
   isEnabled: boolean
-}> = ({ isEnabled, modal, accounts = [], setCurrentAccount }) => {
+  callbackRef
+  setCallbackRef: React.Dispatch<any>
+}> = ({
+  isEnabled,
+  modal,
+  accounts = [],
+  setCurrentAccount,
+  callbackRef,
+  setCallbackRef,
+}) => {
   const { initialized } = usePolkadotApi()
   const { t } = useI18n()
 
@@ -84,7 +93,13 @@ export const AccountModal: React.FC<{
   }
 
   return (
-    <Modal {...modal.bindings}>
+    <Modal
+      {...modal.bindings}
+      onClose={() => {
+        modal.bindings.onClose()
+        setCallbackRef(null)
+      }}
+    >
       <Modal.Title>{t('accounts')}</Modal.Title>
       <Modal.Subtitle>
         {accounts.length ? t('selectAnAccount') : ''}
@@ -98,6 +113,14 @@ export const AccountModal: React.FC<{
                 onClick={() => {
                   setCurrentAccount(account)
                   modal.setVisible(false)
+                  setTimeout(() => {
+                    if (callbackRef) {
+                      if (typeof callbackRef.current === 'function') {
+                        callbackRef.current()
+                      }
+                      setCallbackRef(null)
+                    }
+                  }, 100)
                 }}
                 icon={<User />}
               >
@@ -114,7 +137,13 @@ export const AccountModal: React.FC<{
       ) : (
         <Note label={false}>{t('accountNoticeAllowAccess')}</Note>
       )}
-      <Modal.Action passive onClick={() => modal.setVisible(false)}>
+      <Modal.Action
+        passive
+        onClick={() => {
+          modal.setVisible(false)
+          setCallbackRef(null)
+        }}
+      >
         {t('cancel')}
       </Modal.Action>
     </Modal>

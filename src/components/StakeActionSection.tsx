@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import {
@@ -487,7 +487,11 @@ const Calculator: React.FC<{
       return
     }
     return parseFloat(
-      (((phaPrice * 365) / (ksmPrice * timeDelta)) * 100).toFixed(2)
+      (
+        ((phaPrice * 365 * (hasReferrer ? 100.5 : 100)) /
+          (ksmPrice * timeDelta)) *
+        100
+      ).toFixed(2)
     )
   }, [phaPrice, ksmPrice, timeDelta])
 
@@ -611,6 +615,8 @@ const StakeActionSection: React.FC = () => {
   const stakeInput = useInput('')
   const referrerInput = useInput('')
 
+  const accountCallbackRef = useRef(null)
+
   useEffect(() => {
     if (currentContributorQuery?.data?.contributor?.amount) {
       referrerInput.reset()
@@ -634,7 +640,7 @@ const StakeActionSection: React.FC = () => {
   const tryContribute = useCallback(async () => {
     setTxWaiting(false)
     if (!currentAccount) {
-      openWeb3Modal()
+      openWeb3Modal(accountCallbackRef)
       return
     }
     if (!(initialized && chainInfo)) {
@@ -692,6 +698,10 @@ const StakeActionSection: React.FC = () => {
     chainInfo,
     currentAccount,
   ])
+
+  useEffect(() => {
+    accountCallbackRef.current = tryContribute
+  }, [tryContribute])
 
   const trySubmitTx = useCallback(() => {
     setTxWaiting(true)

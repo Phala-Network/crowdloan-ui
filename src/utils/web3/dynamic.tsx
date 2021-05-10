@@ -87,6 +87,17 @@ const _Web3Provider: React.FC<{
     })()
   }, [currentAccount])
 
+  const [callbackRef, setCallbackRef] = useState(null)
+  const openModal = useCallback(
+    (_callbackRef?) => {
+      if (_callbackRef) {
+        setCallbackRef(_callbackRef)
+      }
+      modal.setVisible(true)
+    },
+    [setCallbackRef]
+  )
+
   const contextValue = useMemo<ExtensionContextValue>(
     () => ({
       enable,
@@ -95,7 +106,7 @@ const _Web3Provider: React.FC<{
       extensions,
       accounts,
       accountModal: modal,
-      openModal: () => modal.setVisible(true),
+      openModal,
       currentAccount,
       currentInjector,
       setCurrentAccount,
@@ -104,7 +115,11 @@ const _Web3Provider: React.FC<{
         accounts,
         setCurrentAccount,
         isEnabled,
+        callbackRef,
+        setCallbackRef,
       },
+      callbackRef,
+      setCallbackRef,
     }),
     [
       enable,
@@ -115,6 +130,8 @@ const _Web3Provider: React.FC<{
       modal,
       currentAccount,
       currentInjector,
+      callbackRef,
+      setCallbackRef,
     ]
   )
   return (
