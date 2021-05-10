@@ -8,12 +8,20 @@ import { User } from '@geist-ui/react-icons'
 import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
 import { AccountModal } from '@/utils/web3/common'
 
+const Logo = styled.img.attrs({
+  src: '/logo.svg',
+})`
+  height: 40px;
+  display: block;
+  margin-left: 16px;
+`
+
 const NavbarWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   align-items: center;
-  padding: 0px 16px;
+  padding: 0;
   position: fixed;
   z-index: 100;
   height: 60px;
@@ -23,17 +31,15 @@ const NavbarWrapper = styled.div`
   background: ${(props) => props.theme.bl01};
   box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.1);
   color: ${(props) => props.theme.wh01};
-  background-image: url('/logo.svg');
-  background-repeat: no-repeat;
-  background-size: auto 40px;
-  background-position-y: center;
-  background-position-x: 24px;
   backdrop-filter: blur(8px);
+  overflow-x: auto;
 `
 const Menu = styled.ul`
   display: flex;
-  margin: 0;
+  margin: 0 0 0 42px;
+  padding-right: 16px;
   align-items: center;
+  flex-flow: row nowrap;
 
   & li {
     font-size: 14px;
@@ -41,6 +47,7 @@ const Menu = styled.ul`
     color: rgba(255, 255, 255, 0.9);
     margin: 0;
     margin-left: 24px;
+    word-break: keep-all;
 
     &:before {
       content: '';
@@ -99,30 +106,33 @@ const Navbar: React.FC = () => {
   const { modalBindings } = useWeb3()
 
   return (
-    <NavbarWrapper>
+    <>
       <AccountModal {...modalBindings} />
-      <Menu>
-        <li>
-          <Link>{t('aboutKhala')}</Link>
-        </li>
-        <li>
-          <Link>{t('learnSlotAuction')}</Link>
-        </li>
-        <li>
-          <Link style={{ color: '#D1FF52' }}>{t('affiliationProgram')}</Link>
-        </li>
-        {Object.keys(localeNames).map((loc) =>
-          locale === loc ? null : (
-            <li key={loc} onClick={() => changeLocale(loc)}>
-              <Link href={null}>{localeNames[loc]}</Link>
-            </li>
-          )
-        )}
-        <li>
-          <ConnectWallet />
-        </li>
-      </Menu>
-    </NavbarWrapper>
+      <NavbarWrapper>
+        <Logo />
+        <Menu>
+          <li>
+            <Link>{t('aboutKhala')}</Link>
+          </li>
+          <li>
+            <Link>{t('learnSlotAuction')}</Link>
+          </li>
+          <li>
+            <Link style={{ color: '#D1FF52' }}>{t('affiliationProgram')}</Link>
+          </li>
+          {Object.keys(localeNames).map((loc) =>
+            locale === loc ? null : (
+              <li key={loc} onClick={() => changeLocale(loc)}>
+                <Link href={null}>{localeNames[loc]}</Link>
+              </li>
+            )
+          )}
+          <li>
+            <ConnectWallet />
+          </li>
+        </Menu>
+      </NavbarWrapper>
+    </>
   )
 }
 

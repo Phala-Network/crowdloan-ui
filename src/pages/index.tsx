@@ -1,22 +1,41 @@
 import Navbar from '@/components/Navbar'
 import styled from 'styled-components'
 import PageBase from '@/components/PageBase'
-import { Grid } from '@geist-ui/react'
+import { Grid, Loading } from '@geist-ui/react'
 import React, { useMemo } from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
 import RankSection from '@/components/RankSection'
 import AuctionChartSection from '@/components/AuctionChartSection'
 import PriceChartSection from '@/components/PriceChartSection'
+import { useMeta } from '@/utils/meta'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
     width: 100%;
   }
 `
+const PageLoadingWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  place-content: center;
+`
+
+const PageLoading: React.FC = () => {
+  return (
+    <PageLoadingWrapper>
+      <Loading />
+    </PageLoadingWrapper>
+  )
+}
 
 const _Home: React.FC = () => {
-  return (
+  const {
+    campaignQuery: { data },
+  } = useMeta()
+  return data ? (
     <>
       <Navbar />
       <PageBase>
@@ -31,6 +50,8 @@ const _Home: React.FC = () => {
         <RankSection />
       </PageBase>
     </>
+  ) : (
+    <PageLoading />
   )
 }
 

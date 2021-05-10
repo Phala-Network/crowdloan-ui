@@ -601,7 +601,10 @@ const StakeActionSection: React.FC = () => {
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
 
-  const { currentContributorQuery } = useMeta()
+  const {
+    currentContributorQuery,
+    campaignQuery: { data: campaign },
+  } = useMeta()
 
   const [, setToast] = useToasts()
   const confirmModal = useModal()
@@ -728,7 +731,11 @@ const StakeActionSection: React.FC = () => {
             </ModalLine>
             <ModalLine>
               您将在Kusama卡槽拍卖中为Khala质押{txValue}直到
-              2021年4月30日。您的PHA奖励将在___解锁__%，之后每隔___解锁__%，
+              {campaign.meta.estimateEndReleasingIn}。您的PHA奖励将在
+              {campaign.meta.estimateFirstReleasingIn}解锁
+              {campaign.meta.firstReleasingPercentage}%，之后每隔
+              {campaign.meta.estimateReleasingDaysInterval}天解锁
+              {campaign.meta.estimateReleasingPercentagePerInterval}%，
               届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
             </ModalLine>
           </Fieldset.Content>

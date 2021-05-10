@@ -11,13 +11,16 @@ import { GetContributorsResponse } from '@/utils/request'
 const style__Rank = css`
   background: transparent;
   padding: 0;
+  width: 100%;
+  overflow-x: auto;
 `
 
 const TableWrap = styled.div`
-  width: 100%;
-
+    min-width: 900px;
+    width: 100%;
   .Table {
     margin-top: 4px;
+
 
     thead {
       th {
