@@ -16,11 +16,11 @@ const style__Rank = css`
 `
 
 const TableWrap = styled.div`
-    min-width: 900px;
-    width: 100%;
+  min-width: 900px;
+  width: 100%;
+
   .Table {
     margin-top: 4px;
-
 
     thead {
       th {
