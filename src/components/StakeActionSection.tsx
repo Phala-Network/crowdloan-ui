@@ -483,7 +483,7 @@ const Calculator: React.FC<{
   }, [stakingReward, ksmPrice])
 
   const currentPhaApy = useMemo(() => {
-    if (!(contributingIncome && ksmAmount && ksmPrice && timeDelta)) {
+    if (!(phaPrice && ksmPrice && timeDelta)) {
       return
     }
     return parseFloat(
