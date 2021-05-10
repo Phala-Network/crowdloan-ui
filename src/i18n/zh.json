@@ -48,5 +48,6 @@
   "heightestBid": "最高出价",
   "averageBid": "平均出价",
   "khalaBid": "当前Khala出价",
-  "phalaBid": "当前Phala出价"
+  "phalaBid": "当前Phala出价",
+  "noMoreReward": "到达奖励软顶，之后的支持没有奖励"
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
 import {
@@ -21,6 +21,8 @@ import Demical from 'decimal.js'
 import { ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
+import { useMeta } from '@/utils/meta'
+import { Smile } from '@geist-ui/react-icons'
 
 const createReferrerRemark = ({ api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -53,6 +55,16 @@ const StakeActionInfoWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
+
+  & input[type='number']::-webkit-outer-spin-button,
+  & input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  & input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
   & > .Calculator {
     background-image: url('/action_bg.svg');
     justify-content: space-between;
@@ -112,6 +124,15 @@ const StakeActionInfoWrapper = styled.div`
         color: rgba(255, 255, 255, 0.9) !important;
         font-weight: 600;
         text-align: right;
+      }
+
+      & .KSMRateInput span.right {
+        border: 0;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 25px !important;
+        line-height: 39px !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        padding: 0 9px 0 1px;
       }
     }
   }
@@ -360,6 +381,216 @@ const ModalLine = styled.p`
   font-size: 0.9rem;
 `
 
+const NoMoreReward = styled.div`
+  & p {
+    text-align: center;
+  }
+`
+
+const Calculator: React.FC<{
+  ksmAmountInput: string
+  hasReferrer: boolean
+}> = ({ ksmAmountInput, hasReferrer }) => {
+  const { t } = useI18n()
+
+  const { price, campaignQuery, dayjs } = useMeta()
+
+  const auctionAmount = useMemo(() => {
+    return campaignQuery.data?.meta?.contributionChart
+      ? campaignQuery.data.meta.contributionChart[
+          campaignQuery.data.meta.contributionChart.length - 1
+        ][1]
+      : 0
+  }, [campaignQuery.data?.meta?.contributionChart])
+
+  const shouldShowCalculator = useMemo(() => {
+    return campaignQuery.data?.campaign?.cap > auctionAmount
+  }, [campaignQuery.data?.campaign?.cap, auctionAmount])
+
+  const timeDelta = useMemo(() => {
+    const endDate = campaignQuery?.data?.meta?.estimateEndReleasingIn
+    if (!endDate) {
+      return 0
+    }
+    return dayjs(endDate).diff(dayjs(), 'day')
+  }, [campaignQuery?.data?.meta?.estimateEndReleasingIn])
+
+  const phaPriceInput = useInput('')
+  const ksmPriceInput = useInput('')
+  const ksmApyInput = useInput('')
+
+  const currentPhaPrice = price?.phaQuery?.data?.price
+  const currentKsmPrice = price?.ksmQuery?.data?.price
+  const currentKsmApy = price?.ksmQuery?.data?.stakeApr
+
+  useEffect(() => {
+    if (!phaPriceInput.state && currentPhaPrice) {
+      phaPriceInput.setState(`${currentPhaPrice}`)
+    }
+  }, [currentPhaPrice])
+  useEffect(() => {
+    if (!ksmPriceInput.state && currentKsmPrice) {
+      ksmPriceInput.setState(`${currentKsmPrice}`)
+    }
+  }, [currentKsmPrice])
+  useEffect(() => {
+    if (!ksmApyInput.state && currentKsmApy) {
+      ksmApyInput.setState(`${currentKsmApy}`)
+    }
+  }, [currentKsmApy])
+
+  const ksmAmount = useMemo(() => {
+    const ret = parseFloat(ksmAmountInput)
+    return ret < 0 ? 0 : ret
+  }, [ksmAmountInput])
+  const phaPrice = useMemo(() => {
+    const ret = parseFloat(phaPriceInput.state)
+    return ret < 0 ? 0 : ret
+  }, [phaPriceInput.state])
+  const ksmPrice = useMemo(() => {
+    const ret = parseFloat(ksmPriceInput.state)
+    return ret < 0 ? 0 : ret
+  }, [ksmPriceInput.state])
+  const ksmApy = useMemo(() => {
+    const ret = parseFloat(ksmApyInput.state)
+    return ret < 0 ? 0 : ret / 100
+  }, [ksmApyInput.state])
+
+  const contributingReward = useMemo(() => {
+    if (!ksmAmount) {
+      return
+    }
+    return parseFloat((ksmAmount * (hasReferrer ? 100.5 : 100)).toFixed(9))
+  }, [ksmAmount, hasReferrer])
+  const contributingIncome = useMemo(() => {
+    if (!(typeof contributingReward === 'number' && phaPrice)) {
+      return
+    }
+    return parseFloat((contributingReward * phaPrice).toFixed(9))
+  }, [contributingReward, phaPrice])
+
+  const stakingReward = useMemo(() => {
+    if (!(ksmAmount && ksmApy && timeDelta)) {
+      return
+    }
+    return parseFloat(((ksmAmount * ksmApy * timeDelta) / 365).toFixed(9))
+  }, [ksmAmount, ksmApy, timeDelta])
+  const stakingIncome = useMemo(() => {
+    if (!(stakingReward && ksmPrice)) {
+      return
+    }
+    return parseFloat((stakingReward * ksmPrice).toFixed(9))
+  }, [stakingReward, ksmPrice])
+
+  const currentPhaApy = useMemo(() => {
+    if (!(contributingIncome && ksmAmount && ksmPrice && timeDelta)) {
+      return
+    }
+    return parseFloat(
+      (((phaPrice * 365) / (ksmPrice * timeDelta)) * 100).toFixed(2)
+    )
+  }, [phaPrice, ksmPrice, timeDelta])
+
+  const moreIncome = useMemo(() => contributingIncome - stakingIncome, [
+    contributingIncome,
+    stakingIncome,
+  ])
+
+  return shouldShowCalculator ? (
+    <StakeActionInfoWrapper>
+      <div className="Title">
+        {t('calculate')}
+        <Tooltip
+          text={
+            <div>
+              可获得的PHA：预估可获得的奖励
+              <br />
+              PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑
+              <br />
+              为PHA质押的收益=可获得的PHA*PHA价格
+              <br />
+              KSM抵押收益：质押的KSM*KSM价格
+              <br />
+              额外收益=质押收益-抵押收益
+              <br />
+              预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算
+              <br />
+              <a>
+                查看更多详情
+                <span>
+                  <ChevronRight size={16} />
+                </span>
+              </a>
+            </div>
+          }
+          type="dark"
+          placement="bottomStart"
+          hideArrow={true}
+          offset={4}
+          portalClassName="TooltipText"
+        >
+          <i className="alert-circle" />
+        </Tooltip>
+      </div>
+      <div className="Calculator">
+        <div className="left">
+          <div className="Rate">{t('phalaStakeAPY')}</div>
+          <div className="RateNum">{currentPhaApy || '-'} %</div>
+          <div className="Price">{t('phaPrice')}</div>
+          <Input
+            {...phaPriceInput.bindings}
+            min="0.000001"
+            type="number"
+            label="$"
+            className="PriceInput"
+          />
+          <div className="Price">{t('contributingReward')}</div>
+          <div className="Amount">{contributingReward || '-'} PHA</div>
+          <div className="Price">{t('contributingIncome')}</div>
+          <div className="Amount">$ {contributingIncome || '-'}</div>
+        </div>
+        <div className="center">VS</div>
+        <div className="right">
+          <div className="Rate">{t('KSMAPY')}</div>
+          <Input
+            {...ksmApyInput.bindings}
+            min="0.000001"
+            labelRight="%"
+            type="number"
+            className="KSMRateInput"
+          />
+          <div className="Price">{t('KSMPrice')}</div>
+          <Input
+            {...ksmPriceInput.bindings}
+            min="0.000001"
+            type="number"
+            label="$"
+            className="PriceInput"
+          />
+          <div className="Price">{t('stakingReward')}</div>
+          <div className="Amount">{stakingReward || '-'} KSM</div>
+          <div className="Price">
+            {t('stakingIncome')} <i className="alert-circle" />
+          </div>
+          <div className="Amount">$ {stakingIncome || '-'}</div>
+        </div>
+      </div>
+
+      <div className="Extra">
+        <span className="ExtraTitle">{t('moreIncome')}</span>
+        <span className="ExtraAmount">$ {moreIncome || '-'}</span>
+      </div>
+    </StakeActionInfoWrapper>
+  ) : (
+    <NoMoreReward>
+      <p>
+        <Smile size={48} />
+      </p>
+      <p>{t('noMoreReward')}</p>
+    </NoMoreReward>
+  )
+}
+
 const StakeActionSection: React.FC = () => {
   const { t } = useI18n()
   const {
@@ -370,10 +601,18 @@ const StakeActionSection: React.FC = () => {
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
 
+  const { currentContributorQuery } = useMeta()
+
   const [, setToast] = useToasts()
   const confirmModal = useModal()
   const stakeInput = useInput('')
   const referrerInput = useInput('')
+
+  useEffect(() => {
+    if (currentContributorQuery?.data?.contributor?.amount) {
+      referrerInput.reset()
+    }
+  }, [currentContributorQuery?.data?.contributor?.amount])
 
   const [tx, setTx] = useState(null)
   const [txPaymenInfo, setTxPaymentInfo] = useState(null)
@@ -550,77 +789,16 @@ const StakeActionSection: React.FC = () => {
           </div>
         </div>
       </StakeActionInputWrapper>
-      <StakeActionInfoWrapper>
-        <div className="Title">
-          {t('calculate')}
-          <Tooltip
-            text={
-              <div>
-                可获得的PHA：预估可获得的奖励
-                <br />
-                PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑
-                <br />
-                为PHA质押的收益=可获得的PHA*PHA价格
-                <br />
-                KSM抵押收益：质押的KSM*KSM价格
-                <br />
-                额外收益=质押收益-抵押收益
-                <br />
-                预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算
-                <br />
-                <a>
-                  查看更多详情
-                  <span>
-                    <ChevronRight size={16} />
-                  </span>
-                </a>
-              </div>
-            }
-            type="dark"
-            placement="bottomStart"
-            hideArrow={true}
-            offset={4}
-            portalClassName="TooltipText"
-          >
-            <i className="alert-circle" />
-          </Tooltip>
-        </div>
-        <div className="Calculator">
-          <div className="left">
-            <div className="Rate">{t('phalaStakeAPY')}</div>
-            <div className="RateNum">21%</div>
-            <div className="Price">{t('phaPrice')}</div>
-            <Input label="$" className="PriceInput" />
-            <div className="Price">{t('contributingReward')}</div>
-            <div className="Amount">13,374PHA</div>
-            <div className="Price">{t('contributingIncome')}</div>
-            <div className="Amount">$ 5,345.00</div>
-          </div>
-          <div className="center">VS</div>
-          <div className="right">
-            <div className="Rate">{t('KSMAPY')}</div>
-            <Input className="KSMRateInput" />
-            <div className="Price">{t('KSMPrice')}</div>
-            <Input label="$" className="PriceInput" />
-            <div className="Price">{t('stakingReward')}</div>
-            <div className="Amount">13,374PHA</div>
-            <div className="Price">
-              {t('stakingIncome')} <i className="alert-circle" />
-            </div>
-            <div className="Amount">$ 5,345.00</div>
-          </div>
-        </div>
-
-        <div className="Extra">
-          <span className="ExtraTitle">{t('moreIncome')}</span>
-          <span className="ExtraAmount">{t('max')}$ 3,000.00</span>
-        </div>
-      </StakeActionInfoWrapper>
+      <Calculator
+        ksmAmountInput={stakeInput.state}
+        hasReferrer={!!referrerInput.state}
+      />
       <StakeActionForm>
         <div className="InviterWrap">
           {t('introducer')}
           <Input
             {...referrerInput.bindings}
+            disabled={!!currentContributorQuery?.data?.contributor?.amount}
             className="InviterInput"
             placeholder={t('fillIntroducer')}
           />

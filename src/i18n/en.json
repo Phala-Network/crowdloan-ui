@@ -48,5 +48,6 @@
   "heightestBid": "Highest Bid",
   "averageBid": "Average Bid",
   "khalaBid": "Khala Bid",
-  "phalaBid": "Phala Bid"
+  "phalaBid": "Phala Bid",
+  "noMoreReward": "No more reward."
 }
