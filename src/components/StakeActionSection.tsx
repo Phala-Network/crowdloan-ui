@@ -606,6 +606,7 @@ const StakeActionSection: React.FC = () => {
   const balance = useBalance(currentAccount?.address)
 
   const {
+    refetch,
     currentContributorQuery,
     campaignQuery: { data: campaign },
   } = useMeta()
@@ -710,9 +711,12 @@ const StakeActionSection: React.FC = () => {
       { signer: currentInjector.signer },
       ({ status }) => {
         if (status.isInBlock) {
-          setTxWaiting(false)
-          confirmModal.setVisible(false)
-          setToast({ text: 'Success', type: 'success', delay: 3000 }) // todo
+          setTimeout(() => {
+            setTxWaiting(false)
+            confirmModal.setVisible(false)
+            setToast({ text: 'Success', type: 'success', delay: 3000 })
+            refetch()
+          }, 6000)
         } else {
           console.warn(`Current status: ${status.type}`)
         }

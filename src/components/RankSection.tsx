@@ -106,15 +106,17 @@ const TableFooter = styled.div`
 
 const RankSection: React.FC = () => {
   const { t } = useI18n()
-  const { campaignId, currentContributorQuery } = useMeta()
+  const { campaignId, currentContributorQuery, refetchCount } = useMeta()
   const { current: perPage } = useRef(10)
 
   const [page, setPage] = useState(1)
 
-  const { data } = useQuery<GetContributorsResponse>([
-    'getRank',
-    { campaignId, page, perPage },
-  ])
+  const { data } = useQuery<GetContributorsResponse>(
+    ['getRank', { campaignId, page, perPage, refetchCount }],
+    {
+      refetchInterval: 60 * 1000,
+    }
+  )
 
   const totalPage = useMemo(() => data?.pagination?.totalPage || 1, [
     data?.pagination?.totalPage,

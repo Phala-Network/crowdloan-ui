@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useMemo, useRef } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import {
   GetCampaignResponse,
@@ -24,6 +31,8 @@ export type AppMeta = {
   }
   campaignQuery: UseQueryResult<GetCampaignResponse>
   currentContributorQuery: UseQueryResult<GetContributorResponse>
+  refetch: () => void
+  refetchCount: number
 }
 
 export const MetaContext = createContext<AppMeta>(null)
@@ -33,28 +42,38 @@ const _MetaProvider: React.FC = ({ children }) => {
   const { current: campaignId } = React.useRef(1)
   const { currentAccount } = useWeb3()
 
+  const [refetchCount, setRefetchCount] = useState(0)
+  const refetch = useCallback(() => {
+    setRefetchCount(refetchCount + 1)
+  }, [refetchCount])
+
   const ksmQuery = useQuery<GetPriceResponse>(
-    ['getPrice', { currency: 'KSM' }],
+    ['getPrice', { currency: 'KSM', refetchCount }],
     {
       refetchInterval: 60 * 1000,
     }
   )
   const phaQuery = useQuery<GetPriceResponse>(
-    ['getPrice', { currency: 'PHA' }],
+    ['getPrice', { currency: 'PHA', refetchCount }],
     {
       refetchInterval: 60 * 1000,
     }
   )
   const campaignQuery = useQuery<GetCampaignResponse>(
-    ['getCampaign', { campaignId }],
+    ['getCampaign', { campaignId, refetchCount }],
     {
       refetchInterval: 60 * 1000,
     }
   )
-  const currentContributorQuery = useQuery<GetContributorResponse>([
-    'getContributor',
-    { campaignId, contributorId: currentAccount?.address },
-  ])
+  const currentContributorQuery = useQuery<GetContributorResponse>(
+    [
+      'getContributor',
+      { campaignId, contributorId: currentAccount?.address, refetchCount },
+    ],
+    {
+      refetchInterval: 60 * 1000,
+    }
+  )
 
   const contextValue = useMemo<AppMeta>(
     (): AppMeta => ({
@@ -66,6 +85,8 @@ const _MetaProvider: React.FC = ({ children }) => {
       },
       campaignQuery,
       currentContributorQuery,
+      refetch,
+      refetchCount,
     }),
     [campaignId, ksmQuery, phaQuery, campaignQuery]
   )
