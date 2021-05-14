@@ -24,19 +24,21 @@ import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
 import { Smile } from '@geist-ui/react-icons'
 
-const createReferrerRemark = ({ api, referrer }) => {
+const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
   const remark = api.createType('PhalaCrowdloanReferrerRemark', {
     magic: 'CR',
-    paraId: 3000,
+    paraId,
     referrer: refAcc,
     referrerHash: refAcc.hash.toHex(),
   })
   return api.createType('Bytes', remark.toHex())
 }
 
-const createReferrerRemarkTx = ({ api, referrer }) => {
-  return api.tx.system.remarkWithEvent(createReferrerRemark({ api, referrer }))
+const createReferrerRemarkTx = ({ paraId, api, referrer }) => {
+  return api.tx.system.remarkWithEvent(
+    createReferrerRemark({ paraId, api, referrer })
+  )
 }
 
 const style__StakeActionSection = css`
@@ -602,6 +604,7 @@ const StakeActionSection: React.FC = () => {
     currentInjector,
     openModal: openWeb3Modal,
   } = useWeb3()
+
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
 
@@ -668,12 +671,15 @@ const StakeActionSection: React.FC = () => {
 
     setTxValue(txValue.toHuman())
 
+    const paraId = parseInt(campaign.campaign.parachainId)
+
     const txs = []
     if (referrerInput.state.trim()) {
       try {
         const referrerInputValue = decodeAddress(referrerInput.state.trim())
         txs.push(
           createReferrerRemarkTx({
+            paraId,
             api,
             referrer: referrerInputValue,
           })
@@ -688,7 +694,9 @@ const StakeActionSection: React.FC = () => {
       }
     }
 
-    txs.push(api.tx.crowdloan.contribute(3000, txValue, null))
+    txs.push(api.tx.crowdloan.contribute(paraId, txValue, null))
+
+    console.log(txs)
 
     setTx(api.tx.utility.batch(txs))
     confirmModal.setVisible(true)
@@ -698,6 +706,7 @@ const StakeActionSection: React.FC = () => {
     initialized,
     chainInfo,
     currentAccount,
+    campaign.campaign.parachainId,
   ])
 
   useEffect(() => {
