@@ -574,9 +574,7 @@ const Calculator: React.FC<{
           />
           <div className="Price">{t('stakingReward')}</div>
           <div className="Amount">{stakingReward || '-'} KSM</div>
-          <div className="Price">
-            {t('stakingIncome')} <i className="alert-circle" />
-          </div>
+          <div className="Price">{t('stakingIncome')}</div>
           <div className="Amount">$ {stakingIncome || '-'}</div>
         </div>
       </div>
