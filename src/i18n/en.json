@@ -49,5 +49,11 @@
   "averageBid": "Average Bid",
   "khalaBid": "Khala Bid",
   "phalaBid": "Phala Bid",
-  "noMoreReward": "No more reward."
+  "noMoreReward": "No more reward.",
+  "calculatePopInfo1": "Contributing Reward : Stake KSM to contribute Khala's PHA rewards",
+  "calculatePopInfo2": "PHA Price、KSM APY、KSM Price：Default current market data, editable",
+  "calculatePopInfo3": "Contributing Income = Contributing Reward * PHA Price",
+  "calculatePopInfo4": "Staking Reward = KSM Contribution * KSM APY",
+  "calculatePopInfo5": "Staking Income = Staking Reward * KSM Price",
+  "calculatePopInfo6": "More Income = Contributing Income - Staking Income"
 }

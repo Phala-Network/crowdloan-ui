@@ -49,5 +49,11 @@
   "averageBid": "平均出价",
   "khalaBid": "当前Khala出价",
   "phalaBid": "当前Phala出价",
-  "noMoreReward": "到达奖励软顶，之后的支持没有奖励"
+  "noMoreReward": "到达奖励软顶，之后的支持没有奖励",
+  "calculatePopInfo1": "支持奖励：抵押 KSM 支持 Khala 可获得的 PHA 奖励",
+  "calculatePopInfo2": "PHA 价格、KSM 年化、KSM 价格：默认当前市场数据，可编辑",
+  "calculatePopInfo3": "支持收益 = 支持 Khala 奖励 * PHA 价格",
+  "calculatePopInfo4": "KSM 抵押奖励 = 支持的 KSM * KSM 年化",
+  "calculatePopInfo5": "KSM 抵押收益 = KSM 抵押奖励 * KSM 价格",
+  "calculatePopInfo6": "额外收益 = 支持收益 - 抵押收益"
 }

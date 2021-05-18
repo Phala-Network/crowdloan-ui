@@ -388,6 +388,10 @@ const NoMoreReward = styled.div`
   }
 `
 
+const TooltipText = styled.div`
+  margin: 6px 2px;
+`
+
 const Calculator: React.FC<{
   ksmAmountInput: string
   hasReferrer: boolean
@@ -508,17 +512,12 @@ const Calculator: React.FC<{
         <Tooltip
           text={
             <div>
-              可获得的PHA：预估可获得的奖励
-              <br />
-              PHA价格、KSM年化、KSM价格：默认当前市场数据，可编辑
-              <br />
-              为PHA质押的收益=可获得的PHA*PHA价格
-              <br />
-              KSM抵押收益：质押的KSM*KSM价格
-              <br />
-              额外收益=质押收益-抵押收益
-              <br />
-              预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算
+              <TooltipText>{t('calculatePopInfo1')}</TooltipText>
+              <TooltipText>{t('calculatePopInfo2')}</TooltipText>
+              <TooltipText>{t('calculatePopInfo3')}</TooltipText>
+              <TooltipText>{t('calculatePopInfo4')}</TooltipText>
+              <TooltipText>{t('calculatePopInfo5')}</TooltipText>
+              <TooltipText>{t('calculatePopInfo6')}</TooltipText>
               {/* temp remove */}
               {/* <br />
               <a>
