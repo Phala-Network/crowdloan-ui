@@ -18,7 +18,6 @@ import { useBalance } from '@/utils/polkadot/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { usePolkadotApi } from '@/utils/polkadot'
 import Demical from 'decimal.js'
-import { ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
@@ -520,13 +519,14 @@ const Calculator: React.FC<{
               额外收益=质押收益-抵押收益
               <br />
               预估收益、质押收益、额外收益中的最大值是按照当前质押量计算，最小值是按质押硬顶计算
-              <br />
+              {/* temp remove */}
+              {/* <br />
               <a>
                 查看更多详情
                 <span>
                   <ChevronRight size={16} />
                 </span>
-              </a>
+              </a> */}
             </div>
           }
           type="dark"
