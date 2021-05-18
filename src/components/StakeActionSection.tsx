@@ -696,8 +696,6 @@ const StakeActionSection: React.FC = () => {
 
     txs.push(api.tx.crowdloan.contribute(paraId, txValue, null))
 
-    console.log(txs)
-
     setTx(api.tx.utility.batch(txs))
     confirmModal.setVisible(true)
   }, [
