@@ -743,6 +743,7 @@ const StakeActionSection: React.FC = () => {
         </div>
         <div className="InputWrap">
           <RcInputNumber
+            max={999999999}
             style={{ width: 'calc(100% - 120px)' }}
             placeholder="0"
             value={stakeInput}
