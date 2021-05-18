@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
+  ::selection {
+    background: #9dc431;
+    color: #fff;
+  }
   div, div:before, div:after {
     box-sizing: border-box;
   }
