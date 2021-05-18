@@ -22,6 +22,8 @@ import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
 import { Smile } from '@geist-ui/react-icons'
+import InputNumber from './InputNumber'
+import RcInputNumber from 'rc-input-number'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -56,15 +58,6 @@ const StakeActionInfoWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
-
-  & input[type='number']::-webkit-outer-spin-button,
-  & input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  & input[type='number'] {
-    -moz-appearance: textfield;
-  }
 
   & > .Calculator {
     background-image: url('/action_bg.svg');
@@ -111,30 +104,6 @@ const StakeActionInfoWrapper = styled.div`
       display: flex;
       flex-direction: column;
       text-align: right;
-
-      // override
-      & .KSMRateInput .input-wrapper {
-        width: 100px;
-        background: rgba(0, 0, 0, 0.2);
-        border: none !important;
-      }
-
-      & .KSMRateInput input {
-        font-size: 25px !important;
-        line-height: 39px !important;
-        color: rgba(255, 255, 255, 0.9) !important;
-        font-weight: 600;
-        text-align: right;
-      }
-
-      & .KSMRateInput span.right {
-        border: 0;
-        background: rgba(0, 0, 0, 0.2);
-        font-size: 25px !important;
-        line-height: 39px !important;
-        color: rgba(255, 255, 255, 0.9) !important;
-        padding: 0 9px 0 1px;
-      }
     }
   }
 
@@ -170,32 +139,6 @@ const StakeActionInfoWrapper = styled.div`
     margin-top: 12px;
     i {
       vertical-align: sub;
-    }
-  }
-
-  // override
-  & .PriceInput .input-wrapper {
-    width: 60px;
-    background: rgba(0, 0, 0, 0.2);
-    border: none !important;
-    line-height: 24px !important;
-  }
-  & .PriceInput {
-    height: 24px !important;
-
-    span {
-      background: rgba(0, 0, 0, 0.2);
-      color: rgba(255, 255, 255, 0.9) !important;
-      border: none;
-      padding: 0 6px;
-    }
-
-    & input {
-      margin-left: 0;
-      font-size: 14px !important;
-      line-height: 24px !important;
-      color: rgba(255, 255, 255, 0.9) !important;
-      font-weight: 600;
     }
   }
 
@@ -289,6 +232,8 @@ const StakeActionInputWrapper = styled.div`
     line-height: 50px !important;
     color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 600;
+    background: transparent;
+    border: none;
     caret-color: #d1ff52;
   }
 
@@ -420,27 +365,27 @@ const Calculator: React.FC<{
     return dayjs(endDate).diff(dayjs(), 'day')
   }, [campaignQuery?.data?.meta?.estimateEndReleasingIn])
 
-  const phaPriceInput = useInput('')
-  const ksmPriceInput = useInput('')
-  const ksmApyInput = useInput('')
+  const [phaPriceInput, setPhaPriceInput] = useState(null)
+  const [ksmPriceInput, setKsmPriceInput] = useState(null)
+  const [ksmApyInput, setKsmApyInput] = useState(null)
 
   const currentPhaPrice = price?.phaQuery?.data?.price
   const currentKsmPrice = price?.ksmQuery?.data?.price
   const currentKsmApy = price?.ksmQuery?.data?.stakeApr
 
   useEffect(() => {
-    if (!phaPriceInput.state && currentPhaPrice) {
-      phaPriceInput.setState(`${currentPhaPrice}`)
+    if (!phaPriceInput && currentPhaPrice) {
+      setPhaPriceInput(currentPhaPrice)
     }
   }, [currentPhaPrice])
   useEffect(() => {
-    if (!ksmPriceInput.state && currentKsmPrice) {
-      ksmPriceInput.setState(`${currentKsmPrice}`)
+    if (!ksmPriceInput && currentKsmPrice) {
+      setKsmPriceInput(currentKsmPrice)
     }
   }, [currentKsmPrice])
   useEffect(() => {
-    if (!ksmApyInput.state && currentKsmApy) {
-      ksmApyInput.setState(`${currentKsmApy}`)
+    if (!ksmApyInput && currentKsmApy) {
+      setKsmApyInput(currentKsmApy)
     }
   }, [currentKsmApy])
 
@@ -449,17 +394,14 @@ const Calculator: React.FC<{
     return ret < 0 ? 0 : ret
   }, [ksmAmountInput])
   const phaPrice = useMemo(() => {
-    const ret = parseFloat(phaPriceInput.state)
-    return ret < 0 ? 0 : ret
-  }, [phaPriceInput.state])
+    return phaPriceInput < 0 ? 0 : phaPriceInput
+  }, [phaPriceInput])
   const ksmPrice = useMemo(() => {
-    const ret = parseFloat(ksmPriceInput.state)
-    return ret < 0 ? 0 : ret
-  }, [ksmPriceInput.state])
+    return ksmPriceInput < 0 ? 0 : ksmPriceInput
+  }, [ksmPriceInput])
   const ksmApy = useMemo(() => {
-    const ret = parseFloat(ksmApyInput.state)
-    return ret < 0 ? 0 : ret / 100
-  }, [ksmApyInput.state])
+    return ksmApyInput < 0 ? 0 : ksmApyInput / 100
+  }, [ksmApyInput])
 
   const contributingReward = useMemo(() => {
     if (!ksmAmount) {
@@ -542,12 +484,10 @@ const Calculator: React.FC<{
           <div className="Rate">{t('phalaStakeAPY')}</div>
           <div className="RateNum">{currentPhaApy || '-'} %</div>
           <div className="Price">{t('phaPrice')}</div>
-          <Input
-            {...phaPriceInput.bindings}
-            min="0.000001"
-            type="number"
-            label="$"
-            className="PriceInput"
+          <InputNumber
+            before={'$'}
+            value={phaPriceInput}
+            onChange={setPhaPriceInput}
           />
           <div className="Price">{t('contributingReward')}</div>
           <div className="Amount">{contributingReward || '-'} PHA</div>
@@ -557,20 +497,19 @@ const Calculator: React.FC<{
         <div className="center">VS</div>
         <div className="right">
           <div className="Rate">{t('KSMAPY')}</div>
-          <Input
-            {...ksmApyInput.bindings}
-            min="0.000001"
-            labelRight="%"
-            type="number"
-            className="KSMRateInput"
+          <InputNumber
+            width={90}
+            inputSize="big"
+            after={'%'}
+            textAlign="right"
+            value={ksmApyInput}
+            onChange={setKsmApyInput}
           />
           <div className="Price">{t('KSMPrice')}</div>
-          <Input
-            {...ksmPriceInput.bindings}
-            min="0.000001"
-            type="number"
-            label="$"
-            className="PriceInput"
+          <InputNumber
+            before={'$'}
+            value={ksmPriceInput}
+            onChange={setKsmPriceInput}
           />
           <div className="Price">{t('stakingReward')}</div>
           <div className="Amount">{stakingReward || '-'} KSM</div>
@@ -613,7 +552,8 @@ const StakeActionSection: React.FC = () => {
 
   const [, setToast] = useToasts()
   const confirmModal = useModal()
-  const stakeInput = useInput('')
+  const [stakeInput, setStakeInput] = useState(10)
+
   const referrerInput = useInput('')
 
   const accountCallbackRef = useRef(null)
@@ -647,7 +587,7 @@ const StakeActionSection: React.FC = () => {
     if (!(initialized && chainInfo)) {
       return
     }
-    const contributeInputValue = parseFloat(stakeInput.state) || 0
+    const contributeInputValue = stakeInput || 0
 
     if (contributeInputValue <= 0) {
       setToast({
@@ -696,7 +636,7 @@ const StakeActionSection: React.FC = () => {
     setTx(api.tx.utility.batch(txs))
     confirmModal.setVisible(true)
   }, [
-    stakeInput.state,
+    stakeInput,
     referrerInput.state,
     initialized,
     chainInfo,
@@ -802,11 +742,11 @@ const StakeActionSection: React.FC = () => {
           </span>
         </div>
         <div className="InputWrap">
-          <Input
-            className="Input"
-            type="number"
+          <RcInputNumber
+            style={{ width: 'calc(100% - 120px)' }}
             placeholder="0"
-            {...stakeInput.bindings}
+            value={stakeInput}
+            onChange={(value) => setStakeInput(value)}
           />
           <div className="InputPostfix">
             <span className="Label">{t('max')}</span>
@@ -815,7 +755,7 @@ const StakeActionSection: React.FC = () => {
         </div>
       </StakeActionInputWrapper>
       <Calculator
-        ksmAmountInput={stakeInput.state}
+        ksmAmountInput={stakeInput?.toString() || '0'}
         hasReferrer={!!referrerInput.state}
       />
       <StakeActionForm>
