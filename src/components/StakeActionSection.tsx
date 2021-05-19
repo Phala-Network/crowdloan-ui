@@ -249,6 +249,7 @@ const StakeActionInputWrapper = styled.div`
     border-radius: 4px;
     margin: 0px 8px;
     font-size: 12px;
+    cursor: pointer;
   }
 
   & .Unit {
@@ -750,7 +751,15 @@ const StakeActionSection: React.FC = () => {
             onChange={(value) => setStakeInput(value)}
           />
           <div className="InputPostfix">
-            <span className="Label">{t('max')}</span>
+            {balance && (
+              <span
+                className="Label"
+                onClick={() => setStakeInput(parseFloat(balance.toHuman()))}
+              >
+                {t('max')}
+              </span>
+            )}
+
             <span className="Unit">KSM</span>
           </div>
         </div>
