@@ -57,5 +57,10 @@
   "calculatePopInfo3": "支持收益 = 支持 Khala 奖励 * PHA 价格",
   "calculatePopInfo4": "KSM 抵押奖励 = 支持的 KSM * KSM 年化",
   "calculatePopInfo5": "KSM 抵押收益 = KSM 抵押奖励 * KSM 价格",
-  "calculatePopInfo6": "额外收益 = 支持收益 - 抵押收益"
+  "calculatePopInfo6": "额外收益 = 支持收益 - 抵押收益",
+  "dataSource": "数据来源",
+  "priceLastUpdated": "价格最后更新:",
+  "lastUpdated": "最后更新:",
+  "coinGechoLink": "https://www.coingecko.com/en/coins/phala-network",
+  "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama"
 }

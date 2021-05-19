@@ -5,6 +5,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import type { GetPriceResponse } from '@/utils/request'
 import { useMeta } from '@/utils/meta'
+import TextTooltip from './TextTooltip'
+import { useI18n } from '../i18n'
+import dayjs from 'dayjs'
 
 const PriceChart = styled.div`
   width: 100%;
@@ -49,6 +52,8 @@ const PriceChart = styled.div`
         font-size: 14px;
         line-height: 20px;
         color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
       }
 
       .Number {
@@ -159,6 +164,7 @@ const defaultChartOptions = {
 
 const PriceChartSection: React.FC = () => {
   const { price } = useMeta()
+  const { t } = useI18n()
 
   const ksmData = React.useMemo<GetPriceResponse>(() => price?.ksmQuery?.data, [
     price?.ksmQuery?.data,
@@ -197,7 +203,37 @@ const PriceChartSection: React.FC = () => {
       <PriceChart>
         <div className="Amounts">
           <div className="Amount Re">
-            <span className="Title">KSM</span>
+            <div className="Title">
+              <span>KSM</span>
+              <TextTooltip
+                style={{ marginLeft: 5 }}
+                placement="bottom"
+                text={[
+                  <div key="link">
+                    {t('dataSource')}:{' '}
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={t('stakingrewardsLink')}
+                    >
+                      StakingRewards
+                    </a>
+                    {' & '}
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={t('coinGechoLink')}
+                    >
+                      CoinGecho
+                    </a>
+                  </div>,
+                  <div key="ksmData.lastUpdatedAt">
+                    {t('priceLastUpdated')}{' '}
+                    {dayjs(ksmData?.lastUpdatedAt).format('YYYY-MM-DD HH:mm')}
+                  </div>,
+                ]}
+              />
+            </div>
             <div className="Detail">
               <div className="Item">
                 <span className="Text">Price</span>
@@ -233,7 +269,29 @@ const PriceChartSection: React.FC = () => {
             </div>
           </div>
           <div className="Amount Yg">
-            <span className="Title">PHA</span>
+            <div className="Title">
+              <span>PHA</span>
+              <TextTooltip
+                style={{ marginLeft: 5 }}
+                placement="bottom"
+                text={[
+                  <div key="link">
+                    {t('dataSource')}:{' '}
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={t('coinGechoLink')}
+                    >
+                      CoinGecho
+                    </a>
+                  </div>,
+                  <div key="phaData.lastUpdatedAt">
+                    {t('lastUpdated')}{' '}
+                    {dayjs(phaData?.lastUpdatedAt).format('YYYY-MM-DD HH:mm')}
+                  </div>,
+                ]}
+              />
+            </div>
             <div className="Detail">
               <div className="Item">
                 <span className="Text">Price</span>

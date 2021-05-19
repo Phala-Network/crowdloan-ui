@@ -14,7 +14,7 @@ const Icon = styled.div`
 `
 
 type Props = {
-  text: string[]
+  text: React.ReactNode[]
 } & Partial<TooltipProps>
 
 const TextTooltip: React.FC<Props> = (props) => {
@@ -24,8 +24,8 @@ const TextTooltip: React.FC<Props> = (props) => {
     <Tooltip
       text={
         <div>
-          {text.map((str) => {
-            return <TooltipText key={str}>{str}</TooltipText>
+          {text.map((node, index) => {
+            return <TooltipText key={index}>{node}</TooltipText>
           })}
         </div>
       }

@@ -20,7 +20,6 @@ const GlobalStyle = createGlobalStyle`
       color: rgba(255, 255, 255, 0.9);
       a {
         display: inline-box;
-        margin-top: 8px;
         color: #d1ff52;
         line-height: 16px;
         span {
