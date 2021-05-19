@@ -1,4 +1,5 @@
 import { Tooltip } from '@geist-ui/react'
+import { TooltipProps } from '@geist-ui/react/dist/tooltip/tooltip'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -7,7 +8,6 @@ const TooltipText = styled.div`
 `
 
 const Icon = styled.div`
-  display: inline-block;
   width: 14px;
   height: 14px;
   background-image: url('/alert.svg');
@@ -15,10 +15,10 @@ const Icon = styled.div`
 
 type Props = {
   text: string[]
-}
+} & Partial<TooltipProps>
 
 const TextTooltip: React.FC<Props> = (props) => {
-  const { text = [] } = props
+  const { text = [], ...others } = props
 
   return (
     <Tooltip
@@ -34,6 +34,7 @@ const TextTooltip: React.FC<Props> = (props) => {
       hideArrow={true}
       offset={4}
       portalClassName="TooltipText"
+      {...others}
     >
       <Icon />
     </Tooltip>
