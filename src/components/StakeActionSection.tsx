@@ -738,7 +738,7 @@ const StakeActionSection: React.FC = () => {
         <div className="wrap">
           <span className="text">{t('enterAnContributeAmount')}</span>
           <span className="balance">
-            {t('balance')}: {balance ? balance.toHuman() : '...'}
+            {t('balance')}: {balance ? balance.toHuman() : '-'}
           </span>
         </div>
         <div className="InputWrap">
