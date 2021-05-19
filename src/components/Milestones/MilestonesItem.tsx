@@ -1,13 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Item = styled.li`
+const Item = styled.li<{ height: number }>`
   font-size: 12px;
   list-style: none;
   margin: 0;
-  padding-bottom: 20px;
   position: relative;
-  height: 100px;
+  height: ${(props) => props.height}px;
 
   &:before {
     display: none;
@@ -58,18 +57,20 @@ type Props = {
   noTail?: boolean
   isLast?: boolean
   active?: boolean
+  height?: number
 }
 
 const MilestonesItem: React.FC<Props> = (props) => {
   const {
     noTail = false,
     label,
+    height = 100,
     content,
     isLast = false,
     active = false,
   } = props
   return (
-    <Item>
+    <Item height={height}>
       {label && <Label>{label}</Label>}
       {!noTail && <Tail active={active}></Tail>}
       <Head isLast={isLast}></Head>
