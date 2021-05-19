@@ -375,12 +375,12 @@ const Calculator: React.FC<{
 
   useEffect(() => {
     if (!phaPriceInput && currentPhaPrice) {
-      setPhaPriceInput(currentPhaPrice)
+      setPhaPriceInput(parseFloat(currentPhaPrice.toFixed(2)))
     }
   }, [currentPhaPrice])
   useEffect(() => {
     if (!ksmPriceInput && currentKsmPrice) {
-      setKsmPriceInput(currentKsmPrice)
+      setKsmPriceInput(parseFloat(currentKsmPrice.toFixed(2)))
     }
   }, [currentKsmPrice])
   useEffect(() => {
