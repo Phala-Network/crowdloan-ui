@@ -24,6 +24,7 @@ import { Smile } from '@geist-ui/react-icons'
 import InputNumber from './InputNumber'
 import RcInputNumber from 'rc-input-number'
 import TextTooltip from './TextTooltip'
+import AlertIcon from './AlertIcon'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -269,15 +270,22 @@ const StakeActionForm = styled.div`
     align-items: center;
   }
 
+  & .with-label {
+    flex: 1;
+    margin-left: 12px;
+  }
+
   // override
   & .InviterInput .input-wrapper {
-    width: 260px;
+    width: 100%;
     background: rgba(0, 0, 0, 0.2);
     border: none !important;
     line-height: 40px !important;
   }
+
   & .InviterInput {
     height: 40px !important;
+    width: 100% !important;
 
     span {
       background: rgba(0, 0, 0, 0.2);
@@ -743,6 +751,7 @@ const StakeActionSection: React.FC = () => {
       <StakeActionForm>
         <div className="InviterWrap">
           {t('introducer')}
+          <AlertIcon style={{ marginLeft: 3 }} size={16} />
           <Input
             {...referrerInput.bindings}
             disabled={!!currentContributorQuery?.data?.contributor?.amount}

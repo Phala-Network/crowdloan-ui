@@ -2,15 +2,10 @@ import { Tooltip } from '@geist-ui/react'
 import { TooltipProps } from '@geist-ui/react/dist/tooltip/tooltip'
 import React from 'react'
 import styled from 'styled-components'
+import AlertIcon from './AlertIcon'
 
 const TooltipText = styled.div`
   margin: 6px 2px;
-`
-
-const Icon = styled.div`
-  width: 14px;
-  height: 14px;
-  background-image: url('/alert.svg');
 `
 
 type Props = {
@@ -36,7 +31,7 @@ const TextTooltip: React.FC<Props> = (props) => {
       portalClassName="TooltipText"
       {...others}
     >
-      <Icon />
+      <AlertIcon />
     </Tooltip>
   )
 }
