@@ -32,6 +32,14 @@ const apiUrls = {
 }
 
 const requestFunctions = {
+  async getAnnouncements({ campaignId = 1, locale = 'zh' }) {
+    const res = await axios.get(`/campaigns/${campaignId}/announcements`, {
+      params: {
+        locale,
+      },
+    })
+    return checkResponse(res)
+  },
   getPrice: async ({ currency }: GetPriceOptions) => {
     const res = await axios.get(apiUrls.getPrice + currency)
     return checkResponse(res)
