@@ -112,10 +112,14 @@ const Navbar: React.FC = () => {
         <Logo />
         <Menu>
           <li>
-            <Link>{t('aboutKhala')}</Link>
+            <Link target="_blank" href={t('aboutKhalaLink')}>
+              {t('aboutKhala')}
+            </Link>
           </li>
           <li>
-            <Link>{t('learnSlotAuction')}</Link>
+            <Link target="_blank" href={t('learnSlotAuctionLink')}>
+              {t('learnSlotAuction')}
+            </Link>
           </li>
           <li>
             <Link style={{ color: '#D1FF52' }}>{t('affiliationProgram')}</Link>
