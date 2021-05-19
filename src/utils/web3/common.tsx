@@ -109,6 +109,7 @@ export const AccountModal: React.FC<{
           <ButtonGroup size="large" vertical>
             {accounts.map((account) => (
               <ItemButton
+                effect={false}
                 key={account.address}
                 onClick={() => {
                   setCurrentAccount(account)

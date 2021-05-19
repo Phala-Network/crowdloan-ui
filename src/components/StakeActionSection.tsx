@@ -778,7 +778,7 @@ const StakeActionSection: React.FC = () => {
             placeholder={t('fillIntroducer')}
           />
         </div>
-        <Button className="ActionBtn" onClick={tryContribute}>
+        <Button effect={false} className="ActionBtn" onClick={tryContribute}>
           {t('stake')}
         </Button>
       </StakeActionForm>

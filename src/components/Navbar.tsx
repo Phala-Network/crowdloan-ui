@@ -147,6 +147,7 @@ export const ConnectWallet: React.FC = () => {
   if (currentAccount) {
     return (
       <Button
+        effect={false}
         size="small"
         onClick={() => openModal()}
         auto
@@ -162,7 +163,12 @@ export const ConnectWallet: React.FC = () => {
     )
   }
   return (
-    <Button size="mini" onClick={() => openModal()} className="Connect">
+    <Button
+      effect={false}
+      size="mini"
+      onClick={() => openModal()}
+      className="Connect"
+    >
       {t('connectWallet')}
     </Button>
   )
