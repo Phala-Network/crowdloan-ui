@@ -19,6 +19,8 @@ const GridWrapper = styled.div`
   padding: 0 120px;
   max-width: 1600px;
   width: 100%;
+  position: relative;
+
   @media (min-width: 0px) and (max-width: 540px) {
     padding: 0 12px;
   }
