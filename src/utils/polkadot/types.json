@@ -4,5 +4,6 @@
     "paraId": "ParaId",
     "referrer": "AccountId",
     "referrerHash": "Bytes"
-  }
+  },
+  "BridgedBlockHash": "H256"
 }
