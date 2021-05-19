@@ -558,8 +558,16 @@ const StakeActionSection: React.FC = () => {
   }, [currentAccount, tx, api, setTxPaymentInfo])
   const [txWaiting, setTxWaiting] = useState(false)
   const [txValue, setTxValue] = useState(null)
+  const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
 
   const tryContribute = useCallback(async () => {
+    if (stakeInput < 0.1) {
+      setStakeLeastAlert(true)
+      return
+    } else {
+      setStakeLeastAlert(false)
+    }
+
     setTxWaiting(false)
     if (!currentAccount) {
       openWeb3Modal(accountCallbackRef)
@@ -724,6 +732,7 @@ const StakeActionSection: React.FC = () => {
         </div>
         <div className="InputWrap">
           <RcInputNumber
+            min={0.000001}
             max={999999999}
             style={{ width: 'calc(100% - 120px)' }}
             placeholder="0"
@@ -760,7 +769,11 @@ const StakeActionSection: React.FC = () => {
           />
         </div>
         <Button effect={false} className="ActionBtn" onClick={tryContribute}>
-          {balance ? t('stake') : t('connectWallet')}
+          {stakeLeastAlert
+            ? t('pleaseSupportAtLeast')
+            : balance
+            ? t('stake')
+            : t('connectWallet')}
         </Button>
       </StakeActionForm>
     </Section>
