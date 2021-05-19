@@ -10,6 +10,7 @@ import AuctionChartSection from '@/components/AuctionChartSection'
 import PriceChartSection from '@/components/PriceChartSection'
 import { useMeta } from '@/utils/meta'
 import Announcement from '../components/Announcement'
+import Milestones from '../components/Milestones'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -40,6 +41,7 @@ const _Home: React.FC = () => {
     <>
       <Navbar />
       <PageBase>
+        <Milestones></Milestones>
         <Announcement></Announcement>
         <StakeActionSection />
         <StakeInfoSection />
