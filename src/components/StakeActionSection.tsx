@@ -779,7 +779,7 @@ const StakeActionSection: React.FC = () => {
           />
         </div>
         <Button effect={false} className="ActionBtn" onClick={tryContribute}>
-          {t('stake')}
+          {balance ? t('stake') : t('connectWallet')}
         </Button>
       </StakeActionForm>
     </Section>
