@@ -4,7 +4,6 @@ import Section from '@/components/Section'
 import {
   Input,
   Button,
-  Tooltip,
   useInput,
   useToasts,
   useModal,
@@ -24,6 +23,7 @@ import { useMeta } from '@/utils/meta'
 import { Smile } from '@geist-ui/react-icons'
 import InputNumber from './InputNumber'
 import RcInputNumber from 'rc-input-number'
+import TextTooltip from './TextTooltip'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -169,13 +169,6 @@ const StakeActionInfoWrapper = styled.div`
       text-align: right;
       color: rgba(255, 255, 255, 0.9);
     }
-  }
-
-  & .alert-circle {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    background-image: url('/alert.svg');
   }
 `
 
@@ -334,10 +327,6 @@ const NoMoreReward = styled.div`
   }
 `
 
-const TooltipText = styled.div`
-  margin: 6px 2px;
-`
-
 const Calculator: React.FC<{
   ksmAmountInput: string
   hasReferrer: boolean
@@ -452,33 +441,16 @@ const Calculator: React.FC<{
     <StakeActionInfoWrapper>
       <div className="Title">
         {t('calculate')}
-        <Tooltip
-          text={
-            <div>
-              <TooltipText>{t('calculatePopInfo1')}</TooltipText>
-              <TooltipText>{t('calculatePopInfo2')}</TooltipText>
-              <TooltipText>{t('calculatePopInfo3')}</TooltipText>
-              <TooltipText>{t('calculatePopInfo4')}</TooltipText>
-              <TooltipText>{t('calculatePopInfo5')}</TooltipText>
-              <TooltipText>{t('calculatePopInfo6')}</TooltipText>
-              {/* temp remove */}
-              {/* <br />
-              <a>
-                查看更多详情
-                <span>
-                  <ChevronRight size={16} />
-                </span>
-              </a> */}
-            </div>
-          }
-          type="dark"
-          placement="bottomStart"
-          hideArrow={true}
-          offset={4}
-          portalClassName="TooltipText"
-        >
-          <i className="alert-circle" />
-        </Tooltip>
+        <TextTooltip
+          text={[
+            t('calculatePopInfo1'),
+            t('calculatePopInfo2'),
+            t('calculatePopInfo3'),
+            t('calculatePopInfo4'),
+            t('calculatePopInfo5'),
+            t('calculatePopInfo6'),
+          ]}
+        />
       </div>
       <div className="Calculator">
         <div className="left">
