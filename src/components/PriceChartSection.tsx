@@ -28,9 +28,9 @@ const PriceChart = styled.div`
         &::before {
           content: '';
           width: 2px;
-          height: 63px;
+          height: 58px;
           left: 0;
-          top: 7.5px;
+          top: 3px;
           position: absolute;
           background: #eb5757;
         }
@@ -40,9 +40,9 @@ const PriceChart = styled.div`
         &::before {
           content: '';
           width: 2px;
-          height: 63px;
+          height: 58px;
           left: 0;
-          top: 7.5px;
+          top: 3px;
           position: absolute;
           background: #d1ff52;
         }
