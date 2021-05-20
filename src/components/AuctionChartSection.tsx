@@ -98,9 +98,13 @@ const AuctionChartSection: React.FC = () => {
     return {
       tooltip: {
         trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        borderColor: 'rgba(255, 255, 255, 0.4)',
         axisPointer: {
           type: 'cross',
-          xAxisIndex: 'all',
+        },
+        textStyle: {
+          color: 'white',
         },
       },
       grid: [
@@ -132,7 +136,7 @@ const AuctionChartSection: React.FC = () => {
         {
           name: 'PHA',
           type: 'line',
-          lineStyle: { color: '#d1ff52' },
+          itemStyle: { color: '#d1ff52' },
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,

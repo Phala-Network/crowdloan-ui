@@ -100,9 +100,13 @@ const PriceChart = styled.div`
 const defaultChartOptions = {
   tooltip: {
     trigger: 'axis',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderColor: 'rgba(255, 255, 255, 0.4)',
     axisPointer: {
       type: 'cross',
-      xAxisIndex: 'all',
+    },
+    textStyle: {
+      color: 'white',
     },
   },
   axisPointer: {
@@ -121,10 +125,10 @@ const defaultChartOptions = {
   },
   grid: [
     {
-      left: '30px',
-      right: '24px',
-      bottom: '24px',
-      top: '40px',
+      left: '0px',
+      right: '0px',
+      bottom: '20px',
+      top: '20px',
     },
   ],
   yAxis: [
@@ -133,19 +137,21 @@ const defaultChartOptions = {
       name: 'Amount',
       splitLine: { show: false },
       axisPointer: { show: false },
+      show: false,
     },
     {
       type: 'value',
       name: 'PHA',
       splitLine: { show: false },
       axisPointer: { show: false },
+      show: false,
     },
   ],
   series: [
     {
       name: 'KSM',
       type: 'line',
-      lineStyle: { color: '#eb5757' },
+      itemStyle: { color: '#eb5757' },
       showSymbol: false,
       hoverAnimation: false,
       yAxisIndex: 0,
@@ -154,7 +160,7 @@ const defaultChartOptions = {
     {
       name: 'PHA',
       type: 'line',
-      lineStyle: { color: '#d1ff52' },
+      itemStyle: { color: '#d1ff52' },
       showSymbol: false,
       hoverAnimation: false,
       yAxisIndex: 1,
@@ -180,7 +186,7 @@ const PriceChartSection: React.FC = () => {
         {
           name: 'KSM',
           type: 'line',
-          lineStyle: { color: '#eb5757' },
+          itemStyle: { color: '#eb5757' },
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,
@@ -189,7 +195,7 @@ const PriceChartSection: React.FC = () => {
         {
           name: 'PHA',
           type: 'line',
-          lineStyle: { color: '#d1ff52' },
+          itemStyle: { color: '#d1ff52' },
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 1,
