@@ -180,21 +180,11 @@ const PriceChartSection: React.FC = () => {
     return Object.assign({}, defaultChartOptions, {
       series: [
         {
-          name: 'KSM',
-          type: 'line',
-          itemStyle: { color: '#eb5757' },
-          showSymbol: false,
-          hoverAnimation: false,
-          yAxisIndex: 0,
+          ...defaultChartOptions.series[0],
           data: ksmData?.data?.map?.(formatData),
         },
         {
-          name: 'PHA',
-          type: 'line',
-          itemStyle: { color: '#d1ff52' },
-          showSymbol: false,
-          hoverAnimation: false,
-          yAxisIndex: 1,
+          ...defaultChartOptions.series[1],
           data: phaData?.data?.map?.(formatData),
         },
       ],
