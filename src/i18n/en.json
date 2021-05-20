@@ -65,5 +65,6 @@
   "coinGechoLink": "https://www.coingecko.com/en/coins/phala-network",
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
   "pleaseSupportAtLeast": "Please support at least 0.1 KSM",
-  "transactionConfirmationTitle": "Transaction Confirmation"
+  "transactionConfirmationTitle": "Transaction Confirmation",
+  "seeDetailsToLearnMore": "See details to learn more"
 }

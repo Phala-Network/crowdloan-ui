@@ -6,6 +6,7 @@ import { useMeta } from '@/utils/meta'
 import { GetAnnouncementsResponse } from '@/utils/request/types'
 import Section from '@/components/Section'
 import { useLocalStorage } from 'react-use'
+import { useI18n } from '@/i18n'
 
 type Props = any
 
@@ -17,7 +18,6 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-  word-break: break-all;
   flex: 1;
   font-size: 12px;
 `
@@ -61,6 +61,7 @@ const Link = styled.a`
 
 const Announcement: React.FC<Props> = () => {
   const { locale } = useIntl()
+  const { t } = useI18n()
 
   const { campaignId } = useMeta()
   const { data, isLoading, isError } = useQuery<GetAnnouncementsResponse>([
@@ -102,7 +103,7 @@ const Announcement: React.FC<Props> = () => {
           {text}{' '}
           {link && (
             <Link target="_blank" href={link}>
-              查看详情了解更多
+              {t('seeDetailsToLearnMore')}
             </Link>
           )}
         </Content>
