@@ -268,8 +268,10 @@ const StakeInfoSection: React.FC = () => {
     return {
       tooltip: {
         trigger: 'axis',
-        axisPointer: {
-          animation: false,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        borderColor: 'rgba(255, 255, 255, 0.4)',
+        textStyle: {
+          color: 'white',
         },
       },
       grid: [

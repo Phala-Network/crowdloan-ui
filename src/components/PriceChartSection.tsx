@@ -102,15 +102,9 @@ const defaultChartOptions = {
     trigger: 'axis',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderColor: 'rgba(255, 255, 255, 0.4)',
-    axisPointer: {
-      type: 'cross',
-    },
     textStyle: {
       color: 'white',
     },
-  },
-  axisPointer: {
-    link: { xAxisIndex: 'all' },
   },
   xAxis: {
     type: 'time',
