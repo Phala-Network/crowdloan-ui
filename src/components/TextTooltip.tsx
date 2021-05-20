@@ -2,7 +2,7 @@ import { Tooltip } from '@geist-ui/react'
 import { TooltipProps } from '@geist-ui/react/dist/tooltip/tooltip'
 import React from 'react'
 import styled from 'styled-components'
-import AlertIcon from './AlertIcon'
+import AlertIcon from '@/components/AlertIcon'
 
 const TooltipText = styled.div`
   margin: 6px 2px;

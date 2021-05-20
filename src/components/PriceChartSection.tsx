@@ -5,8 +5,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import type { GetPriceResponse } from '@/utils/request'
 import { useMeta } from '@/utils/meta'
-import TextTooltip from './TextTooltip'
-import { useI18n } from '../i18n'
+import TextTooltip from '@/components/TextTooltip'
+import { useI18n } from '@/i18n'
 import dayjs from 'dayjs'
 
 const PriceChart = styled.div`

@@ -21,10 +21,10 @@ import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
 import { Smile } from '@geist-ui/react-icons'
-import InputNumber from './InputNumber'
+import InputNumber from '@/components/InputNumber'
 import RcInputNumber from 'rc-input-number'
-import TextTooltip from './TextTooltip'
-import AlertIcon from './AlertIcon'
+import TextTooltip from '@/components/TextTooltip'
+import AlertIcon from '@/components/AlertIcon'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)

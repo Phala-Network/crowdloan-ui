@@ -2,9 +2,9 @@ import { useIntl } from 'gatsby-plugin-intl'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
-import { useMeta } from '../utils/meta'
-import { GetAnnouncementsResponse } from '../utils/request/types'
-import Section from './Section'
+import { useMeta } from '@/utils/meta'
+import { GetAnnouncementsResponse } from '@/utils/request/types'
+import Section from '@/components/Section'
 import { useLocalStorage } from 'react-use'
 
 type Props = any
