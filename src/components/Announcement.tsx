@@ -1,5 +1,5 @@
 import { useIntl } from 'gatsby-plugin-intl'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { useMeta } from '../utils/meta'
@@ -58,11 +58,14 @@ const Announcement: React.FC<Props> = () => {
     'getAnnouncements',
     { campaignId, locale },
   ])
+  const [closed, setClosed] = useState(false)
 
   const [announcementClosedValue, setAnnouncementClosedValue] = useLocalStorage(
     'announcementClosed',
     []
   )
+
+  if (closed) return null
 
   if (isLoading || isError) {
     return null
@@ -77,11 +80,8 @@ const Announcement: React.FC<Props> = () => {
 
   const { body: text, id: announcementId } = firstAnnouncement
 
-  if (announcementClosedValue.includes(announcementId)) {
-    return null
-  }
-
   function close() {
+    setClosed(true)
     setAnnouncementClosedValue([...announcementClosedValue, announcementId])
   }
 
