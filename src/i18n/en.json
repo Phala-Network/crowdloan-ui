@@ -59,9 +59,10 @@
   "calculatePopInfo5": "Staking Income = Staking Reward * KSM Price",
   "calculatePopInfo6": "More Income = Contributing Income - Staking Income",
   "dataSource": "Data source",
-  "lastUpdated": "Last updated: Month Day, Hour Minute",
-  "priceLastUpdated": "Price last updated: Month Day, Hour Minute",
+  "lastUpdated": "Last updated: ",
+  "priceLastUpdated": "Price last updated: ",
   "coinGechoLink": "https://www.coingecko.com/en/coins/phala-network",
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
-  "pleaseSupportAtLeast": "Please support at least 0.1 KSM"
+  "pleaseSupportAtLeast": "Please support at least 0.1 KSM",
+  "transactionConfirmationTitle": "Transaction Confirmation"
 }

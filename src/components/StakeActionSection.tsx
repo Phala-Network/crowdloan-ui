@@ -675,7 +675,7 @@ const StakeActionSection: React.FC = () => {
       innerStyle={style__StakeActionSection}
     >
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
-        <Modal.Title>Transaction Confirmation</Modal.Title>
+        <Modal.Title>{t('transactionConfirmationTitle')}</Modal.Title>
         <Modal.Subtitle></Modal.Subtitle>
         <Fieldset>
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
@@ -719,14 +719,14 @@ const StakeActionSection: React.FC = () => {
           disabled={txWaiting}
           onClick={txWaiting ? undefined : () => confirmModal.setVisible(false)}
         >
-          Cancel
+          {t('cancel')}
         </Modal.Action>
         <Modal.Action
           loading={txWaiting}
           disabled={txWaiting}
           onClick={txWaiting ? undefined : trySubmitTx}
         >
-          OK
+          {t('ok')}
         </Modal.Action>
       </Modal>
       <StakeActionInputWrapper>

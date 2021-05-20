@@ -59,9 +59,10 @@
   "calculatePopInfo5": "KSM 抵押收益 = KSM 抵押奖励 * KSM 价格",
   "calculatePopInfo6": "额外收益 = 支持收益 - 抵押收益",
   "dataSource": "数据来源",
-  "priceLastUpdated": "价格最后更新:",
-  "lastUpdated": "最后更新:",
+  "priceLastUpdated": "价格最后更新: ",
+  "lastUpdated": "最后更新: ",
   "coinGechoLink": "https://www.coingecko.com/en/coins/phala-network",
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
-  "pleaseSupportAtLeast": "请至少支持 0.1 KSM"
+  "pleaseSupportAtLeast": "请至少支持 0.1 KSM",
+  "transactionConfirmationTitle": "交易确认"
 }
