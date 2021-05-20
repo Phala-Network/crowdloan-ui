@@ -175,6 +175,8 @@ const PriceChartSection: React.FC = () => {
     price?.phaQuery?.data,
   ])
   const chartOptions = React.useMemo(() => {
+    const formatData = (item) => [item[0], item[1].toFixed(2)]
+
     return Object.assign({}, defaultChartOptions, {
       series: [
         {
@@ -184,7 +186,7 @@ const PriceChartSection: React.FC = () => {
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,
-          data: ksmData?.data,
+          data: ksmData?.data?.map?.(formatData),
         },
         {
           name: 'PHA',
@@ -193,7 +195,7 @@ const PriceChartSection: React.FC = () => {
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 1,
-          data: phaData?.data,
+          data: phaData?.data?.map?.(formatData),
         },
       ],
     })
@@ -241,7 +243,7 @@ const PriceChartSection: React.FC = () => {
                 <span className="Number">
                   $
                   {ksmData?.data?.length ? (
-                    ksmData.data[ksmData.data.length - 1][1]
+                    ksmData.data[ksmData.data.length - 1][1].toFixed(2)
                   ) : (
                     <Loading size="mini" />
                   )}
@@ -299,7 +301,7 @@ const PriceChartSection: React.FC = () => {
                 <span className="Number">
                   $
                   {phaData?.data?.length ? (
-                    phaData.data[phaData.data.length - 1][1]
+                    phaData.data[phaData.data.length - 1][1].toFixed(2)
                   ) : (
                     <Loading size="mini" />
                   )}
