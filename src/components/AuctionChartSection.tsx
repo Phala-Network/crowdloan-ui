@@ -183,7 +183,7 @@ const AuctionChartSection: React.FC = () => {
           option={chartOptions}
           style={{
             height: 'auto',
-            minHeight: '180px',
+            minHeight: '190px',
             flex: 1,
             width: '100%',
             margin: '0 auto 0',

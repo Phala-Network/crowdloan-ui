@@ -124,6 +124,7 @@ const defaultChartOptions = {
       left: '30px',
       right: '24px',
       bottom: '24px',
+      top: '40px',
     },
   ],
   yAxis: [
@@ -312,7 +313,7 @@ const PriceChartSection: React.FC = () => {
           option={chartOptions}
           style={{
             height: 'auto',
-            minHeight: '270px',
+            minHeight: '190px',
             flex: 1,
             width: '100%',
             margin: '-10px auto 0',
