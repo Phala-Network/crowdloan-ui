@@ -467,6 +467,8 @@ const Calculator: React.FC<{
           <div className="Price">{t('phaPrice')}</div>
           <InputNumber
             before={'$'}
+            min={0.000001}
+            max={99999}
             value={phaPriceInput}
             onChange={setPhaPriceInput}
           />
@@ -480,6 +482,8 @@ const Calculator: React.FC<{
           <div className="Rate">{t('KSMAPY')}</div>
           <InputNumber
             width={90}
+            min={0.000001}
+            max={99999}
             inputSize="big"
             after={'%'}
             textAlign="right"
@@ -489,6 +493,8 @@ const Calculator: React.FC<{
           <div className="Price">{t('KSMPrice')}</div>
           <InputNumber
             before={'$'}
+            min={0.000001}
+            max={99999}
             value={ksmPriceInput}
             onChange={setKsmPriceInput}
           />
