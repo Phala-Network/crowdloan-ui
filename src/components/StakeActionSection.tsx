@@ -319,6 +319,11 @@ const StakeActionForm = styled.div`
     &:hover {
       background: rgba(209, 255, 82, 0.8);
     }
+    &:disabled,
+    &[disabled] {
+      opacity: 0.3;
+      color: rgba(0, 0, 0, 0.4);
+    }
   }
 `
 
@@ -565,6 +570,13 @@ const StakeActionSection: React.FC = () => {
   const [txWaiting, setTxWaiting] = useState(false)
   const [txValue, setTxValue] = useState(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
+  const [stakeActionButtonDisabled, setStakeActionButtonDisabled] = useState(
+    false
+  )
+
+  useEffect(() => {
+    setStakeActionButtonDisabled(!stakeInput)
+  }, [stakeInput])
 
   const tryContribute = useCallback(async () => {
     if (stakeInput < 0.1) {
@@ -774,7 +786,12 @@ const StakeActionSection: React.FC = () => {
             placeholder={t('fillIntroducer')}
           />
         </div>
-        <Button effect={false} className="ActionBtn" onClick={tryContribute}>
+        <Button
+          disabled={stakeActionButtonDisabled}
+          effect={false}
+          className="ActionBtn"
+          onClick={tryContribute}
+        >
           {stakeLeastAlert
             ? t('pleaseSupportAtLeast')
             : balance
