@@ -50,6 +50,15 @@ const CloseIcon = styled.div`
   }
 `
 
+const Link = styled.a`
+  color: ${(props) => props.theme.yg01};
+  text-decoration-line: underline;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
 const Announcement: React.FC<Props> = () => {
   const { locale } = useIntl()
 
@@ -78,7 +87,7 @@ const Announcement: React.FC<Props> = () => {
     return null
   }
 
-  const { body: text, id: announcementId } = firstAnnouncement
+  const { body: text, id: announcementId, link } = firstAnnouncement
 
   function close() {
     setClosed(true)
@@ -89,7 +98,14 @@ const Announcement: React.FC<Props> = () => {
     <Section xs={24} className="Announcement">
       <Container>
         <NotificationIcon></NotificationIcon>
-        <Content>{text}</Content>
+        <Content>
+          {text}{' '}
+          {link && (
+            <Link target="_blank" href={link}>
+              查看详情了解更多
+            </Link>
+          )}
+        </Content>
         <CloseIcon onClick={close}></CloseIcon>
       </Container>
     </Section>
