@@ -25,6 +25,8 @@ import InputNumber from '@/components/InputNumber'
 import RcInputNumber from 'rc-input-number'
 import TextTooltip from '@/components/TextTooltip'
 import AlertIcon from '@/components/AlertIcon'
+import StakeSuccessModal from '@/components/StakeSuccessModal'
+import queryString from 'query-string'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -544,6 +546,7 @@ const StakeActionSection: React.FC = () => {
 
   const [, setToast] = useToasts()
   const confirmModal = useModal()
+  const stakeSuccessModal = useModal()
   const [stakeInput, setStakeInput] = useState(10)
 
   const referrerInput = useInput('')
@@ -553,6 +556,12 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     if (currentContributorQuery?.data?.contributor?.amount) {
       referrerInput.reset()
+    } else {
+      const { invitor } = queryString.parse(location.search)
+
+      if (invitor) {
+        referrerInput.setState(invitor as string)
+      }
     }
   }, [currentContributorQuery?.data?.contributor?.amount])
 
@@ -665,7 +674,7 @@ const StakeActionSection: React.FC = () => {
           setTimeout(() => {
             setTxWaiting(false)
             confirmModal.setVisible(false)
-            setToast({ text: 'Success', type: 'success', delay: 3000 })
+            stakeSuccessModal.setVisible(true)
             refetch()
           }, 6000)
         } else {
@@ -686,6 +695,8 @@ const StakeActionSection: React.FC = () => {
       lg={8}
       innerStyle={style__StakeActionSection}
     >
+      <StakeSuccessModal modalProps={{ ...stakeSuccessModal.bindings }} />
+
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
         <Modal.Title>{t('transactionConfirmationTitle')}</Modal.Title>
         <Modal.Subtitle></Modal.Subtitle>
@@ -741,6 +752,7 @@ const StakeActionSection: React.FC = () => {
           {t('ok')}
         </Modal.Action>
       </Modal>
+
       <StakeActionInputWrapper>
         <div className="wrap">
           <span className="text">{t('enterAnContributeAmount')}</span>
