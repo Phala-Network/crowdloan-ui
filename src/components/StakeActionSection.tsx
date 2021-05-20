@@ -773,7 +773,7 @@ const StakeActionSection: React.FC = () => {
             {balance && (
               <span
                 className="Label"
-                onClick={() => setStakeInput(parseFloat(balance.toHuman()))}
+                // onClick={() => setStakeInput(parseFloat(balance.toHuman()))}
               >
                 {t('max')}
               </span>
