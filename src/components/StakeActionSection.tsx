@@ -27,6 +27,9 @@ import TextTooltip from '@/components/TextTooltip'
 import AlertIcon from '@/components/AlertIcon'
 import StakeSuccessModal from '@/components/StakeSuccessModal'
 import queryString from 'query-string'
+import { useQuery } from 'react-query'
+import { GetCampaignResponse } from '@/utils/request/types'
+import { VoidFn } from '@polkadot/api/types'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -534,9 +537,11 @@ const StakeActionSection: React.FC = () => {
     currentInjector,
     openModal: openWeb3Modal,
   } = useWeb3()
-
+  const { campaignId } = useMeta()
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
+  const { data: campaignData, isLoading: getCampaignIsLoading } =
+    useQuery<GetCampaignResponse>(['getCampaign', { campaignId }])
 
   const {
     refetch,
@@ -585,6 +590,26 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
   }, [stakeInput])
+
+  useEffect(() => {
+    if (!initialized || getCampaignIsLoading) return
+    if (!campaignData?.campaign?.endBlock) return
+
+    let unsubscribe: VoidFn
+
+    api.rpc.chain
+      .subscribeNewHeads((header) => {
+        if (header.number.toNumber() > campaignData.campaign.endBlock) {
+          // disable stake button
+          setStakeActionButtonDisabled(true)
+        }
+      })
+      .then((_unsubscribe) => (unsubscribe = _unsubscribe))
+
+    return () => {
+      unsubscribe?.()
+    }
+  }, [initialized, api, campaignData, getCampaignIsLoading])
 
   const tryContribute = useCallback(async () => {
     if (stakeInput < 0.1) {

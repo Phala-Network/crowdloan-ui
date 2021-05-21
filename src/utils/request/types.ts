@@ -57,6 +57,7 @@ export type GetCampaignResponse = {
     hardCap: number
     totalRewardAmount: string
     raisedAmount: number
+    endBlock: number
   }
   meta: {
     milestones: {
