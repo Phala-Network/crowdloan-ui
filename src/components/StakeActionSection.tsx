@@ -447,10 +447,10 @@ const Calculator: React.FC<{
     )
   }, [phaPrice, ksmPrice, timeDelta])
 
-  const moreIncome = useMemo(() => contributingIncome - stakingIncome, [
-    contributingIncome,
-    stakingIncome,
-  ])
+  const moreIncome = useMemo(
+    () => contributingIncome - stakingIncome,
+    [contributingIncome, stakingIncome]
+  )
 
   return shouldShowCalculator ? (
     <StakeActionInfoWrapper>
@@ -579,9 +579,8 @@ const StakeActionSection: React.FC = () => {
   const [txWaiting, setTxWaiting] = useState(false)
   const [txValue, setTxValue] = useState(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
-  const [stakeActionButtonDisabled, setStakeActionButtonDisabled] = useState(
-    false
-  )
+  const [stakeActionButtonDisabled, setStakeActionButtonDisabled] =
+    useState(false)
 
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
