@@ -1,7 +1,8 @@
 import React from 'react'
 import Navbar from '@/components/Navbar'
 import PageHeader from './PageHeader'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
+import { PageStyle } from './PageStyle'
 
 const Page = styled.div`
   width: 100%;
@@ -17,17 +18,10 @@ const Container = styled.div`
   margin: auto;
 `
 
-const GlobalStyle = createGlobalStyle`
-  ::selection {
-    background: #03FFFF;
-    color: #fff;
-  }
-`
-
 const LandingPage: React.FC = () => {
   return (
     <>
-      <GlobalStyle></GlobalStyle>
+      <PageStyle></PageStyle>
       <Navbar color="#03FFFF" logo="/landing/logo.png" />
       <Page>
         <Container>
