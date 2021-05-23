@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import PageHeader from './PageHeader'
 import styled from 'styled-components'
 import { PageStyle } from './PageStyle'
+import BgLayer from './BgLayer'
 
 const Page = styled.div`
   width: 100%;
@@ -20,7 +21,7 @@ const Container = styled.div`
 
 const LandingPage: React.FC = () => {
   return (
-    <>
+    <BgLayer backgroundUrl="/landing/bg.jpg">
       <PageStyle></PageStyle>
       <Navbar color="#03FFFF" logo="/landing/logo.png" />
       <Page>
@@ -33,7 +34,7 @@ const LandingPage: React.FC = () => {
           ></PageHeader>
         </Container>
       </Page>
-    </>
+    </BgLayer>
   )
 }
 
