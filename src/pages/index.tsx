@@ -60,9 +60,10 @@ const _Home: React.FC = () => {
 }
 
 const Home: React.FC = () => {
-  const hasWindow = useMemo(() => typeof window !== 'undefined', [
-    typeof window !== 'undefined',
-  ])
+  const hasWindow = useMemo(
+    () => typeof window !== 'undefined',
+    [typeof window !== 'undefined']
+  )
   return hasWindow ? <_Home /> : null
 }
 
