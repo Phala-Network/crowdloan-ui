@@ -4,6 +4,7 @@ import PageHeader from './PageHeader'
 import styled from 'styled-components'
 import { PageStyle } from './PageStyle'
 import BgLayer from './BgLayer'
+import PageHeaderButtons from './PageHeaderButtons'
 
 const Page = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const Container = styled.div`
   padding-right: 20px;
   padding-left: 20px;
   margin: auto;
+  min-height: 100vh;
 `
 
 const LandingPage: React.FC = () => {
@@ -31,7 +33,8 @@ const LandingPage: React.FC = () => {
             description={
               'Please bookmark this page, Khala will open Crowdloan on this page in the second round of the Kusama auction'
             }
-          ></PageHeader>
+          />
+          <PageHeaderButtons></PageHeaderButtons>
         </Container>
       </Page>
     </BgLayer>
