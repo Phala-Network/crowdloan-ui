@@ -8,9 +8,7 @@ import { User } from '@geist-ui/react-icons'
 import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
 import { AccountModal } from '@/utils/web3/common'
 
-const Logo = styled.img.attrs({
-  src: '/logo.svg',
-})`
+const Logo = styled.img`
   height: 40px;
   display: block;
   margin-left: 16px;
@@ -34,7 +32,7 @@ const NavbarWrapper = styled.div`
   backdrop-filter: blur(8px);
   overflow-x: auto;
 `
-const Menu = styled.ul`
+const Menu = styled.ul<{ color: string }>`
   display: flex;
   margin: 0 0 0 42px;
   padding-right: 16px;
@@ -58,7 +56,7 @@ const Menu = styled.ul`
     font-size: 14px;
     height: 30px;
     line-height: 32px;
-    background: #d1ff52;
+    background: ${(props) => props.color};
     border-radius: 4px;
     padding: 0 15px;
     border: none;
@@ -68,7 +66,7 @@ const Menu = styled.ul`
     &:focus,
     &:active {
       color: rgba(0, 0, 0, 0.7);
-      background: #d1ff52;
+      background: ${(props) => props.color};
     }
   }
 
@@ -100,17 +98,24 @@ const Menu = styled.ul`
     }
   }
 `
-const Navbar: React.FC = () => {
+
+export type NavbarProps = {
+  color?: string
+  logo?: string
+}
+
+const Navbar: React.FC<NavbarProps> = (props) => {
   const { t } = useI18n()
   const { locale } = useContext(IntlContext)
   const { modalBindings } = useWeb3()
+  const { color = '#d1ff52', logo = '/logo.svg' } = props
 
   return (
     <>
       <AccountModal {...modalBindings} />
       <NavbarWrapper>
-        <Logo />
-        <Menu>
+        <Logo src={logo} />
+        <Menu color={color}>
           <li>
             <Link target="_blank" href={t('aboutKhalaLink')}>
               {t('aboutKhala')}
@@ -122,7 +127,7 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link style={{ color: '#D1FF52' }}>{t('affiliationProgram')}</Link>
+            <Link style={{ color }}>{t('affiliationProgram')}</Link>
           </li>
           {Object.keys(localeNames).map((loc) =>
             locale === loc ? null : (

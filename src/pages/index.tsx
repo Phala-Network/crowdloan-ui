@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Loading } from '@geist-ui/react'
 import React, { useMemo } from 'react'
@@ -9,8 +9,8 @@ import RankSection from '@/components/RankSection'
 import AuctionChartSection from '@/components/AuctionChartSection'
 import PriceChartSection from '@/components/PriceChartSection'
 import { useMeta } from '@/utils/meta'
-import Announcement from '../components/Announcement'
-import Milestones from '../components/Milestones'
+import Announcement from '@/components/Announcement'
+import Milestones from '@/components/Milestones'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -23,6 +23,13 @@ const PageLoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   place-content: center;
+`
+
+const GlobalStyle = createGlobalStyle`
+  ::selection {
+    background: #D1FF52;
+    color: #fff;
+  }
 `
 
 const PageLoading: React.FC = () => {
@@ -39,6 +46,7 @@ const _Home: React.FC = () => {
   } = useMeta()
   return data ? (
     <>
+      <GlobalStyle></GlobalStyle>
       <Navbar />
       <PageBase>
         <Milestones></Milestones>
