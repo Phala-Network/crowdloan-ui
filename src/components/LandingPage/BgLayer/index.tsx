@@ -9,11 +9,6 @@ const BgLayerStyle = styled.div`
   background-color: transparent;
   position: relative;
 
-  @media (max-width: 700px) {
-    background-size: auto 700px;
-    background-attachment: inherit;
-  }
-
   .mask {
     position: absolute;
     left: 0;
