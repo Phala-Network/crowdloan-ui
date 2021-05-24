@@ -7,6 +7,8 @@ import { useWeb3 } from '@/utils/web3'
 import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
 import { AccountModal } from '@/utils/web3/common'
 import { ConnectWallet } from '@/components/ConnectWallet'
+import MobileMenu from './MobileMenu'
+import { useMediaQuery } from 'react-responsive'
 
 const Logo = styled.img`
   height: 40px;
@@ -114,41 +116,67 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     logo = '/logo.svg',
     hasAffiliationProgramLink = true,
   } = props
+  const showMobileMenu = useMediaQuery({ minWidth: 0, maxWidth: 900 })
+
+  const aboutKhalaLink = (
+    <Link target="_blank" href={t('aboutKhalaLink')}>
+      {t('aboutKhala')}
+    </Link>
+  )
+
+  const learnSlotAuctionLink = (
+    <Link target="_blank" href={t('learnSlotAuctionLink')}>
+      {t('learnSlotAuction')}
+    </Link>
+  )
+
+  const affiliationProgram = (
+    <Link style={{ color }}>{t('affiliationProgram')}</Link>
+  )
+
+  const createLocalLinks = (NodeType: string) =>
+    Object.keys(localeNames).map((loc) =>
+      locale === loc
+        ? null
+        : React.createElement(
+            NodeType,
+            {
+              key: loc,
+              onClick: () => changeLocale(loc),
+            },
+            <Link href={null}>{localeNames[loc]}</Link>
+          )
+    )
 
   return (
     <>
       <AccountModal {...modalBindings} />
       <NavbarWrapper>
         <Logo src={logo} />
-        <Menu color={color}>
-          <li>
-            <Link target="_blank" href={t('aboutKhalaLink')}>
-              {t('aboutKhala')}
-            </Link>
-          </li>
-          <li>
-            <Link target="_blank" href={t('learnSlotAuctionLink')}>
-              {t('learnSlotAuction')}
-            </Link>
-          </li>
+        {!showMobileMenu && (
+          <Menu color={color}>
+            <li>{aboutKhalaLink}</li>
+            <li>{learnSlotAuctionLink}</li>
 
-          {hasAffiliationProgramLink && (
+            {hasAffiliationProgramLink && <li>{affiliationProgram}</li>}
+            {createLocalLinks('li')}
+
             <li>
-              <Link style={{ color }}>{t('affiliationProgram')}</Link>
+              <ConnectWallet />
             </li>
-          )}
+          </Menu>
+        )}
 
-          {Object.keys(localeNames).map((loc) =>
-            locale === loc ? null : (
-              <li key={loc} onClick={() => changeLocale(loc)}>
-                <Link href={null}>{localeNames[loc]}</Link>
-              </li>
-            )
-          )}
-          <li>
-            <ConnectWallet />
-          </li>
-        </Menu>
+        <MobileMenu
+          color={color}
+          items={[
+            aboutKhalaLink,
+            learnSlotAuctionLink,
+            hasAffiliationProgramLink ? affiliationProgram : null,
+            ...createLocalLinks('div'),
+          ]}
+          show={showMobileMenu}
+        ></MobileMenu>
       </NavbarWrapper>
     </>
   )

@@ -3,6 +3,7 @@ import { useWeb3 } from '@/utils/web3'
 import { Button } from '@geist-ui/react'
 import { User } from '@geist-ui/react-icons'
 import React from 'react'
+import CurrentAccountName from '@/components/CurrentAccountName'
 
 export const ConnectWallet: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
@@ -18,11 +19,7 @@ export const ConnectWallet: React.FC = () => {
         type="default"
         icon={<User />}
       >
-        {currentAccount.meta.name ||
-          `${currentAccount.address.slice(
-            0,
-            5
-          )}...${currentAccount.address.slice(-5)}`}
+        <CurrentAccountName />
       </Button>
     )
   }
