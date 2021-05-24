@@ -6,7 +6,7 @@ import { useIntl } from 'gatsby-plugin-intl'
 
 const CardHeaderWithStyle = styled.div`
   width: 400px;
-  background-color: #000000;
+  background-image: url('/landing/card-bg.jpg');
   color: #03ffff;
   font-style: normal;
   font-weight: normal;
