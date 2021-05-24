@@ -8,7 +8,7 @@ import { useMeta } from '@/utils/meta'
 import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
 import { CloudOff, Plus } from '@geist-ui/react-icons'
-import { ConnectWallet } from '@/components/Navbar'
+import { ConnectWallet } from '@/components/ConnectWallet'
 import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request'
 
