@@ -9,6 +9,7 @@ import PageHeaderButton from './PageHeaderButton'
 import InvitedNumber from './InvitedNumber'
 import ContentCard from './ContentCard'
 import CardQA from './CardQA'
+import CardBasicReward from './CardBasicReward'
 
 const Page = styled.div`
   width: 100%;
@@ -55,9 +56,8 @@ const LandingPage: React.FC = () => {
             </PageHeaderButton>
           </PageHeaderButtons>
 
-          <ContentCard type="vertical" name={['BASIC REWARD']} index={1}>
-            Basic Reward
-          </ContentCard>
+          <CardBasicReward></CardBasicReward>
+
           <ContentCard type="vertical" name={['REFERRALS']} index={2}>
             Referrals
           </ContentCard>
