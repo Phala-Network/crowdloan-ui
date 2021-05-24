@@ -28,7 +28,11 @@ const LandingPage: React.FC = () => {
   return (
     <BgLayer backgroundUrl="/landing/bg.jpg">
       <PageStyle></PageStyle>
-      <Navbar color="#03FFFF" logo="/landing/logo.png" />
+      <Navbar
+        color="#03FFFF"
+        logo="/landing/logo.png"
+        hasAffiliationProgramLink={false}
+      />
       <Page>
         <Container>
           <PageHeader
@@ -50,8 +54,20 @@ const LandingPage: React.FC = () => {
             </PageHeaderButton>
           </PageHeaderButtons>
 
-          <ContentCard type="vertical" name={['Khala']} index={0}>
-            sdfsdf
+          <ContentCard type="vertical" name={['Basic Reward']} index={1}>
+            Basic Reward
+          </ContentCard>
+          <ContentCard type="vertical" name={['Referrals']} index={2}>
+            Referrals
+          </ContentCard>
+          <ContentCard type="vertical" name={['Process']} index={3}>
+            Process
+          </ContentCard>
+          <ContentCard type="vertical" name={['ways', 'to support']} index={4}>
+            ways to support
+          </ContentCard>
+          <ContentCard type="vertical" name={['Q&A']} index={5}>
+            Q&A
           </ContentCard>
         </Container>
       </Page>

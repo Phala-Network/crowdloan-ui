@@ -2,6 +2,7 @@ import RandomBlock from '../../RandomBlock'
 import React from 'react'
 import classnames from 'classnames'
 import styled from 'styled-components'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const CardHeaderWithStyle = styled.div`
   width: 400px;
@@ -16,7 +17,7 @@ const CardHeaderWithStyle = styled.div`
   justify-content: space-between;
   z-index: 800;
 
-  &:lang(zh) {
+  &.zh {
     padding: 20px 18px 20px 30px;
     font-family: mplus_hzk_12;
     font-size: 44px;
@@ -27,16 +28,16 @@ const CardHeaderWithStyle = styled.div`
     }
   }
 
-  /* &:lang(en) { */
-  padding: 30px 18px 20px 30px;
-  font-family: Minecraft;
-  font-size: 36px;
+  &.en {
+    padding: 30px 18px 20px 30px;
+    font-family: Minecraft;
+    font-size: 36px;
 
-  @media (max-width: 768px) {
-    font-size: 18px;
-    padding: 15px;
+    @media (max-width: 768px) {
+      font-size: 18px;
+      padding: 15px;
+    }
   }
-  /* } */
 
   &.small {
     display: inline-block;
@@ -106,9 +107,10 @@ export type CardHeaderProps = {
 
 const CardHeader: React.FC<CardHeaderProps> = (props) => {
   const { index, name, className, type = 'normal' } = props
+  const { locale } = useIntl()
 
   return (
-    <CardHeaderWithStyle className={classnames([type, className])}>
+    <CardHeaderWithStyle className={classnames([type, className, locale])}>
       <div
         className={'target'}
         // id for link jump

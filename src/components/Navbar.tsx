@@ -21,7 +21,7 @@ const NavbarWrapper = styled.div`
   align-items: center;
   padding: 0;
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
   height: 60px;
   width: 100%;
   left: 0;
@@ -102,13 +102,18 @@ const Menu = styled.ul<{ color: string }>`
 export type NavbarProps = {
   color?: string
   logo?: string
+  hasAffiliationProgramLink?: boolean
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
   const { t } = useI18n()
   const { locale } = useContext(IntlContext)
   const { modalBindings } = useWeb3()
-  const { color = '#d1ff52', logo = '/logo.svg' } = props
+  const {
+    color = '#d1ff52',
+    logo = '/logo.svg',
+    hasAffiliationProgramLink = true,
+  } = props
 
   return (
     <>
@@ -126,9 +131,13 @@ const Navbar: React.FC<NavbarProps> = (props) => {
               {t('learnSlotAuction')}
             </Link>
           </li>
-          <li>
-            <Link style={{ color }}>{t('affiliationProgram')}</Link>
-          </li>
+
+          {hasAffiliationProgramLink && (
+            <li>
+              <Link style={{ color }}>{t('affiliationProgram')}</Link>
+            </li>
+          )}
+
           {Object.keys(localeNames).map((loc) =>
             locale === loc ? null : (
               <li key={loc} onClick={() => changeLocale(loc)}>
