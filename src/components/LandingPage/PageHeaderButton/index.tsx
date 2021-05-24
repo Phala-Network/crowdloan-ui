@@ -91,6 +91,24 @@ const ButtonStyle = styled.button`
     }
   }
 
+  &.sp1 {
+    background-color: #03ffff;
+    border: 2px solid #0a0a0a;
+    color: #0a0a0a;
+
+    &:hover {
+      border-color: #0a0a0a;
+      background-color: #0a0a0a;
+      color: #03ffff;
+    }
+
+    &:active {
+      border-color: #03ffff;
+      background-color: #03ffff;
+      color: #0a0a0a;
+    }
+  }
+
   &:hover {
     .iconArrow {
       transform: translate3d(2px, 0, 0);
@@ -109,7 +127,7 @@ const ButtonStyle = styled.button`
 `
 
 type Props = {
-  color?: 'white' | 'black' | 'gray' | 'primary'
+  color?: 'white' | 'black' | 'gray' | 'primary' | 'sp1'
   hasArrowIcon?: boolean
   style?: React.CSSProperties
   type?: 'button' | 'link'
