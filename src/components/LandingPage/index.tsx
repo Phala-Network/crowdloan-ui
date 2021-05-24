@@ -7,6 +7,7 @@ import BgLayer from './BgLayer'
 import PageHeaderButtons from './PageHeaderButtons'
 import PageHeaderButton from './PageHeaderButton'
 import InvitedNumber from './InvitedNumber'
+import ContentCard from './ContentCard'
 
 const Page = styled.div`
   width: 100%;
@@ -48,6 +49,10 @@ const LandingPage: React.FC = () => {
               Telegram
             </PageHeaderButton>
           </PageHeaderButtons>
+
+          <ContentCard type="vertical" name={['Khala']} index={0}>
+            sdfsdf
+          </ContentCard>
         </Container>
       </Page>
     </BgLayer>
