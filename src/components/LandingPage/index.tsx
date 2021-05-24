@@ -7,11 +7,11 @@ import BgLayer from './BgLayer'
 import PageHeaderButtons from './PageHeaderButtons'
 import PageHeaderButton from './PageHeaderButton'
 import InvitedNumber from './InvitedNumber'
-import ContentCard from './ContentCard'
 import CardQA from './CardQA'
 import CardBasicReward from './CardBasicReward'
 import CardReferrals from './CardReferrals'
 import CardWaysToSupport from './CardWaysToSupport'
+import CardProcess from './CardProcess'
 
 const Page = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ const Page = styled.div`
 `
 
 const Container = styled.div`
-  max-width: 1350px;
+  max-width: 1390px;
   padding-right: 20px;
   padding-left: 20px;
   margin: auto;
@@ -60,11 +60,7 @@ const LandingPage: React.FC = () => {
 
           <CardBasicReward></CardBasicReward>
           <CardReferrals></CardReferrals>
-
-          <ContentCard type="vertical" name={['PROCESS']} index={3}>
-            Process
-          </ContentCard>
-
+          <CardProcess></CardProcess>
           <CardWaysToSupport></CardWaysToSupport>
           <CardQA></CardQA>
         </Container>

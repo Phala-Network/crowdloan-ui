@@ -59,8 +59,8 @@ const CardWaysToSupport: React.FC = () => {
             <ItemName>Crowdloan Dapp (This Page)</ItemName>
           </Item>
         </Grid>
-        <Grid sm={0} md={8} xs={24}></Grid>
-        <Grid sm={0} md={8} xs={24}></Grid>
+        <Grid sm={0} md={8} xs={0}></Grid>
+        <Grid sm={0} md={8} xs={0}></Grid>
         <Grid sm={12} md={8} xs={24}>
           <Item>
             <LogoWrap>
