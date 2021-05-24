@@ -11,6 +11,7 @@ import ContentCard from './ContentCard'
 import CardQA from './CardQA'
 import CardBasicReward from './CardBasicReward'
 import CardReferrals from './CardReferrals'
+import CardWaysToSupport from './CardWaysToSupport'
 
 const Page = styled.div`
   width: 100%;
@@ -63,9 +64,8 @@ const LandingPage: React.FC = () => {
           <ContentCard type="vertical" name={['PROCESS']} index={3}>
             Process
           </ContentCard>
-          <ContentCard type="vertical" name={['WAYS', 'TO SUPPORT']} index={4}>
-            ways to support
-          </ContentCard>
+
+          <CardWaysToSupport></CardWaysToSupport>
           <CardQA></CardQA>
         </Container>
       </Page>
