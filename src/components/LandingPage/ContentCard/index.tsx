@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 const ContentCardStyle = styled.div`
   margin-top: 60px;
-  z-index: 2000;
+  z-index: 1000;
   position: relative;
 
   &.small {

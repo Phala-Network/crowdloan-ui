@@ -54,16 +54,16 @@ const LandingPage: React.FC = () => {
             </PageHeaderButton>
           </PageHeaderButtons>
 
-          <ContentCard type="vertical" name={['Basic Reward']} index={1}>
+          <ContentCard type="vertical" name={['BASIC REWARD']} index={1}>
             Basic Reward
           </ContentCard>
-          <ContentCard type="vertical" name={['Referrals']} index={2}>
+          <ContentCard type="vertical" name={['REFERRALS']} index={2}>
             Referrals
           </ContentCard>
-          <ContentCard type="vertical" name={['Process']} index={3}>
+          <ContentCard type="vertical" name={['PROCESS']} index={3}>
             Process
           </ContentCard>
-          <ContentCard type="vertical" name={['ways', 'to support']} index={4}>
+          <ContentCard type="vertical" name={['WAYS', 'TO SUPPORT']} index={4}>
             ways to support
           </ContentCard>
           <ContentCard type="vertical" name={['Q&A']} index={5}>
