@@ -9,7 +9,7 @@ const Wrap = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 30px;
-    width: 220px;
+    width: 320px;
   }
 
   & > * {

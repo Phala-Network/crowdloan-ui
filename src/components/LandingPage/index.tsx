@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { PageStyle } from './PageStyle'
 import BgLayer from './BgLayer'
 import PageHeaderButtons from './PageHeaderButtons'
+import PageHeaderButton from './PageHeaderButton'
+import InvitedNumber from './InvitedNumber'
 
 const Page = styled.div`
   width: 100%;
@@ -34,7 +36,18 @@ const LandingPage: React.FC = () => {
               'Please bookmark this page, Khala will open Crowdloan on this page in the second round of the Kusama auction'
             }
           />
-          <PageHeaderButtons></PageHeaderButtons>
+          <PageHeaderButtons>
+            <PageHeaderButton color="primary" size="middle">
+              Referral Reward
+            </PageHeaderButton>
+            <InvitedNumber></InvitedNumber>
+            <PageHeaderButton color="gray" hasArrowIcon size="middle">
+              Subscribe our crowdloan news
+            </PageHeaderButton>
+            <PageHeaderButton color="gray" hasArrowIcon size="middle">
+              Telegram
+            </PageHeaderButton>
+          </PageHeaderButtons>
         </Container>
       </Page>
     </BgLayer>
