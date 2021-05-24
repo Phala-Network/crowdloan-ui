@@ -1,7 +1,8 @@
 import { Grid } from '@geist-ui/react'
 import React from 'react'
 import styled from 'styled-components'
-import ContentCard from './ContentCard'
+import ContentCard from '../ContentCard'
+import { Arrow } from './Arrow'
 
 const Item = styled.div`
   background-color: white;
@@ -42,6 +43,7 @@ const CardProcess: React.FC = () => {
               Unbond your KSM soon if they’re already bonded! (At least 7 days
               before the Crowdloan starts).
             </ItemContent>
+            <Arrow></Arrow>
           </Item>
         </Grid>
         <Grid sm={12} md={8} xs={24}>
@@ -52,6 +54,7 @@ const CardProcess: React.FC = () => {
               slot is released. when the 2nd slot begin, you can join on this
               page.
             </ItemContent>
+            <Arrow position="rightBottom"></Arrow>
           </Item>
         </Grid>
         <Grid sm={0} md={8} xs={0}></Grid>
@@ -65,6 +68,7 @@ const CardProcess: React.FC = () => {
               addresses immediately. The remaining 66% will be vested monthly
               over 11 months.
             </ItemContent>
+            <Arrow></Arrow>
           </Item>
         </Grid>
         <Grid sm={12} md={8} xs={24}>
