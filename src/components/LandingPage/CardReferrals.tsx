@@ -1,4 +1,4 @@
-import { Col, Container, Grid, Spacer } from '@geist-ui/react'
+import { Container, Grid, Spacer } from '@geist-ui/react'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ContentCard from './ContentCard'
