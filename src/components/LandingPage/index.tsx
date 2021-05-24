@@ -26,7 +26,7 @@ const Container = styled.div`
 
 const LandingPage: React.FC = () => {
   return (
-    <BgLayer backgroundUrl="/landing/bg.jpg">
+    <BgLayer noMask={true} backgroundUrl="/landing/bg.jpg">
       <PageStyle></PageStyle>
       <Navbar
         color="#03FFFF"
