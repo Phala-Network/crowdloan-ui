@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const CardContentStyle = styled.div`
   background-color: #f0efee;
   background-repeat: no-repeat;
-  padding: 60px 30px;
+  padding: 30px;
   font-family: Lato;
   font-size: 14px;
   font-weight: normal;

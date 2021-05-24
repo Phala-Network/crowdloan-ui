@@ -8,6 +8,7 @@ import PageHeaderButtons from './PageHeaderButtons'
 import PageHeaderButton from './PageHeaderButton'
 import InvitedNumber from './InvitedNumber'
 import ContentCard from './ContentCard'
+import CardQA from './CardQA'
 
 const Page = styled.div`
   width: 100%;
@@ -66,9 +67,7 @@ const LandingPage: React.FC = () => {
           <ContentCard type="vertical" name={['WAYS', 'TO SUPPORT']} index={4}>
             ways to support
           </ContentCard>
-          <ContentCard type="vertical" name={['Q&A']} index={5}>
-            Q&A
-          </ContentCard>
+          <CardQA></CardQA>
         </Container>
       </Page>
     </BgLayer>
