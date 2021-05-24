@@ -38,9 +38,8 @@ export const _defaultContextValue: ExtensionContextValue = {
   accounts: [],
 }
 
-export const ExtentionContext = createContext<ExtensionContextValue | null>(
-  _defaultContextValue
-)
+export const ExtentionContext =
+  createContext<ExtensionContextValue | null>(_defaultContextValue)
 
 export const ERR_POLKADOT_WEB3_NOT_INJECTED = 'ERR_POLKADOT_WEB3_NOT_INJECTED'
 
