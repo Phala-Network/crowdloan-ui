@@ -16,8 +16,8 @@ const RandomBlock: React.FC<Props> = (props) => {
   const { row = 8, column = 4 } = props
   const [size, setSize] = useState(20)
   const [data, setData] = useState(new Array(row * column).fill(0))
-  const isSM = useMediaQuery({ maxWidth: 960 })
-  const isMD = useMediaQuery({ minWidth: 960, maxWidth: 1280 })
+  const isSM = useMediaQuery({ maxWidth: 768 })
+  const isMD = useMediaQuery({ minWidth: 768, maxWidth: 992 })
   const isLG = useMediaQuery({ minWidth: 1280 })
 
   useEffect(() => {
