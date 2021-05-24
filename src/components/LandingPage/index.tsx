@@ -44,19 +44,20 @@ const LandingPage: React.FC = () => {
             description={
               'Please bookmark this page, Khala will open Crowdloan on this page in the second round of the Kusama auction'
             }
-          />
-          <PageHeaderButtons>
-            <PageHeaderButton color="primary" size="middle">
-              Referral Reward
-            </PageHeaderButton>
-            <InvitedNumber></InvitedNumber>
-            <PageHeaderButton color="gray" hasArrowIcon size="middle">
-              Subscribe our crowdloan news
-            </PageHeaderButton>
-            <PageHeaderButton color="gray" hasArrowIcon size="middle">
-              Telegram
-            </PageHeaderButton>
-          </PageHeaderButtons>
+          >
+            <PageHeaderButtons>
+              <PageHeaderButton color="primary" size="middle">
+                Referral Reward
+              </PageHeaderButton>
+              <InvitedNumber></InvitedNumber>
+              <PageHeaderButton color="gray" hasArrowIcon size="middle">
+                Subscribe our crowdloan news
+              </PageHeaderButton>
+              <PageHeaderButton color="gray" hasArrowIcon size="middle">
+                Telegram
+              </PageHeaderButton>
+            </PageHeaderButtons>
+          </PageHeader>
 
           <CardBasicReward></CardBasicReward>
           <CardReferrals></CardReferrals>

@@ -4,6 +4,7 @@ import SectionHeader, { SectionHeaderProps } from '../SectionHeader'
 
 const Header = styled.div`
   max-width: 900px;
+  margin-bottom: 160px;
 
   .title {
     line-height: 1;
@@ -41,6 +42,7 @@ const PageHeader: React.FC<Props> = (props) => {
         titleClassName={'title'}
         descriptionClassName={'description'}
       ></SectionHeader>
+      {props.children}
     </Header>
   )
 }
