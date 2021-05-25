@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useI18n } from '@/i18n'
 import EmailSubscribe from './EmailSubscribe'
 import PageHeaderButton from './PageHeaderButton'
 
 const EmailSubscribeButton: React.FC = () => {
   const [showEmailSubscribeInput, setShowEmailSubscribeInput] = useState(false)
+  const { t } = useI18n()
 
   return (
     <>
@@ -14,7 +16,7 @@ const EmailSubscribeButton: React.FC = () => {
           size="middle"
           onClick={() => setShowEmailSubscribeInput(true)}
         >
-          Subscribe our crowdloan news
+          {t('subscribeToOurCrowdloanNews')}
         </PageHeaderButton>
       )}
       <div style={{ display: showEmailSubscribeInput ? 'block' : 'none' }}>

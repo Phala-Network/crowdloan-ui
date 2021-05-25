@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useMeta } from '@/utils/meta'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const InvitedNumberRoot = styled.div`
   font-family: Lato;
@@ -20,14 +21,12 @@ const InvitedNumberRoot = styled.div`
 
 const InvitedNumber: React.FC = () => {
   const { campaignQuery } = useMeta()
+  const { locale } = useIntl()
 
   const amount = campaignQuery?.data?.meta?.totalInvitedCount
+  const text = locale === 'en' ? `${amount} invited` : `已邀请 ${amount} 人`
 
-  return (
-    <InvitedNumberRoot>
-      {amount >= 1000 ? `${amount} invited` : ''}
-    </InvitedNumberRoot>
-  )
+  return amount >= 1000 ? <InvitedNumberRoot>{text}</InvitedNumberRoot> : null
 }
 
 export default InvitedNumber

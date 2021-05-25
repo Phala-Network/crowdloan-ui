@@ -16,6 +16,7 @@ import WechatButton from './WechatButton'
 import { useIntl } from 'gatsby-plugin-intl'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import EmailSubscribeButton from './EmailSubscribeButton'
+import { useI18n } from '@/i18n'
 
 const Page = styled.div`
   width: 100%;
@@ -35,6 +36,7 @@ const Container = styled.div`
 const LandingPage: React.FC = () => {
   const color = '#03FFFF'
   const { locale } = useIntl()
+  const { t } = useI18n()
 
   return (
     <BgLayer noMask={true} backgroundUrl="/landing/bg.jpg">
@@ -47,10 +49,8 @@ const LandingPage: React.FC = () => {
       <Page>
         <Container>
           <PageHeader
-            title={'Khala’s Crowdloan Dapp is Comming！'}
-            description={
-              'Please bookmark this page, Khala will open Crowdloan on this page in the second round of the Kusama auction'
-            }
+            title={t('landingPageTitle')}
+            description={t('landingPageDescription')}
           >
             <PageHeaderButtons>
               <PageHeaderButton
@@ -63,8 +63,9 @@ const LandingPage: React.FC = () => {
                   })
                 }
               >
-                Referral Reward
+                {t('landingPageReferralRewards')}
               </PageHeaderButton>
+
               <InvitedNumber></InvitedNumber>
 
               <EmailSubscribeButton></EmailSubscribeButton>
