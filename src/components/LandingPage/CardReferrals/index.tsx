@@ -5,16 +5,16 @@ import {
   useClipboard,
   useToasts,
 } from '@geist-ui/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useWeb3 } from '@/utils/web3'
-import ContentCard from './ContentCard'
-import PageHeaderButton from './PageHeaderButton'
+import ContentCard from '@/components/LandingPage/ContentCard'
+import PageHeaderButton from '@/components/LandingPage/PageHeaderButton'
 import useTwitterLink from '@/hooks/useTwitterLink'
 import useShareLink from '@/hooks/useShareLink'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
-import queryString from 'query-string'
+import InvitorContent from './InvitorContent'
 
 const Content = styled.div`
   font-family: Lato;
@@ -32,53 +32,16 @@ const Image = styled.div`
   margin: auto;
 `
 
-const Input = styled.input`
-  flex: 1;
-  display: block;
-  outline: none;
-  color: ${(props) => props.theme.bl01};
-  border: 1px solid ${(props) => props.theme.bl01};
-  background-color: transparent;
-  font-family: Lato;
-  padding: 0 12px;
-  max-width: 436px;
-  font-size: 18px;
-  width: 260px;
-  height: 38px;
-  line-height: 38px;
-
-  &::placeholder {
-    color: ${(props) => props.theme.bl02};
-  }
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-    width: 260px;
-    height: 26px;
-    line-height: 26px;
-  }
-`
-
 const CardReferrals: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
   const { currentContributorQuery } = useMeta()
   const contributorReferralsCount =
     currentContributorQuery?.data?.contributor?.referralsCount
-  const referrer = currentContributorQuery?.data?.contributor?.referrer
   const twitterLink = useTwitterLink()
   const shareLink = useShareLink()
   const { copy } = useClipboard()
   const [, setToast] = useToasts()
   const { t } = useI18n()
-  const [invitor, setInvitor] = useState('')
-
-  useEffect(() => {
-    const { invitor } = queryString.parse(location.search)
-
-    if (invitor) {
-      setInvitor(invitor as string)
-    }
-  }, [currentAccount])
 
   return (
     <ContentCard type="vertical" name={['REFERRALS']} index={2}>
@@ -121,28 +84,7 @@ const CardReferrals: React.FC = () => {
 
               <Spacer y={1}></Spacer>
 
-              <div>
-                Your Invitor’s Kusama Address {referrer ? `: ${referrer}` : ''}
-              </div>
-
-              {!referrer && (
-                <Container>
-                  <Input
-                    onChange={(e) => setInvitor(e.target.value)}
-                    value={invitor}
-                    placeholder="Your Invitor’s Kusama Address"
-                  ></Input>
-
-                  <Spacer x={1}></Spacer>
-
-                  <div>
-                    <PageHeaderButton color="sp1" size="middle">
-                      Bond
-                    </PageHeaderButton>
-                    <div>Fee: 0.0023 KSM</div>
-                  </div>
-                </Container>
-              )}
+              <InvitorContent></InvitorContent>
 
               <Spacer y={2}></Spacer>
 
