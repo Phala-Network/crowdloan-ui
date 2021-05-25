@@ -62,7 +62,9 @@ const Input = styled.input`
 const CardReferrals: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
   const { currentContributorQuery } = useMeta()
-  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+  const contributorReferralsCount =
+    currentContributorQuery?.data?.contributor?.referralsCount
+  const referrer = currentContributorQuery?.data?.contributor?.referrer
   const twitterLink = useTwitterLink()
   const shareLink = useShareLink()
   const { copy } = useClipboard()
@@ -119,23 +121,28 @@ const CardReferrals: React.FC = () => {
 
               <Spacer y={1}></Spacer>
 
-              <div>Your Invitor’s Kusama Address</div>
-              <Container>
-                <Input
-                  onChange={(e) => setInvitor(e.target.value)}
-                  value={invitor}
-                  placeholder="Your Invitor’s Kusama Address"
-                ></Input>
+              <div>
+                Your Invitor’s Kusama Address {referrer ? `: ${referrer}` : ''}
+              </div>
 
-                <Spacer x={1}></Spacer>
+              {!referrer && (
+                <Container>
+                  <Input
+                    onChange={(e) => setInvitor(e.target.value)}
+                    value={invitor}
+                    placeholder="Your Invitor’s Kusama Address"
+                  ></Input>
 
-                <div>
-                  <PageHeaderButton color="sp1" size="middle">
-                    Bond
-                  </PageHeaderButton>
-                  <div>Fee: 0.0023 KSM</div>
-                </div>
-              </Container>
+                  <Spacer x={1}></Spacer>
+
+                  <div>
+                    <PageHeaderButton color="sp1" size="middle">
+                      Bond
+                    </PageHeaderButton>
+                    <div>Fee: 0.0023 KSM</div>
+                  </div>
+                </Container>
+              )}
 
               <Spacer y={2}></Spacer>
 
@@ -165,8 +172,10 @@ const CardReferrals: React.FC = () => {
 
               <Spacer y={1}></Spacer>
 
-              {contributorAmount && (
-                <Content>You have invited {contributorAmount} friend!</Content>
+              {contributorReferralsCount > 0 && (
+                <Content>
+                  You have invited {contributorReferralsCount} friend!
+                </Content>
               )}
             </div>
           )}

@@ -143,10 +143,10 @@ export type GetContributorResponse = {
     rewardAmount: number
     referralsCount: number
     promotionRewardAmount: number
+    referrer?: string
   }
   meta: {
     rank: number
-    referrer?: string
     latestContributions: {
       amount: number
       rewardAmount: number
