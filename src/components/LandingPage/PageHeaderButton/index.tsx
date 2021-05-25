@@ -134,6 +134,7 @@ type Props = {
   uppercase?: boolean
   className?: string
   size?: 'default' | 'middle'
+  disabled?: boolean
 }
 
 const index: React.FC<Props> = (props) => {
@@ -146,11 +147,13 @@ const index: React.FC<Props> = (props) => {
     children,
     style,
     onClick,
+    disabled,
     ...others
   } = props
 
   return (
     <ButtonStyle
+      disabled={disabled}
       onClick={onClick}
       style={style}
       className={classnames([className, 'button', color, size, { uppercase }])}
