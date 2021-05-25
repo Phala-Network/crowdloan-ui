@@ -46,11 +46,12 @@ const WechatButton: React.FC<Props> = (props) => {
         onClick={() => setShowQrcode(true)}
       >
         微信
-        {showQrcode && (
-          <Qrcode color={color}>
-            <img src="https://phala.network/images/qrcode.png" alt="qrcode" />
-          </Qrcode>
-        )}
+        <Qrcode
+          style={{ display: showQrcode ? 'block' : 'none' }}
+          color={color}
+        >
+          <img src="https://phala.network/images/qrcode.png" alt="qrcode" />
+        </Qrcode>
       </PageHeaderButton>
     </span>
   )
