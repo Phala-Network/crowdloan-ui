@@ -72,5 +72,6 @@
   "pleaseEnterTheRightEmailAddress": "Please enter the right email address",
   "thanksForSubscribing": "Thanks for subscribing!",
   "emailInputPlaceholder": "Enter your email address",
-  "isAlreadySubscribed": "Email is already subscribed"
+  "isAlreadySubscribed": "Email is already subscribed",
+  "copySuccess": "Copy Success"
 }

@@ -72,5 +72,6 @@
   "pleaseEnterTheRightEmailAddress": "请输入正确的邮箱地址",
   "thanksForSubscribing": "感谢订阅！",
   "emailInputPlaceholder": "输入您的邮箱",
-  "isAlreadySubscribed": "该邮箱已经订阅"
+  "isAlreadySubscribed": "该邮箱已经订阅",
+  "copySuccess": "复制成功"
 }

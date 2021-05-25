@@ -1,8 +1,19 @@
-import { Container, Grid, Spacer } from '@geist-ui/react'
-import React, { useState } from 'react'
+import {
+  Container,
+  Grid,
+  Spacer,
+  useClipboard,
+  useToasts,
+} from '@geist-ui/react'
+import React from 'react'
 import styled from 'styled-components'
+import { useWeb3 } from '@/utils/web3'
 import ContentCard from './ContentCard'
 import PageHeaderButton from './PageHeaderButton'
+import useTwitterLink from '@/hooks/useTwitterLink'
+import useShareLink from '@/hooks/useShareLink'
+import { useI18n } from '@/i18n'
+import { useMeta } from '@/utils/meta'
 
 const Content = styled.div`
   font-family: Lato;
@@ -21,13 +32,20 @@ const Image = styled.div`
 `
 
 const CardReferrals: React.FC = () => {
-  const [showNextStep, setShowNextStep] = useState(false)
+  const { openModal, currentAccount } = useWeb3()
+  const { currentContributorQuery } = useMeta()
+  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+  const twitterLink = useTwitterLink()
+  const shareLink = useShareLink()
+  const { copy } = useClipboard()
+  const [, setToast] = useToasts()
+  const { t } = useI18n()
 
   return (
     <ContentCard type="vertical" name={['REFERRALS']} index={2}>
       <Grid.Container gap={3}>
         <Grid sm={17} md={17} xs={24}>
-          {!showNextStep && (
+          {!currentAccount && (
             <div>
               <Content>
                 There is an additional reward available for Referrals. If a
@@ -41,13 +59,13 @@ const CardReferrals: React.FC = () => {
                 color="black"
                 hasArrowIcon
                 size="middle"
-                onClick={() => setShowNextStep(true)}
+                onClick={() => openModal()}
               >
                 Connect Kusama First
               </PageHeaderButton>
             </div>
           )}
-          {showNextStep && (
+          {currentAccount && (
             <div>
               <Content>
                 First, you can Bond your invitor, when you help Khala to win the
@@ -65,20 +83,34 @@ const CardReferrals: React.FC = () => {
               <Spacer y={2}></Spacer>
 
               <Container>
-                <PageHeaderButton color="sp1" size="middle">
-                  Tweet to tell your friend
-                </PageHeaderButton>
+                <a href={twitterLink} target="_blank" rel="noreferrer">
+                  <PageHeaderButton color="sp1" size="middle">
+                    Tweet to tell your friend
+                  </PageHeaderButton>
+                </a>
 
                 <Spacer x={1}></Spacer>
 
-                <PageHeaderButton color="black" size="middle">
+                <PageHeaderButton
+                  onClick={() => {
+                    copy(shareLink)
+                    setToast({
+                      text: t('copySuccess'),
+                      type: 'success',
+                    })
+                  }}
+                  color="black"
+                  size="middle"
+                >
                   Generate my referal link
                 </PageHeaderButton>
               </Container>
 
               <Spacer y={1}></Spacer>
 
-              <Content>You have invited X friend!</Content>
+              {contributorAmount && (
+                <Content>You have invited {contributorAmount} friend!</Content>
+              )}
             </div>
           )}
         </Grid>

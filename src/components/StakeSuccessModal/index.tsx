@@ -8,6 +8,7 @@ import { useIntl } from 'gatsby-plugin-intl'
 import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request/types'
 import { useMeta } from '@/utils/meta'
+import useTwitterLink from '@/hooks/useTwitterLink'
 
 type Props = {
   modalProps: Partial<ModalProps>
@@ -29,17 +30,7 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
   const { t } = useI18n()
   const { campaignId } = useMeta()
   const { locale } = useIntl()
-  const twitterText =
-    'Make Phala Great Again!' +
-    '&url=' +
-    process.env.WEBSITE_URL +
-    '%3Finvitor%3D' +
-    currentAccountAddress +
-    '&via=PhalaNetwork' +
-    '&hashtags=blockchain,Phala' +
-    '&related=twitterapi%2Ctwitter' +
-    '&original_referer=https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/overview'
-  const twitterLink = `https://twitter.com/intent/tweet?text=${twitterText}`
+  const twitterLink = useTwitterLink()
   const { data } = useQuery<GetContributionsResponse>([
     'getContributions',
     {
