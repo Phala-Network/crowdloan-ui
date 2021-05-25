@@ -66,5 +66,11 @@
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
   "pleaseSupportAtLeast": "Please support at least 0.1 KSM",
   "transactionConfirmationTitle": "Transaction Confirmation",
-  "seeDetailsToLearnMore": "See details to learn more"
+  "seeDetailsToLearnMore": "See details to learn more",
+  "sending...": "Sending...",
+  "subscribeFail": "Subscribe Fail",
+  "pleaseEnterTheRightEmailAddress": "Please enter the right email address",
+  "thanksForSubscribing": "Thanks for subscribing!",
+  "emailInputPlaceholder": "Enter your email address",
+  "isAlreadySubscribed": "Email is already subscribed"
 }

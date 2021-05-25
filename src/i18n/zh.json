@@ -66,5 +66,11 @@
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
   "pleaseSupportAtLeast": "请至少支持 0.1 KSM",
   "transactionConfirmationTitle": "交易确认",
-  "seeDetailsToLearnMore": "查看详情了解更多"
+  "seeDetailsToLearnMore": "查看详情了解更多",
+  "sending...": "发送中...",
+  "subscribeFail": "订阅失败",
+  "pleaseEnterTheRightEmailAddress": "请输入正确的邮箱地址",
+  "thanksForSubscribing": "感谢订阅！",
+  "emailInputPlaceholder": "输入您的邮箱",
+  "isAlreadySubscribed": "该邮箱已经订阅"
 }
