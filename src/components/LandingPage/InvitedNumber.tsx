@@ -24,7 +24,9 @@ const InvitedNumber: React.FC = () => {
   const amount = campaignQuery?.data?.meta?.totalInvitedCount
 
   return (
-    <InvitedNumberRoot>{amount ? `${amount} invited` : ''}</InvitedNumberRoot>
+    <InvitedNumberRoot>
+      {amount >= 1000 ? `${amount} invited` : ''}
+    </InvitedNumberRoot>
   )
 }
 
