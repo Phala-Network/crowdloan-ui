@@ -82,6 +82,9 @@ const TextInfo = styled.div`
   line-height: 20px;
   height: 20px;
   margin-top: 10px;
+  position: absolute;
+  left: 0;
+  bottom: -30px;
 
   &.warning {
     color: #03ffff;
@@ -144,12 +147,12 @@ const EmailInput: React.FC<Props> = (props) => {
     }
   }
 
-  let text = null
+  let statusInfo = null
 
   if (subscribeStatus === 'sending') {
-    text = <TextInfo className={'warning'}>{t('sending...')}</TextInfo>
+    statusInfo = <TextInfo className={'warning'}>{t('sending...')}</TextInfo>
   } else if (subscribeStatus === 'error') {
-    text = (
+    statusInfo = (
       <TextInfo className={'warning'}>
         {message.toString().includes('is already subscribed')
           ? t('isAlreadySubscribed')
@@ -157,17 +160,17 @@ const EmailInput: React.FC<Props> = (props) => {
       </TextInfo>
     )
   } else if (status === STATUS.warning) {
-    text = (
+    statusInfo = (
       <TextInfo className={'warning'}>
         {t('pleaseEnterTheRightEmailAddress')}
       </TextInfo>
     )
   } else if (status === STATUS.success) {
-    text = <TextInfo>{t('thanksForSubscribing')}</TextInfo>
+    statusInfo = <TextInfo>{t('thanksForSubscribing')}</TextInfo>
   }
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <EmailInputWrap className={classnames(['emailInput', status])}>
         <input
           onKeyPress={onKeyPress}
@@ -186,7 +189,7 @@ const EmailInput: React.FC<Props> = (props) => {
           )}
         </div>
       </EmailInputWrap>
-      {text}
+      {statusInfo}
     </div>
   )
 }
