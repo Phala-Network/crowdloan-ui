@@ -71,16 +71,12 @@ const CardReferrals: React.FC = () => {
   const [invitor, setInvitor] = useState('')
 
   useEffect(() => {
-    if (contributorAmount) {
-      setInvitor('')
-    } else {
-      const { invitor } = queryString.parse(location.search)
+    const { invitor } = queryString.parse(location.search)
 
-      if (invitor) {
-        setInvitor(invitor as string)
-      }
+    if (invitor) {
+      setInvitor(invitor as string)
     }
-  }, [contributorAmount])
+  }, [currentAccount])
 
   return (
     <ContentCard type="vertical" name={['REFERRALS']} index={2}>
@@ -126,6 +122,7 @@ const CardReferrals: React.FC = () => {
               <div>Your Invitor’s Kusama Address</div>
               <Container>
                 <Input
+                  onChange={(e) => setInvitor(e.target.value)}
                   value={invitor}
                   placeholder="Your Invitor’s Kusama Address"
                 ></Input>
