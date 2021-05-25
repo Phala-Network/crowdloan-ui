@@ -130,11 +130,8 @@ type Props = {
   color?: 'white' | 'black' | 'gray' | 'primary' | 'sp1'
   hasArrowIcon?: boolean
   style?: React.CSSProperties
-  type?: 'button' | 'link'
   onClick?: MouseEventHandler<HTMLButtonElement>
   uppercase?: boolean
-  href?: string | { [key: string]: string }
-  text?: string | { [key: string]: string }
   className?: string
   size?: 'default' | 'middle'
 }
@@ -146,11 +143,10 @@ const index: React.FC<Props> = (props) => {
     uppercase = false,
     hasArrowIcon = false,
     color = 'black',
-    // type = 'button',
-    // href,
     children,
     style,
     onClick,
+    ...others
   } = props
 
   return (
@@ -158,6 +154,7 @@ const index: React.FC<Props> = (props) => {
       onClick={onClick}
       style={style}
       className={classnames([className, 'button', color, size, { uppercase }])}
+      {...others}
     >
       <div>{children}</div>
       {hasArrowIcon && <IconArrow className={'iconArrow'} />}

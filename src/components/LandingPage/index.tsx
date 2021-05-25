@@ -12,6 +12,8 @@ import CardBasicReward from './CardBasicReward'
 import CardReferrals from './CardReferrals'
 import CardWaysToSupport from './CardWaysToSupport'
 import CardProcess from './CardProcess'
+import WechatButton from './WechatButton'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const Page = styled.div`
   width: 100%;
@@ -29,11 +31,14 @@ const Container = styled.div`
 `
 
 const LandingPage: React.FC = () => {
+  const color = '#03FFFF'
+  const { locale } = useIntl()
+
   return (
     <BgLayer noMask={true} backgroundUrl="/landing/bg.jpg">
       <PageStyle></PageStyle>
       <Navbar
-        color="#03FFFF"
+        color={color}
         logo="/landing/logo.png"
         hasAffiliationProgramLink={false}
       />
@@ -53,9 +58,20 @@ const LandingPage: React.FC = () => {
               <PageHeaderButton color="gray" hasArrowIcon size="middle">
                 Subscribe our crowdloan news
               </PageHeaderButton>
-              <PageHeaderButton color="gray" hasArrowIcon size="middle">
-                Telegram
-              </PageHeaderButton>
+
+              {locale === 'en' && (
+                <a
+                  target="_blank"
+                  href="https://t.me/phalanetwork"
+                  rel="noreferrer"
+                >
+                  <PageHeaderButton color="gray" hasArrowIcon size="middle">
+                    Telegram
+                  </PageHeaderButton>
+                </a>
+              )}
+
+              {locale === 'zh' && <WechatButton color={color}></WechatButton>}
             </PageHeaderButtons>
           </PageHeader>
 
