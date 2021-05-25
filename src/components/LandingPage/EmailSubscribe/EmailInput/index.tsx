@@ -13,7 +13,7 @@ const EmailInputWrap = styled.div`
   display: flex;
   align-items: center;
 
-  @media (max-width: 1920px) {
+  @media (max-width: 8888px) {
     padding: 0 11px;
   }
 
@@ -39,11 +39,11 @@ const EmailInputWrap = styled.div`
       color: ${(props) => props.theme.wh01};
     }
 
-    @media (max-width: 1920px) {
+    @media (max-width: 8888px) {
       font-size: 18px;
       width: 260px;
-      height: 45px;
-      line-height: 45px;
+      height: 36px;
+      line-height: 36px;
     }
   }
 
@@ -68,7 +68,7 @@ const EmailInputWrap = styled.div`
       width: 32px;
       height: 32px;
 
-      @media (max-width: 1920px) {
+      @media (max-width: 8888px) {
         width: 23px;
         height: 23px;
       }

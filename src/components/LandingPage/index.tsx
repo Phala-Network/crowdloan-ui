@@ -15,7 +15,7 @@ import CardProcess from './CardProcess'
 import WechatButton from './WechatButton'
 import { useIntl } from 'gatsby-plugin-intl'
 import scrollIntoView from 'scroll-into-view-if-needed'
-import EmailSubscribe from './EmailSubscribe'
+import EmailSubscribeButton from './EmailSubscribeButton'
 
 const Page = styled.div`
   width: 100%;
@@ -66,11 +66,8 @@ const LandingPage: React.FC = () => {
                 Referral Reward
               </PageHeaderButton>
               <InvitedNumber></InvitedNumber>
-              <PageHeaderButton color="gray" hasArrowIcon size="middle">
-                Subscribe our crowdloan news
-              </PageHeaderButton>
 
-              <EmailSubscribe></EmailSubscribe>
+              <EmailSubscribeButton></EmailSubscribeButton>
 
               {locale === 'en' && (
                 <a
