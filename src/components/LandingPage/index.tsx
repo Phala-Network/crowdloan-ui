@@ -14,6 +14,7 @@ import CardWaysToSupport from './CardWaysToSupport'
 import CardProcess from './CardProcess'
 import WechatButton from './WechatButton'
 import { useIntl } from 'gatsby-plugin-intl'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 const Page = styled.div`
   width: 100%;
@@ -51,7 +52,16 @@ const LandingPage: React.FC = () => {
             }
           >
             <PageHeaderButtons>
-              <PageHeaderButton color="primary" size="middle">
+              <PageHeaderButton
+                color="primary"
+                size="middle"
+                onClick={() =>
+                  scrollIntoView(document.getElementById('title_REFERRALS'), {
+                    behavior: 'smooth',
+                    block: 'start',
+                  })
+                }
+              >
                 Referral Reward
               </PageHeaderButton>
               <InvitedNumber></InvitedNumber>

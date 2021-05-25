@@ -43,6 +43,7 @@
     "react-query": "^3.13.0",
     "react-responsive": "^8.2.0",
     "react-use": "^17.2.4",
+    "scroll-into-view-if-needed": "^2.2.28",
     "styled-components": "^5.2.3",
     "styled-jsx": "^3.4.4",
     "yarn": "^1.22.10"
