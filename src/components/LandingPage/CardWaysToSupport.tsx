@@ -1,7 +1,9 @@
 import { Grid } from '@geist-ui/react'
 import React from 'react'
 import styled from 'styled-components'
+import { useI18n } from '@/i18n'
 import ContentCard from './ContentCard'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const Item = styled.div`
   background-color: white;
@@ -48,15 +50,22 @@ const LogoMask = styled.div`
 `
 
 const CardWaysToSupport: React.FC = () => {
+  const { t } = useI18n()
+  const { locale } = useIntl()
+
   return (
-    <ContentCard type="vertical" name={['WAYS', 'TO SUPPORT']} index={4}>
+    <ContentCard
+      type="vertical"
+      name={locale === 'en' ? ['WAYS', 'TO SUPPORT'] : ['支持的方式']}
+      index={4}
+    >
       <Grid.Container gap={3}>
         <Grid sm={12} md={8} xs={24}>
           <Item>
             <LogoWrap>
               <KhalaLogo></KhalaLogo>
             </LogoWrap>
-            <ItemName>Crowdloan Dapp (This Page)</ItemName>
+            <ItemName>{t('crowdloanDappThisPage')}</ItemName>
           </Item>
         </Grid>
         <Grid sm={0} md={8} xs={0}></Grid>
@@ -67,7 +76,7 @@ const CardWaysToSupport: React.FC = () => {
               <img src="/landing/1kraken.png" alt="kraken" />
               <LogoMask></LogoMask>
             </LogoWrap>
-            <ItemName>Crowdloan Dapp (This Page)</ItemName>
+            <ItemName>{t('toBeAnnounced')}</ItemName>
           </Item>
         </Grid>
         <Grid sm={12} md={8} xs={24}>
@@ -76,7 +85,7 @@ const CardWaysToSupport: React.FC = () => {
               <img src="/landing/2Huobi.png" alt="huobi" />
               <LogoMask></LogoMask>
             </LogoWrap>
-            <ItemName>Crowdloan Dapp (This Page)</ItemName>
+            <ItemName>{t('toBeAnnounced')}</ItemName>
           </Item>
         </Grid>
         <Grid sm={12} md={8} xs={24}>
@@ -85,7 +94,7 @@ const CardWaysToSupport: React.FC = () => {
               <img src="/landing/3OKEx-black.png" alt="OKEx" />
               <LogoMask></LogoMask>
             </LogoWrap>
-            <ItemName>Crowdloan Dapp (This Page)</ItemName>
+            <ItemName>{t('toBeAnnounced')}</ItemName>
           </Item>
         </Grid>
       </Grid.Container>
