@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMeta } from '@/utils/meta'
 
 const InvitedNumberRoot = styled.div`
   font-family: Lato;
@@ -18,7 +19,13 @@ const InvitedNumberRoot = styled.div`
 `
 
 const InvitedNumber: React.FC = () => {
-  return <InvitedNumberRoot>1000 invited</InvitedNumberRoot>
+  const { campaignQuery } = useMeta()
+
+  const amount = campaignQuery?.data?.meta?.totalInvitedCount
+
+  return (
+    <InvitedNumberRoot>{amount ? `${amount} invited` : ''}</InvitedNumberRoot>
+  )
 }
 
 export default InvitedNumber
