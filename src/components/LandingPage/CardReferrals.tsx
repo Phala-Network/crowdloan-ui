@@ -31,6 +31,33 @@ const Image = styled.div`
   margin: auto;
 `
 
+const Input = styled.input`
+  flex: 1;
+  display: block;
+  outline: none;
+  color: ${(props) => props.theme.bl01};
+  border: 1px solid ${(props) => props.theme.bl01};
+  background-color: transparent;
+  font-family: Lato;
+  padding: 0 12px;
+  max-width: 436px;
+  font-size: 18px;
+  width: 260px;
+  height: 38px;
+  line-height: 38px;
+
+  &::placeholder {
+    color: ${(props) => props.theme.bl02};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    width: 260px;
+    height: 26px;
+    line-height: 26px;
+  }
+`
+
 const CardReferrals: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
   const { currentContributorQuery } = useMeta()
@@ -79,6 +106,22 @@ const CardReferrals: React.FC = () => {
                 0.5% of your friend’s support reward. there is no limit of how
                 many address you invite.
               </Content>
+
+              <Spacer y={1}></Spacer>
+
+              <div>Your Invitor’s Kusama Address</div>
+              <Container>
+                <Input placeholder="Your Invitor’s Kusama Address"></Input>
+
+                <Spacer x={1}></Spacer>
+
+                <div>
+                  <PageHeaderButton color="sp1" size="middle">
+                    Bond
+                  </PageHeaderButton>
+                  <div>Fee: 0.0023 KSM</div>
+                </div>
+              </Container>
 
               <Spacer y={2}></Spacer>
 
