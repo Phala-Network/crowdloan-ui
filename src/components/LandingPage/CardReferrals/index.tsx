@@ -15,6 +15,7 @@ import useShareLink from '@/hooks/useShareLink'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import InvitorContent from './InvitorContent'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const Content = styled.div`
   font-family: Lato;
@@ -42,19 +43,15 @@ const CardReferrals: React.FC = () => {
   const { copy } = useClipboard()
   const [, setToast] = useToasts()
   const { t } = useI18n()
+  const { locale } = useIntl()
 
   return (
-    <ContentCard type="vertical" name={['REFERRALS']} index={2}>
+    <ContentCard type="vertical" name={[t('referralRewards')]} index={2}>
       <Grid.Container gap={3}>
         <Grid sm={17} md={17} xs={24}>
           {!currentAccount && (
             <div>
-              <Content>
-                There is an additional reward available for Referrals. If a
-                Crowdloan participant invites an additional participant who
-                makes an additional contribution, they will each receive an
-                additional reward: an extra 0.5% on the additional contribution.
-              </Content>
+              <Content>{t('referralRewardsText')}</Content>
 
               <PageHeaderButton
                 style={{ marginTop: 30 }}
@@ -63,24 +60,15 @@ const CardReferrals: React.FC = () => {
                 size="middle"
                 onClick={() => openModal()}
               >
-                Connect Kusama First
+                {t('referralRewardsConnect')}
               </PageHeaderButton>
             </div>
           )}
           {currentAccount && (
             <div>
-              <Content>
-                First, you can Bond your invitor, when you help Khala to win the
-                auction, you will get a bonus reward equivalent to 0.5% of your
-                support reward.
-              </Content>
+              <Content>{t('referralRewardsFirst')}</Content>
               <Spacer y={1}></Spacer>
-              <Content>
-                Second, you can invite your friends, if they help Khala to win
-                the auction, you will you will get a bonus reward equivalent to
-                0.5% of your friend’s support reward. there is no limit of how
-                many address you invite.
-              </Content>
+              <Content>{t('referralRewardsSecond')}</Content>
 
               <Spacer y={1}></Spacer>
 
@@ -91,7 +79,7 @@ const CardReferrals: React.FC = () => {
               <Container>
                 <a href={twitterLink} target="_blank" rel="noreferrer">
                   <PageHeaderButton color="sp1" size="middle">
-                    Tweet to tell your friend
+                    {t('tweetToTellYourFriend')}
                   </PageHeaderButton>
                 </a>
 
@@ -108,7 +96,7 @@ const CardReferrals: React.FC = () => {
                   color="black"
                   size="middle"
                 >
-                  Generate my referal link
+                  {t('generateMyReferalLink')}
                 </PageHeaderButton>
               </Container>
 
@@ -116,7 +104,9 @@ const CardReferrals: React.FC = () => {
 
               {contributorReferralsCount > 0 && (
                 <Content>
-                  You have invited {contributorReferralsCount} friend!
+                  {locale === 'en'
+                    ? `You have invited ${contributorReferralsCount} friend!`
+                    : `您已经邀请 ${contributorReferralsCount} 位朋友`}
                 </Content>
               )}
             </div>

@@ -8,6 +8,7 @@ import queryString from 'query-string'
 import { usePolkadotApi } from '@/utils/polkadot'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { ApiPromise } from '@polkadot/api'
+import { useI18n } from '@/i18n'
 
 const Input = styled.input`
   flex: 1;
@@ -72,6 +73,8 @@ const InvitorContent: React.FC = () => {
     currentContributorQuery,
     campaignQuery: { data: campaign },
   } = useMeta()
+  const { t } = useI18n()
+
   const referrer = currentContributorQuery?.data?.contributor?.referrer
 
   // set invitor from url
@@ -130,7 +133,10 @@ const InvitorContent: React.FC = () => {
 
   return (
     <>
-      <div>Your Invitor’s Kusama Address {referrer ? `: ${referrer}` : ''}</div>
+      <div>
+        {t('yourReferralsKusamaAddress')}
+        {referrer ? `: ${referrer}` : ''}
+      </div>
       {!referrer && (
         <Container>
           <Input
@@ -143,7 +149,7 @@ const InvitorContent: React.FC = () => {
 
           <div>
             <PageHeaderButton color="sp1" size="middle" onClick={tryContribute}>
-              Bond
+              {t('bond')}
             </PageHeaderButton>
             <div>Fee: 0.0023 KSM</div>
           </div>
