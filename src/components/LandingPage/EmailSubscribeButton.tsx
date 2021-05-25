@@ -5,20 +5,23 @@ import PageHeaderButton from './PageHeaderButton'
 const EmailSubscribeButton: React.FC = () => {
   const [showEmailSubscribeInput, setShowEmailSubscribeInput] = useState(false)
 
-  if (!showEmailSubscribeInput) {
-    return (
-      <PageHeaderButton
-        color="gray"
-        hasArrowIcon
-        size="middle"
-        onClick={() => setShowEmailSubscribeInput(true)}
-      >
-        Subscribe our crowdloan news
-      </PageHeaderButton>
-    )
-  } else {
-    return <EmailSubscribe></EmailSubscribe>
-  }
+  return (
+    <>
+      {!showEmailSubscribeInput && (
+        <PageHeaderButton
+          color="gray"
+          hasArrowIcon
+          size="middle"
+          onClick={() => setShowEmailSubscribeInput(true)}
+        >
+          Subscribe our crowdloan news
+        </PageHeaderButton>
+      )}
+      <div style={{ display: showEmailSubscribeInput ? 'block' : 'none' }}>
+        <EmailSubscribe></EmailSubscribe>
+      </div>
+    </>
+  )
 }
 
 export default EmailSubscribeButton
