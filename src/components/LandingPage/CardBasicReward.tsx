@@ -1,6 +1,7 @@
 import { Grid } from '@geist-ui/react'
 import React from 'react'
 import styled from 'styled-components'
+import { useI18n } from '@/i18n'
 import ContentCard from './ContentCard'
 
 const Image = styled.div`
@@ -32,17 +33,15 @@ const Content = styled.div`
 `
 
 const CardBasicReward: React.FC = () => {
+  const { t } = useI18n()
+
   return (
-    <ContentCard type="vertical" name={['BASIC REWARD']} index={1}>
+    <ContentCard type="vertical" name={[t('basicRewards')]} index={1}>
       <Grid.Container gap={3}>
         <Grid sm={17} md={17} xs={24}>
           <div>
             <Title>1 KSM = 100 PHA</Title>
-            <Content>
-              In Khala’s crowdloan, every KSM that supports Khala in the Kusama
-              slot auction through the Crowdloan will be entitled to 100 PHA as
-              rewards (PHA: KSM = 100:1).
-            </Content>
+            <Content>{t('basicRewardsText')}</Content>
           </div>
         </Grid>
         <Grid sm={7} md={7} xs={24}>

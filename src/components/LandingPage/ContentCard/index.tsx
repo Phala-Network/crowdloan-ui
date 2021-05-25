@@ -74,7 +74,7 @@ const ContentCardStyle = styled.div`
 
     .cardContent {
       margin-left: 330px;
-      margin-top: -75px;
+      margin-top: -100px;
 
       @media (max-width: 992px) {
         width: 100%;

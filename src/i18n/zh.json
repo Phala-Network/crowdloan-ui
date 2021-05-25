@@ -78,6 +78,8 @@
   "landingPageDescription": "请收藏此页面，Khala 将在第 2 个插槽开拍时在此页面开启众贷。",
   "landingPageReferralRewards": "邀请奖励",
   "subscribeToOurCrowdloanNews": "订阅我们的众贷新闻",
+  "basicRewards": "基础奖励",
+  "basicRewardsText": "在 Khala 的众贷中，通过众贷在 Kusama 插槽竞拍中支持 Khala 的每个 KSM 都将获得 100 PHA 的奖励（PHA：KSM = 100：1）。",
   "q1": "什么是 Kusama 平行链插槽拍卖？",
   "a1-1": "Kusama 网络由中继链和若干平行链组成，插槽是平行链与中继链连接的接口，数量有限，需由项目通过出价 KSM 竞拍获得。",
   "a1-2": "拍卖采用经过改良的“蜡烛拍卖”，即前 2 天为开放出价期，后 5 天为随机结束期。结束期期间随时可能结束竞拍。只有在结束竞拍前出价最高的项目才能获胜。预计每场拍卖持续 7 天，共有 5 场拍卖。",
