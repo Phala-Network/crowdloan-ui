@@ -71,6 +71,7 @@ export type GetCampaignResponse = {
     estimateReleasingDaysInterval: number
     estimateReleasingPercentagePerInterval: number
     contributionChart: [string, number][]
+    totalInvitedCount: number
   }
 }
 

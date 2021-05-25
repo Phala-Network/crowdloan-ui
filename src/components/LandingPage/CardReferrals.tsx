@@ -5,7 +5,7 @@ import {
   useClipboard,
   useToasts,
 } from '@geist-ui/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWeb3 } from '@/utils/web3'
 import ContentCard from './ContentCard'
@@ -14,6 +14,7 @@ import useTwitterLink from '@/hooks/useTwitterLink'
 import useShareLink from '@/hooks/useShareLink'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
+import queryString from 'query-string'
 
 const Content = styled.div`
   font-family: Lato;
@@ -67,6 +68,19 @@ const CardReferrals: React.FC = () => {
   const { copy } = useClipboard()
   const [, setToast] = useToasts()
   const { t } = useI18n()
+  const [invitor, setInvitor] = useState('')
+
+  useEffect(() => {
+    if (contributorAmount) {
+      setInvitor('')
+    } else {
+      const { invitor } = queryString.parse(location.search)
+
+      if (invitor) {
+        setInvitor(invitor as string)
+      }
+    }
+  }, [contributorAmount])
 
   return (
     <ContentCard type="vertical" name={['REFERRALS']} index={2}>
@@ -111,7 +125,10 @@ const CardReferrals: React.FC = () => {
 
               <div>Your Invitor’s Kusama Address</div>
               <Container>
-                <Input placeholder="Your Invitor’s Kusama Address"></Input>
+                <Input
+                  value={invitor}
+                  placeholder="Your Invitor’s Kusama Address"
+                ></Input>
 
                 <Spacer x={1}></Spacer>
 
