@@ -35,9 +35,10 @@ const Image = styled.div`
 
 const CardReferrals: React.FC = () => {
   const { openModal, currentAccount } = useWeb3()
-  const { currentContributorQuery } = useMeta()
-  const contributorReferralsCount =
-    currentContributorQuery?.data?.contributor?.referralsCount
+  const {
+    currentContributorQuery: { data },
+  } = useMeta()
+  const contributorReferralsCount = data?.contributor?.referralsCount
   const twitterLink = useTwitterLink()
   const shareLink = useShareLink()
   const { copy } = useClipboard()
