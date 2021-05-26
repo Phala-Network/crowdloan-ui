@@ -20,12 +20,10 @@ const InvitedNumberRoot = styled.div`
 `
 
 const InvitedNumber: React.FC = () => {
-  const {
-    campaignQuery: { data },
-  } = useMeta()
+  const meta = useMeta()
   const { locale } = useIntl()
 
-  const amount = data?.meta?.totalInvitedCount
+  const amount = meta?.campaignQuery?.data?.meta?.totalInvitedCount
   const text = locale === 'en' ? `${amount} invited` : `已邀请 ${amount} 人`
 
   return amount >= 1000 ? <InvitedNumberRoot>{text}</InvitedNumberRoot> : null
