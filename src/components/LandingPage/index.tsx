@@ -40,7 +40,7 @@ const LandingPage: React.FC = () => {
   const { t } = useI18n()
 
   return (
-    <BgLayer noMask={true} backgroundUrl="/landing/bg.jpg">
+    <BgLayer noMask={true} backgroundUrl={`/landing/bg-${locale}.jpg`}>
       <PageStyle></PageStyle>
       <Navbar
         color={color}
