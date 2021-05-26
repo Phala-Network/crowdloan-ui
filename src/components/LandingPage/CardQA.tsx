@@ -17,6 +17,10 @@ const ItemTitle = styled.div`
   font-size: 36px;
   line-height: 40px;
   color: #070707;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
 `
 
 const ItemContent = styled.div`
