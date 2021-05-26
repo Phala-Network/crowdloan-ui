@@ -17,6 +17,7 @@ import { useIntl } from 'gatsby-plugin-intl'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import EmailSubscribeButton from './EmailSubscribeButton'
 import { useI18n } from '@/i18n'
+import { Spacer } from '@geist-ui/react'
 
 const Page = styled.div`
   width: 100%;
@@ -52,6 +53,8 @@ const LandingPage: React.FC = () => {
             title={t('landingPageTitle')}
             description={t('landingPageDescription')}
           >
+            <Spacer y={3}></Spacer>
+
             <PageHeaderButtons>
               <PageHeaderButton
                 color="primary"
@@ -67,7 +70,9 @@ const LandingPage: React.FC = () => {
               </PageHeaderButton>
 
               <InvitedNumber></InvitedNumber>
+            </PageHeaderButtons>
 
+            <PageHeaderButtons>
               <EmailSubscribeButton></EmailSubscribeButton>
 
               {locale === 'en' && (
