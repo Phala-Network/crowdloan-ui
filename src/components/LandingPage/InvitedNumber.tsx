@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useMeta } from '@/utils/meta'
 import { useIntl } from 'gatsby-plugin-intl'
+import { useMeta } from '../../utils/meta'
 
 const InvitedNumberRoot = styled.div`
   font-family: Lato;

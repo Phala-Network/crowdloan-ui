@@ -136,14 +136,13 @@ const Calculator: React.FC<{
 }> = ({ ksmAmountInput, hasReferrer }) => {
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
+  const contributionChart = campaignQuery?.data?.meta?.contributionChart
 
   const auctionAmount = useMemo(() => {
-    return campaignQuery.data?.meta?.contributionChart
-      ? campaignQuery.data.meta.contributionChart[
-          campaignQuery.data.meta.contributionChart.length - 1
-        ][1]
+    return contributionChart
+      ? contributionChart[contributionChart.length - 1][1]
       : 0
-  }, [campaignQuery.data?.meta?.contributionChart])
+  }, [contributionChart])
 
   const shouldShowCalculator = useMemo(() => {
     return campaignQuery.data?.campaign?.cap > auctionAmount
