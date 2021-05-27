@@ -16,6 +16,7 @@ import type {
 import React, { createContext } from 'react'
 import styled from 'styled-components'
 import { usePolkadotApi } from '../polkadot'
+import { isWeb3Injected } from '@polkadot/extension-dapp'
 
 export type ExtensionContextValue = {
   enable(): unknown
@@ -79,6 +80,23 @@ export const AccountModal: React.FC<{
 }) => {
   const { initialized } = usePolkadotApi()
   const { t } = useI18n()
+
+  if (!isWeb3Injected) {
+    return (
+      <Modal {...modal.bindings}>
+        <Modal.Title>提示</Modal.Title>
+        <Modal.Content>请先安装 polkadot 插件</Modal.Content>
+        <Modal.Action
+          onClick={() => {
+            window.open('https://polkadot.js.org/extension/')
+            modal.setVisible(false)
+          }}
+        >
+          安装
+        </Modal.Action>
+      </Modal>
+    )
+  }
 
   if (!initialized) {
     return (
