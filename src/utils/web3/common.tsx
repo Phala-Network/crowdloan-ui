@@ -88,7 +88,9 @@ export const AccountModal: React.FC<{
     return (
       <Modal {...modal.bindings}>
         <Modal.Title>{t('alert')}</Modal.Title>
-        <Modal.Content>{t('pleaseInstallText')}</Modal.Content>
+        <Modal.Content>
+          <div style={{ textAlign: 'center' }}>{t('pleaseInstallText')}</div>
+        </Modal.Content>
         <Modal.Action
           onClick={() => {
             window.open('https://polkadot.js.org/extension/')
