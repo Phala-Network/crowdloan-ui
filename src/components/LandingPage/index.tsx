@@ -50,7 +50,15 @@ const LandingPage: React.FC = () => {
       <Page>
         <Container>
           <PageHeader
-            title={t('landingPageTitle')}
+            title={
+              locale === 'en' ? (
+                "Khala's Crowdloan Dapp is Coming!"
+              ) : (
+                <>
+                  Khala 的众贷 Dapp <br /> 即将开启！
+                </>
+              )
+            }
             description={t('landingPageDescription')}
           >
             <Spacer y={3}></Spacer>

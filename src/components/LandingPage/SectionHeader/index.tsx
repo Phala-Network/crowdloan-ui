@@ -42,7 +42,7 @@ const SectionHeaderWrap = styled.div`
 `
 
 export type SectionHeaderProps = {
-  title: string
+  title: React.ReactNode
   description?: string
   color?: 'black' | 'gray'
   className?: string
