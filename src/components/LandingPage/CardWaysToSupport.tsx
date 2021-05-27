@@ -82,7 +82,7 @@ const CardWaysToSupport: React.FC = () => {
         <Grid sm={12} md={8} xs={24}>
           <Item>
             <LogoWrap>
-              <img src="/landing/2Huobi.png" alt="huobi" />
+              <img src="/landing/3OKEx-black.png" alt="OKEx" />
               <LogoMask></LogoMask>
             </LogoWrap>
             <ItemName>{t('toBeAnnounced')}</ItemName>
@@ -91,7 +91,7 @@ const CardWaysToSupport: React.FC = () => {
         <Grid sm={12} md={8} xs={24}>
           <Item>
             <LogoWrap>
-              <img src="/landing/3OKEx-black.png" alt="OKEx" />
+              <img src="/landing/kucoin.png" alt="huobi" />
               <LogoMask></LogoMask>
             </LogoWrap>
             <ItemName>{t('toBeAnnounced')}</ItemName>
