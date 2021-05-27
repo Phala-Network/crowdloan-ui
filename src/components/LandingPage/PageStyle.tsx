@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components'
 
 export const PageStyle = createGlobalStyle`
   ::selection {
-    background: #03FFFF;
+    background: #03FFFF !important;
     color: #fff;
   }
 
