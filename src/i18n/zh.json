@@ -89,6 +89,7 @@
   "referralRewardsSecond": "其次，您可以邀请您的他人来支持 Khala，如果 Khala 获胜，您将获得他们的支持奖励的 0.5％ 等值的奖励。您邀请多少个账户没有限制。",
   "tweetToTellYourFriend": "发推告诉您的朋友",
   "generateMyReferalLink": "生成我的邀请链接",
+  "yourReferrerCannotBeYourself": "不可绑定自己的地址",
   "process": "流程",
   "processT1": "准备KSM",
   "processC1": "如果您的KSM已抵押，请尽快将其取消绑定！ （至少在众筹开始前7天）。",

@@ -94,6 +94,15 @@ const InvitorContent: React.FC = () => {
 
     if (!invitorValue) return
 
+    if (invitorValue === currentAccount.address) {
+      setToast({
+        text: t('yourReferrerCannotBeYourself'),
+        type: 'error',
+        delay: 3000,
+      })
+      return
+    }
+
     setTxWaiting(true)
     const paraId = parseInt(campaign.campaign.parachainId)
 
