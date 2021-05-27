@@ -90,10 +90,12 @@ export type CardProps = CardHeaderProps &
     cardContentClassName?: string
     cardHeaderClassName?: string
     type?: 'normal' | 'small' | 'vertical' | 'wideNormal'
+    id?: string
   }
 
 const Card: React.FC<CardProps> = (props) => {
   const {
+    id,
     name,
     index,
     children,
@@ -104,7 +106,7 @@ const Card: React.FC<CardProps> = (props) => {
   } = props
 
   return (
-    <ContentCardStyle className={classnames([type])} id={name.join('_')}>
+    <ContentCardStyle className={classnames([type])} id={id ?? name.join('_')}>
       <CardHeader
         type={type}
         className={classnames(['cardHeader', cardHeaderClassName])}

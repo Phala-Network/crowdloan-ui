@@ -46,7 +46,13 @@ const CardReferrals: React.FC = () => {
   const { locale } = useIntl()
 
   return (
-    <ContentCard type="vertical" name={[t('referralRewards')]} index={2}>
+    <ContentCard
+      type="vertical"
+      id={'ReferralRewardsCard'}
+      name={locale === 'en' ? ['Referral', 'Rewards'] : ['邀请奖励']}
+      index={2}
+    >
+      <div id="referralRewards"></div>
       <Grid.Container gap={3}>
         <Grid sm={17} md={17} xs={24}>
           {!currentAccount && (

@@ -60,10 +60,13 @@ const LandingPage: React.FC = () => {
                 color="primary"
                 size="middle"
                 onClick={() =>
-                  scrollIntoView(document.getElementById('title_REFERRALS'), {
-                    behavior: 'smooth',
-                    block: 'start',
-                  })
+                  scrollIntoView(
+                    document.getElementById('ReferralRewardsCard'),
+                    {
+                      behavior: 'smooth',
+                      block: 'start',
+                    }
+                  )
                 }
               >
                 {t('landingPageReferralRewards')}
