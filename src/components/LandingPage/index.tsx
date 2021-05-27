@@ -95,6 +95,7 @@ const LandingPage: React.FC = () => {
           </PageHeader>
 
           <CardBasicReward></CardBasicReward>
+          <div id="ReferralRewardsCard"></div>
           <CardReferrals></CardReferrals>
           <CardProcess></CardProcess>
           <CardWaysToSupport></CardWaysToSupport>
