@@ -69,6 +69,8 @@ const InvitorContent: React.FC = () => {
   const [txPaymenInfo, setTxPaymentInfo] = useState(null)
   const [tx, setTx] = useState(null)
   const [txWaiting, setTxWaiting] = useState(false)
+  const [referrerCheck, setReferrerCheck] = useState(false)
+
   const { api, initialized } = usePolkadotApi()
   const {
     refetch,
@@ -166,15 +168,17 @@ const InvitorContent: React.FC = () => {
           referrer,
         })
       )
+
+      setTx(api.tx.utility.batch(txs))
+      setReferrerCheck(true)
     } catch (error) {
+      setReferrerCheck(false)
       setToast({
         text: 'Invalid referrer.',
         type: 'error',
       })
       return
     }
-
-    setTx(api.tx.utility.batch(txs))
   }, [invitor, initialized, api, campaign, currentAccount])
 
   if (isLoading) return <div>...</div>
@@ -195,16 +199,22 @@ const InvitorContent: React.FC = () => {
 
           <Spacer x={1}></Spacer>
 
-          <div>
-            <PageHeaderButton color="sp1" size="middle" onClick={tryContribute}>
-              {t('bond')}
-            </PageHeaderButton>
+          {referrerCheck && (
             <div>
-              {txPaymenInfo
-                ? `${t('Fee')}: ${txPaymenInfo.partialFee.toHuman()}`
-                : '...'}
+              <PageHeaderButton
+                color="sp1"
+                size="middle"
+                onClick={tryContribute}
+              >
+                {t('bond')}
+              </PageHeaderButton>
+              <div>
+                {txPaymenInfo
+                  ? `${t('Fee')}: ${txPaymenInfo.partialFee.toHuman()}`
+                  : '...'}
+              </div>
             </div>
-          </div>
+          )}
         </Container>
       )}
     </>
