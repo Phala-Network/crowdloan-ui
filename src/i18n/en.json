@@ -87,6 +87,8 @@
   "yourReferralsKusamaAddress": "Your referrals' Kusama Address",
   "referralRewardsSecond": "Second, you can invite others to help Khala, if Khala wins, you will get an additional reward equivalent to 0.5% of your friend’s support reward. there is no limit to how many accounts you invite.",
   "bond": "Bond",
+  "Fee": "Fee",
+  "insufficientFee": "insufficient fee",
   "tweetToTellYourFriend": "Tweet to tell your friend",
   "generateMyReferalLink": "Generate my referal link",
   "yourReferrerCannotBeYourself": "your referrer cannot be yourself",

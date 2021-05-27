@@ -66,6 +66,8 @@ const InvitorContent: React.FC = () => {
   const [invitor, setInvitor] = useState('')
   const { currentAccount, currentInjector } = useWeb3()
   const [, setToast] = useToasts()
+  const [txPaymenInfo, setTxPaymentInfo] = useState(null)
+  const [tx, setTx] = useState(null)
   const [txWaiting, setTxWaiting] = useState(false)
   const { api, initialized } = usePolkadotApi()
   const {
@@ -88,7 +90,7 @@ const InvitorContent: React.FC = () => {
 
   // set referrer
   const tryContribute = async () => {
-    if (txWaiting || !initialized) return
+    if (txWaiting || !initialized || !tx) return
 
     const invitorValue = invitor.trim()
 
@@ -104,17 +106,9 @@ const InvitorContent: React.FC = () => {
     }
 
     setTxWaiting(true)
-    const paraId = parseInt(campaign.campaign.parachainId)
 
     try {
-      const referrer = decodeAddress(invitorValue)
-      const referrerRemarkTx = createReferrerRemarkTx({
-        paraId,
-        api,
-        referrer,
-      })
-
-      await referrerRemarkTx.signAndSend(
+      await tx.signAndSend(
         currentAccount.address,
         { signer: currentInjector.signer },
         ({ status }) => {
@@ -131,14 +125,57 @@ const InvitorContent: React.FC = () => {
       )
     } catch (error) {
       console.warn(error)
+      const text = error.message.includes('1010')
+        ? t('insufficientFee')
+        : 'Invalid referrer.'
       setTxWaiting(false)
+      setToast({
+        text,
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    }
+  }
+
+  useEffect(() => {
+    if (!(api && tx && currentAccount)) {
+      setTxPaymentInfo(null)
+      return
+    }
+    ;(async () => {
+      setTxPaymentInfo(await tx.paymentInfo(currentAccount.address))
+    })()
+  }, [currentAccount, tx, api, setTxPaymentInfo])
+
+  useEffect(() => {
+    const invitorValue = invitor.trim()
+
+    if (!initialized || !invitorValue) return
+
+    const txs = []
+
+    try {
+      const referrer = decodeAddress(invitorValue)
+      const paraId = parseInt(campaign.campaign.parachainId)
+
+      txs.push(
+        createReferrerRemarkTx({
+          paraId,
+          api,
+          referrer,
+        })
+      )
+    } catch (error) {
       setToast({
         text: 'Invalid referrer.',
         type: 'error',
       })
       return
     }
-  }
+
+    setTx(api.tx.utility.batch(txs))
+  }, [invitor, initialized, api, campaign])
 
   return (
     <>
@@ -160,7 +197,11 @@ const InvitorContent: React.FC = () => {
             <PageHeaderButton color="sp1" size="middle" onClick={tryContribute}>
               {t('bond')}
             </PageHeaderButton>
-            <div>Fee: 0.0023 KSM</div>
+            <div>
+              {txPaymenInfo
+                ? `${t('Fee')}: ${txPaymenInfo.partialFee.toHuman()}`
+                : '...'}
+            </div>
           </div>
         </Container>
       )}

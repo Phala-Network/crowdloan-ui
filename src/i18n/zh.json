@@ -86,6 +86,8 @@
   "referralRewardsFirst": "首先，您可以绑定邀请者，当您帮助 Khala 赢得拍卖时，您将获得相当于您的支持奖励的0.5％的奖励。",
   "yourReferralsKusamaAddress": "您邀请人的 Kusama 账号",
   "bond": "绑定",
+  "Fee": "手续费",
+  "insufficientFee": "手续费不足",
   "referralRewardsSecond": "其次，您可以邀请您的他人来支持 Khala，如果 Khala 获胜，您将获得他们的支持奖励的 0.5％ 等值的奖励。您邀请多少个账户没有限制。",
   "tweetToTellYourFriend": "发推告诉您的朋友",
   "generateMyReferalLink": "生成我的邀请链接",
