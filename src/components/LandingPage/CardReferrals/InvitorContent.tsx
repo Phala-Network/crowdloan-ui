@@ -175,7 +175,7 @@ const InvitorContent: React.FC = () => {
     }
 
     setTx(api.tx.utility.batch(txs))
-  }, [invitor, initialized, api, campaign])
+  }, [invitor, initialized, api, campaign, currentAccount])
 
   if (isLoading) return <div>...</div>
 
