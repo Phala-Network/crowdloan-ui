@@ -130,6 +130,12 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     </Link>
   )
 
+  const tgLink = (
+    <Link target="_blank" href="https://t.me/phalanetwork">
+      Telegram
+    </Link>
+  )
+
   const affiliationProgram = (
     <Link style={{ color }}>{t('affiliationProgram')}</Link>
   )
@@ -157,7 +163,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           <Menu color={color}>
             <li>{aboutKhalaLink}</li>
             <li>{learnSlotAuctionLink}</li>
-
+            {locale === 'en' && <li>{tgLink}</li>}
             {hasAffiliationProgramLink && <li>{affiliationProgram}</li>}
             {createLocalLinks('li')}
 
@@ -172,6 +178,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           items={[
             aboutKhalaLink,
             learnSlotAuctionLink,
+            locale === 'en' ? tgLink : null,
             hasAffiliationProgramLink ? affiliationProgram : null,
             ...createLocalLinks('div'),
           ]}
