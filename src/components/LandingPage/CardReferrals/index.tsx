@@ -106,13 +106,13 @@ const CardReferrals: React.FC = () => {
 
               <Spacer y={1}></Spacer>
 
-              {contributorReferralsCount > 0 && (
-                <Content>
-                  {locale === 'en'
-                    ? `You have invited ${contributorReferralsCount} friend!`
-                    : `您已经邀请 ${contributorReferralsCount} 位朋友`}
-                </Content>
-              )}
+              {/* todo {contributorReferralsCount > 0 && ( */}
+              <Content>
+                {locale === 'en'
+                  ? `You have invited ${contributorReferralsCount} friend!`
+                  : `您已经邀请 ${contributorReferralsCount} 位朋友`}
+              </Content>
+              {/* )} */}
             </div>
           )}
         </Grid>
