@@ -73,7 +73,7 @@ const InvitorContent: React.FC = () => {
   const {
     refetch,
     currentContributorQuery,
-    campaignQuery: { data: campaign },
+    campaignQuery: { data: campaign, isLoading },
   } = useMeta()
   const { t } = useI18n()
 
@@ -176,6 +176,8 @@ const InvitorContent: React.FC = () => {
 
     setTx(api.tx.utility.batch(txs))
   }, [invitor, initialized, api, campaign])
+
+  if (isLoading) return <div>...</div>
 
   return (
     <>
