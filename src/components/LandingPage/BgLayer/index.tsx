@@ -11,6 +11,8 @@ const BgLayerStyle = styled.div`
 
   .mask {
     position: absolute;
+    background-color: black;
+    opacity: 0.1;
     left: 0;
     right: 0;
     top: 0;
@@ -25,22 +27,7 @@ type Props = {
 }
 
 const BgLayer: React.FC<Props> = (props) => {
-  const { children, backgroundUrl, noMask } = props
-  const [opacity, setOpacity] = useState(1)
-
-  useEffect(() => {
-    const checkPosition = function () {
-      const o = 1 - window.pageYOffset / 1000
-
-      setOpacity(o < 0 ? 0 : o)
-    }
-
-    window.addEventListener('scroll', checkPosition)
-
-    return () => {
-      window.removeEventListener('scroll', checkPosition)
-    }
-  }, [])
+  const { children, backgroundUrl } = props
 
   return (
     <BgLayerStyle
@@ -49,19 +36,8 @@ const BgLayer: React.FC<Props> = (props) => {
       }}
       className={'bgLayer'}
     >
-      {!noMask && (
-        <div
-          style={{
-            opacity,
-            backgroundImage: `linear-gradient(
-          90deg,
-          rgba(25, 25, 25, 0.8) 0%,
-          rgba(25, 25, 25, 0.2) 100%
-          )`,
-          }}
-          className={'mask'}
-        ></div>
-      )}
+      <div className={'mask'}></div>
+
       {children}
     </BgLayerStyle>
   )
