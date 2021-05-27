@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useEffect, useState } from 'react'
 import type { useModal } from '@geist-ui/react'
-
+import { useLocalStorage } from 'react-use'
 import {
   ExtensionContextValue,
   ExtentionContext,
@@ -41,6 +41,8 @@ const _Web3Provider: React.FC<{
   const [accounts, setAccounts] = useState<ExtensionContextValue['accounts']>(
     []
   )
+  const [currentAccountLocal, setCurrentAccountLocal] =
+    useLocalStorage<{ address: string }>('currentAccount')
 
   useEffect(() => {
     ;(async () => {
@@ -68,6 +70,11 @@ const _Web3Provider: React.FC<{
           setError(undefined)
           setExtensions(_extensions)
           unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
+            const lastLoginAccount = injectedAccounts.find(
+              (item) => item.address === currentAccountLocal?.address
+            )
+
+            setCurrentAccount(lastLoginAccount)
             setAccounts(injectedAccounts)
           })
         }
@@ -80,6 +87,7 @@ const _Web3Provider: React.FC<{
   useEffect(() => {
     ;(async () => {
       if (currentAccount?.meta.source) {
+        setCurrentAccountLocal(currentAccount)
         setCurrentInjector(await web3FromSource(currentAccount.meta.source))
       }
     })()
