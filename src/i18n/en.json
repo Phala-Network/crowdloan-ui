@@ -146,5 +146,8 @@
   "q15": "What is the relationship between K-PHA and PHA?",
   "a15": "K-PHA and PHA are the same token, which can be exchanged 1:1 after the Phala cross-chain bridge goes online. Because they are deployed in different blockchain networks, they have different names.",
   "q16": "Where can I track the crowdloan situation?",
-  "a16": "After the crowdloan starts, you can see Khala's crowdloan quantity, crowd lenders, total rewards, current bidding situation and other information in this panel."
+  "a16": "After the crowdloan starts, you can see Khala's crowdloan quantity, crowd lenders, total rewards, current bidding situation and other information in this panel.",
+  "alert": "Alert",
+  "install": "Install",
+  "pleaseInstallText": "Please install polkadot extension and restart browser"
 }

@@ -16,7 +16,6 @@ import type {
 import React, { createContext } from 'react'
 import styled from 'styled-components'
 import { usePolkadotApi } from '../polkadot'
-import { isWeb3Injected } from '@polkadot/extension-dapp'
 
 export type ExtensionContextValue = {
   enable(): unknown
@@ -61,6 +60,10 @@ const ItemButton = styled(Button)`
   }
 `
 
+function web3IsInjected() {
+  return Object.keys(window?.['injectedWeb3']).length !== 0
+}
+
 export const AccountModal: React.FC<{
   modal: ReturnType<typeof useModal>
   accounts?: InjectedAccountWithMeta[]
@@ -81,18 +84,18 @@ export const AccountModal: React.FC<{
   const { initialized } = usePolkadotApi()
   const { t } = useI18n()
 
-  if (!isWeb3Injected) {
+  if (!web3IsInjected()) {
     return (
       <Modal {...modal.bindings}>
-        <Modal.Title>提示</Modal.Title>
-        <Modal.Content>请先安装 polkadot 插件</Modal.Content>
+        <Modal.Title>{t('alert')}</Modal.Title>
+        <Modal.Content>{t('pleaseInstallText')}</Modal.Content>
         <Modal.Action
           onClick={() => {
             window.open('https://polkadot.js.org/extension/')
             modal.setVisible(false)
           }}
         >
-          安装
+          {t('install')}
         </Modal.Action>
       </Modal>
     )
