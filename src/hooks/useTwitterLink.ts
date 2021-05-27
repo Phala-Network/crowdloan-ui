@@ -16,7 +16,7 @@ export default function useTwitterLink(): string {
     '&via=PhalaNetwork' +
     '&hashtags=blockchain,Phala' +
     '&original_referer=' +
-    process.env.WEBSITE_URL
+    location.href
 
   return twitterLink
 }
