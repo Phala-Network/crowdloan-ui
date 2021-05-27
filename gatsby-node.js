@@ -1,8 +1,13 @@
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
+  if (getConfig().mode === 'production') {
+    actions.setWebpackConfig({
+      devtool: false,
+    })
+  }
+
   actions.setWebpackConfig({
-    devtool: getConfig().mode !== 'production',
     plugins: [
       new NodePolyfillPlugin({
         excludeAliases: [
