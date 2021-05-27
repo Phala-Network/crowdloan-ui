@@ -12,7 +12,7 @@ const BgLayerStyle = styled.div`
   .mask {
     position: absolute;
     background-color: #222222;
-    opacity: 0.3;
+    opacity: 0.5;
     left: 0;
     right: 0;
     top: 0;
