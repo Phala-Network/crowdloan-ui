@@ -111,7 +111,7 @@ const CardReferrals: React.FC = () => {
               {contributorReferralsCount !== undefined && (
                 <Content>
                   {locale === 'en'
-                    ? `You have invited ${contributorReferralsCount} friend!`
+                    ? `You have invited ${contributorReferralsCount} friends.`
                     : `您已经邀请 ${contributorReferralsCount} 位朋友`}
                 </Content>
               )}
