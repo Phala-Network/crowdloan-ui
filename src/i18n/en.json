@@ -149,5 +149,6 @@
   "a16": "After the Crowdloan starts, you'll be able to see Khala's Crowdloan total, crowd lenders, total rewards, the current bidding situation, and other information, all on this page.",
   "alert": "Alert",
   "install": "Install",
-  "pleaseInstallText": "Please install polkadot extension and restart browser"
+  "pleaseInstallText": "Please install polkadot extension and restart browser",
+  "twitterShareText": "Khala's participating in the Kusama Parachain Slot Auctions, and you're invited to join in! We'll both get extra rewards if you use my invitate link."
 }
