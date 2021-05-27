@@ -21,20 +21,18 @@ import {
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
 }> = ({ children, modal }) => {
-  const [isEnabled, setIsEnabled] = useState<
-    ExtensionContextValue['isEnabled']
-  >(false)
+  const [isEnabled, setIsEnabled] =
+    useState<ExtensionContextValue['isEnabled']>(false)
   const [error, setError] = useState<ExtensionContextValue['error']>()
 
   const [enableCount, setEnableCount] = useState<number>(-1)
-  const enable = useCallback(() => setEnableCount(enableCount + 1), [
-    enableCount,
-  ])
+  const enable = useCallback(
+    () => setEnableCount(enableCount + 1),
+    [enableCount]
+  )
 
-  const [
-    currentAccount,
-    setCurrentAccount,
-  ] = useState<InjectedAccountWithMeta>()
+  const [currentAccount, setCurrentAccount] =
+    useState<InjectedAccountWithMeta>()
   const [currentInjector, setCurrentInjector] = useState<InjectedExtension>()
 
   const [extensions, setExtensions] = useState<
