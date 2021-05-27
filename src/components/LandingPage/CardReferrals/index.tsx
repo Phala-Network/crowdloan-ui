@@ -71,14 +71,16 @@ const CardReferrals: React.FC = () => {
           {currentAccount && (
             <div>
               <Content>{t('referralRewardsFirst')}</Content>
-              <Spacer y={1}></Spacer>
-              <Content>{t('referralRewardsSecond')}</Content>
 
               <Spacer y={1}></Spacer>
 
               <InvitorContent></InvitorContent>
 
               <Spacer y={2}></Spacer>
+
+              <Content>{t('referralRewardsSecond')}</Content>
+
+              <Spacer y={1}></Spacer>
 
               <Container>
                 <a href={twitterLink} target="_blank" rel="noreferrer">
