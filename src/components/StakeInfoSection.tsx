@@ -264,7 +264,7 @@ const StakeInfoSection: React.FC = () => {
   const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
   const listModal = useModal()
-  useReleasingData()
+  const localData = useReleasingData(8888)
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -297,17 +297,30 @@ const StakeInfoSection: React.FC = () => {
           show: false,
         },
       },
-      yAxis: {
-        type: 'value',
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: 'white',
-            opacity: 0.1,
-            type: 'dashed',
+      yAxis: [
+        {
+          type: 'value',
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'white',
+              opacity: 0.1,
+              type: 'dashed',
+            },
           },
         },
-      },
+        {
+          type: 'value',
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'white',
+              opacity: 0.1,
+              type: 'dashed',
+            },
+          },
+        },
+      ],
       series: [
         {
           type: 'line',
@@ -323,9 +336,23 @@ const StakeInfoSection: React.FC = () => {
           },
           data: currentContributorQuery?.data?.meta?.simulateReleasingCharts,
         },
+        {
+          type: 'line',
+          showSymbol: true,
+          hoverAnimation: false,
+          lineStyle: { color: 'rgba(255, 255, 255, 0.9)' },
+          itemStyle: {
+            normal: {
+              color: 'rgba(255, 255, 255, 0.9)',
+              borderColor: 'rgba(255, 255, 255, 0.9)',
+              borderWidth: 1,
+            },
+          },
+          data: localData,
+        },
       ],
     }
-  }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts])
+  }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts, localData])
 
   const tableData = React.useMemo(() => {
     if (!currentContributorQuery?.data?.meta?.latestContributions) {
