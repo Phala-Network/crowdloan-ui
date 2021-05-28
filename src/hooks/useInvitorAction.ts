@@ -33,7 +33,16 @@ const createReferrerRemarkTx = ({
   )
 }
 
-export default function useInvitorAction() {
+export default function useInvitorAction(): {
+  referrer: string
+  tryInvite: () => Promise<void>
+  txPaymenInfo: any
+  isLoading: boolean
+  setInvitor: React.Dispatch<React.SetStateAction<string>>
+  invitor: string
+  txWaiting: boolean
+  referrerCheck: boolean
+} {
   const [invitor, setInvitor] = useState('')
   const { currentAccount, currentInjector } = useWeb3()
   const [, setToast] = useToasts()

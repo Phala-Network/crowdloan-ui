@@ -316,14 +316,14 @@ const StakeActionSection: React.FC = () => {
     const paraId = parseInt(campaign.campaign.parachainId)
 
     const txs = []
-    if (referrerInput.state.trim()) {
+    const referrerInputValue = referrerInput.state.trim()
+    if (referrerInputValue) {
       try {
-        const referrerInputValue = decodeAddress(referrerInput.state.trim())
         txs.push(
           createReferrerRemarkTx({
             paraId,
             api,
-            referrer: referrerInputValue,
+            referrer: decodeAddress(referrerInputValue),
           })
         )
       } catch (error) {
