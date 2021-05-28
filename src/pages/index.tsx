@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled, { createGlobalStyle } from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Loading } from '@geist-ui/react'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
 import RankSection from '@/components/RankSection'
@@ -11,6 +11,7 @@ import PriceChartSection from '@/components/PriceChartSection'
 import { useMeta } from '@/utils/meta'
 import Announcement from '@/components/Announcement'
 import Milestones from '@/components/Milestones'
+import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -40,12 +41,24 @@ const PageLoading: React.FC = () => {
   )
 }
 
+const CalculatorContextProvider: React.FC = (props) => {
+  const [contributingReward, setContributingReward] = useState(0)
+
+  return (
+    <CalculatorContext.Provider
+      value={{ contributingReward, setContributingReward }}
+    >
+      {props.children}
+    </CalculatorContext.Provider>
+  )
+}
+
 const _Home: React.FC = () => {
   const {
     campaignQuery: { data },
   } = useMeta()
   return data ? (
-    <>
+    <CalculatorContextProvider>
       <GlobalStyle></GlobalStyle>
       <Navbar />
       <PageBase>
@@ -61,7 +74,7 @@ const _Home: React.FC = () => {
         </Grid>
         <RankSection />
       </PageBase>
-    </>
+    </CalculatorContextProvider>
   ) : (
     <PageLoading />
   )

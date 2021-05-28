@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import styled from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
@@ -131,6 +137,8 @@ const NoMoreReward = styled.div`
   }
 `
 
+export const CalculatorContext = createContext(null)
+
 const Calculator: React.FC<{
   ksmAmountInput: string
   hasReferrer: boolean
@@ -138,6 +146,7 @@ const Calculator: React.FC<{
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
   const contributionChart = campaignQuery?.data?.meta?.contributionChart
+  const { setContributingReward } = useContext(CalculatorContext)
 
   const auctionAmount = useMemo(() => {
     return contributionChart
@@ -199,7 +208,12 @@ const Calculator: React.FC<{
     if (!ksmAmount) {
       return
     }
-    return parseFloat((ksmAmount * (hasReferrer ? 100.5 : 100)).toFixed(9))
+
+    const _contributingReward = parseFloat(
+      (ksmAmount * (hasReferrer ? 100.5 : 100)).toFixed(9)
+    )
+    setContributingReward(_contributingReward)
+    return _contributingReward
   }, [ksmAmount, hasReferrer])
   const contributingIncome = useMemo(() => {
     if (!(typeof contributingReward === 'number' && phaPrice)) {

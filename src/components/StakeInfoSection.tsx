@@ -12,6 +12,7 @@ import { ConnectWallet } from '@/components/ConnectWallet'
 import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request'
 import useReleasingData from '@/hooks/useReleasingData'
+import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -264,7 +265,8 @@ const StakeInfoSection: React.FC = () => {
   const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
   const listModal = useModal()
-  const localData = useReleasingData(8888)
+  const { contributingReward } = React.useContext(CalculatorContext)
+  const localData = useReleasingData(contributingReward)
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -447,20 +449,6 @@ const StakeInfoSection: React.FC = () => {
           </Detail>
 
           <SpaceDivider />
-          <Chart>
-            <span className="title">{t('rewardVest')}</span>
-            <div className="info">{t('rewardVestTip')}</div>
-            <ReactECharts
-              option={chartOptions}
-              style={{
-                height: 'auto',
-                minHeight: '180px',
-                flex: 1,
-                width: '100%',
-                margin: '0 auto 0',
-              }}
-            />
-          </Chart>
         </>
       ) : (
         <NoticeCard>
@@ -475,6 +463,21 @@ const StakeInfoSection: React.FC = () => {
           )}
         </NoticeCard>
       )}
+
+      <Chart>
+        <span className="title">{t('rewardVest')}</span>
+        <div className="info">{t('rewardVestTip')}</div>
+        <ReactECharts
+          option={chartOptions}
+          style={{
+            height: 'auto',
+            minHeight: '180px',
+            flex: 1,
+            width: '100%',
+            margin: '0 auto 0',
+          }}
+        />
+      </Chart>
     </Section>
   )
 }
