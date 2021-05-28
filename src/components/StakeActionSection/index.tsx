@@ -80,7 +80,7 @@ const StakeActionInputWrapper = styled.div`
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
-    line-height: 17px;
+    line-height: 22px;
   }
 
   & .InputWrap {
