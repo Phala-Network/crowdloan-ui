@@ -378,6 +378,15 @@ const StakeActionSection: React.FC = () => {
     })
   }, [tx, txWaiting, currentAccount])
 
+  const setMaxStakeNumber = () => {
+    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
+    const result = new Demical(balance.toString())
+      .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
+      .toNumber()
+
+    setStakeInput(result)
+  }
+
   return (
     <Section
       className="StakeActionSection"
@@ -463,10 +472,7 @@ const StakeActionSection: React.FC = () => {
           />
           <div className="InputPostfix">
             {balance && (
-              <span
-                className="Label"
-                // onClick={() => setStakeInput(parseFloat(balance.toHuman()))}
-              >
+              <span className="Label" onClick={setMaxStakeNumber}>
                 {t('max')}
               </span>
             )}
