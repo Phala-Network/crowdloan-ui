@@ -27,6 +27,7 @@ import queryString from 'query-string'
 import useCheckEndBlock from './useCheckEndBlock'
 import Calculator from './Calculator'
 import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import Referrer from './Referrer'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -235,6 +236,7 @@ const StakeActionSection: React.FC = () => {
     campaignQuery: { data: campaign },
   } = useMeta()
 
+  const referrer = currentContributorQuery?.data?.contributor?.referrer
   const [, setToast] = useToasts()
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
@@ -245,7 +247,9 @@ const StakeActionSection: React.FC = () => {
   const accountCallbackRef = useRef(null)
 
   useEffect(() => {
-    if (currentContributorQuery?.data?.contributor?.amount) {
+    if (referrer) {
+      referrerInput.setState(referrer)
+    } else if (currentContributorQuery?.data?.contributor?.amount) {
       referrerInput.reset()
     } else {
       const { invitor } = queryString.parse(location.search)
@@ -254,7 +258,7 @@ const StakeActionSection: React.FC = () => {
         referrerInput.setState(invitor as string)
       }
     }
-  }, [currentContributorQuery?.data?.contributor?.amount])
+  }, [currentContributorQuery?.data?.contributor?.amount, referrer])
 
   const [tx, setTx] = useState(null)
   const [txPaymenInfo, setTxPaymentInfo] = useState(null)
@@ -493,12 +497,15 @@ const StakeActionSection: React.FC = () => {
             style={{ marginLeft: 3, cursor: 'pointer' }}
             size={16}
           />
-          <Input
-            {...referrerInput.bindings}
-            disabled={!!currentContributorQuery?.data?.contributor?.amount}
-            className="InviterInput"
-            placeholder={t('fillIntroducer')}
-          />
+          {referrer && <Referrer value={referrer} />}
+          {!referrer && (
+            <Input
+              {...referrerInput.bindings}
+              disabled={!!currentContributorQuery?.data?.contributor?.amount}
+              className="InviterInput"
+              placeholder={t('fillIntroducer')}
+            />
+          )}
         </div>
         <Button
           disabled={
