@@ -50,6 +50,10 @@ const Milestones: React.FC = () => {
   const lastDate = dayjs(milestones?.[2]?.estimatesAt)
   let iconTop = 0
 
+  if (lastDate.isBefore(today)) {
+    return null
+  }
+
   if (today.isAfter(middleDate)) {
     iconTop += 200
     iconTop += (middleDate.diff(today) / middleDate.diff(lastDate)) * 100
