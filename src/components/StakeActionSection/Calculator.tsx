@@ -5,6 +5,7 @@ import { useMeta } from '@/utils/meta'
 import TextTooltip from '@/components/TextTooltip'
 import InputNumber from '@/components/InputNumber'
 import { Smile } from '@geist-ui/react-icons'
+import NumberDisplay from '@/components/NumberDisplay'
 
 const StakeActionInfoWrapper = styled.div`
   width: 100%;
@@ -256,7 +257,9 @@ const Calculator: React.FC<{
       <div className="Calculator">
         <div className="left">
           <div className="Rate">{t('phalaStakeAPY')}</div>
-          <div className="RateNum">{currentPhaApy || '-'} %</div>
+          <div className="RateNum">
+            <NumberDisplay value={currentPhaApy} /> %
+          </div>
           <div className="Price">{t('phaPrice')}</div>
           <InputNumber
             before={'$'}
@@ -266,9 +269,13 @@ const Calculator: React.FC<{
             onChange={setPhaPriceInput}
           />
           <div className="Price">{t('contributingReward')}</div>
-          <div className="Amount">{contributingReward || '-'} PHA</div>
+          <div className="Amount">
+            <NumberDisplay value={contributingReward} /> PHA
+          </div>
           <div className="Price">{t('contributingIncome')}</div>
-          <div className="Amount">$ {contributingIncome || '-'}</div>
+          <div className="Amount">
+            $ <NumberDisplay value={contributingIncome} />
+          </div>
         </div>
         <div className="center">VS</div>
         <div className="right">
@@ -292,15 +299,21 @@ const Calculator: React.FC<{
             onChange={setKsmPriceInput}
           />
           <div className="Price">{t('stakingReward')}</div>
-          <div className="Amount">{stakingReward || '-'} KSM</div>
+          <div className="Amount">
+            <NumberDisplay value={stakingReward} /> KSM
+          </div>
           <div className="Price">{t('stakingIncome')}</div>
-          <div className="Amount">$ {stakingIncome || '-'}</div>
+          <div className="Amount">
+            $ <NumberDisplay value={stakingIncome} />
+          </div>
         </div>
       </div>
 
       <div className="Extra">
         <span className="ExtraTitle">{t('moreIncome')}</span>
-        <span className="ExtraAmount">$ {moreIncome || '-'}</span>
+        <span className="ExtraAmount">
+          $ <NumberDisplay value={moreIncome} />
+        </span>
       </div>
     </StakeActionInfoWrapper>
   ) : (
