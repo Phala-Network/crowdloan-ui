@@ -167,13 +167,15 @@ const PriceChartSection: React.FC = () => {
   const { price } = useMeta()
   const { t } = useI18n()
 
-  const ksmData = React.useMemo<GetPriceResponse>(() => price?.ksmQuery?.data, [
-    price?.ksmQuery?.data,
-  ])
+  const ksmData = React.useMemo<GetPriceResponse>(
+    () => price?.ksmQuery?.data,
+    [price?.ksmQuery?.data]
+  )
 
-  const phaData = React.useMemo<GetPriceResponse>(() => price?.phaQuery?.data, [
-    price?.phaQuery?.data,
-  ])
+  const phaData = React.useMemo<GetPriceResponse>(
+    () => price?.phaQuery?.data,
+    [price?.phaQuery?.data]
+  )
   const chartOptions = React.useMemo(() => {
     const formatData = (item) => [item[0], item[1].toFixed(2)]
 
