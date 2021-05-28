@@ -95,10 +95,12 @@ const AuctionChartSection: React.FC = () => {
     [campaign?.data]
   )
   const { campaignId } = useMeta()
-  const { data: getCompetitorsData } = useQuery<GetCompetitorsResponse>([
-    'getCompetitors',
-    { campaignId },
-  ])
+  const { data: getCompetitorsData } = useQuery<GetCompetitorsResponse>(
+    ['getCompetitors', { campaignId }],
+    {
+      refetchInterval: 60 * 1000,
+    }
+  )
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -149,7 +151,6 @@ const AuctionChartSection: React.FC = () => {
     }
   }, [campaignData?.meta?.contributionChart])
 
-  // todo: get heightest bid value
   return (
     <Section
       xs={24}
