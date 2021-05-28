@@ -11,6 +11,7 @@ import { CloudOff, Plus } from '@geist-ui/react-icons'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request'
+import useReleasingData from '@/hooks/useReleasingData'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -263,6 +264,7 @@ const StakeInfoSection: React.FC = () => {
   const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
   const listModal = useModal()
+  useReleasingData()
 
   const chartOptions = React.useMemo(() => {
     return {

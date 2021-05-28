@@ -171,7 +171,7 @@ const AuctionChartSection: React.FC = () => {
           <div className="Amount Wh">
             <span className="Title">{t('heightestBid')}</span>
             <p className="Number">
-              {getCompetitorsData?.meta?.raisedAmount || '-'}{' '}
+              {getCompetitorsData?.competitors?.[0]?.raisedAmount || '-'}{' '}
               <span className="Unit">KSM</span>
             </p>
           </div>
