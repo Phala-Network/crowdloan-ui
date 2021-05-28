@@ -26,6 +26,7 @@ import StakeSuccessModal from '@/components/StakeSuccessModal'
 import queryString from 'query-string'
 import useCheckEndBlock from './useCheckEndBlock'
 import Calculator from './Calculator'
+import InvitorInfoDialog from '@/components/InvitorInfoDialog'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -226,6 +227,7 @@ const StakeActionSection: React.FC = () => {
   } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
+  const invitorInfoDialogModal = useModal()
 
   const {
     refetch,
@@ -385,6 +387,7 @@ const StakeActionSection: React.FC = () => {
       innerStyle={style__StakeActionSection}
     >
       <StakeSuccessModal modalProps={{ ...stakeSuccessModal.bindings }} />
+      <InvitorInfoDialog modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
         <Modal.Title>{t('transactionConfirmationTitle')}</Modal.Title>
@@ -479,7 +482,11 @@ const StakeActionSection: React.FC = () => {
       <StakeActionForm>
         <div className="InviterWrap">
           {t('introducer')}
-          <AlertIcon style={{ marginLeft: 3 }} size={16} />
+          <AlertIcon
+            onClick={() => invitorInfoDialogModal.setVisible(true)}
+            style={{ marginLeft: 3, cursor: 'pointer' }}
+            size={16}
+          />
           <Input
             {...referrerInput.bindings}
             disabled={!!currentContributorQuery?.data?.contributor?.amount}
