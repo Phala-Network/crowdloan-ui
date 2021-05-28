@@ -249,8 +249,6 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     if (referrer) {
       referrerInput.setState(referrer)
-    } else if (currentContributorQuery?.data?.contributor?.amount) {
-      referrerInput.reset()
     } else {
       const { invitor } = queryString.parse(location.search)
 
@@ -258,7 +256,7 @@ const StakeActionSection: React.FC = () => {
         referrerInput.setState(invitor as string)
       }
     }
-  }, [currentContributorQuery?.data?.contributor?.amount, referrer])
+  }, [referrer])
 
   const [tx, setTx] = useState(null)
   const [txPaymenInfo, setTxPaymentInfo] = useState(null)
@@ -501,7 +499,6 @@ const StakeActionSection: React.FC = () => {
           {!referrer && (
             <Input
               {...referrerInput.bindings}
-              disabled={!!currentContributorQuery?.data?.contributor?.amount}
               className="InviterInput"
               placeholder={t('fillIntroducer')}
             />
