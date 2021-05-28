@@ -140,7 +140,7 @@ const Calculator: React.FC<{
 
   const auctionAmount = useMemo(() => {
     return contributionChart
-      ? contributionChart[contributionChart.length - 1][1]
+      ? contributionChart?.[contributionChart.length - 1]?.[1]
       : 0
   }, [contributionChart])
 

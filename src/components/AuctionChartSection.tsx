@@ -173,7 +173,7 @@ const AuctionChartSection: React.FC = () => {
               {campaignData?.meta?.contributionChart
                 ? campaignData.meta.contributionChart[
                     campaignData.meta.contributionChart.length - 1
-                  ][1]
+                  ]?.[1]
                 : '...'}{' '}
               <span className="Unit">KSM</span>
             </p>
