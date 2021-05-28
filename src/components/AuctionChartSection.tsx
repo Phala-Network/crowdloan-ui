@@ -4,7 +4,8 @@ import Section from '@/components/Section'
 import ReactECharts from 'echarts-for-react'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
-import { GetCampaignResponse } from '@/utils/request'
+import { GetCampaignResponse, GetCompetitorsResponse } from '@/utils/request'
+import { useQuery } from 'react-query'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -93,6 +94,11 @@ const AuctionChartSection: React.FC = () => {
     () => campaign?.data,
     [campaign?.data]
   )
+  const { campaignId } = useMeta()
+  const { data: getCompetitorsData } = useQuery<GetCompetitorsResponse>([
+    'getCompetitors',
+    { campaignId },
+  ])
 
   const chartOptions = React.useMemo(() => {
     return {
@@ -164,7 +170,8 @@ const AuctionChartSection: React.FC = () => {
           <div className="Amount Wh">
             <span className="Title">{t('heightestBid')}</span>
             <p className="Number">
-              1,000.00 <span className="Unit">KSM</span>
+              {getCompetitorsData?.meta?.raisedAmount || '-'}{' '}
+              <span className="Unit">KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
@@ -174,7 +181,7 @@ const AuctionChartSection: React.FC = () => {
                 ? campaignData.meta.contributionChart[
                     campaignData.meta.contributionChart.length - 1
                   ]?.[1]
-                : '...'}{' '}
+                : '-'}{' '}
               <span className="Unit">KSM</span>
             </p>
           </div>

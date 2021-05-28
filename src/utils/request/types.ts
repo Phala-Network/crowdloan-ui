@@ -156,3 +156,16 @@ export type GetContributorResponse = {
     simulateReleasingCharts: [string, number][]
   }
 }
+export interface GetCompetitorsResponse {
+  competitors?:
+    | {
+        parachainIds?: string[] | null
+        startBlock: number
+        endBlock: number
+        raisedAmount: number
+      }[]
+    | null
+  meta: {
+    raisedAmount: number
+  }
+}

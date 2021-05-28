@@ -40,6 +40,10 @@ const requestFunctions = {
     })
     return checkResponse(res)
   },
+  async getCompetitors({ campaignId = 1 }) {
+    const res = await axios.get(`/campaigns/${campaignId}/competitors`)
+    return checkResponse(res)
+  },
   getPrice: async ({ currency }: GetPriceOptions) => {
     const res = await axios.get(apiUrls.getPrice + currency)
     return checkResponse(res)
