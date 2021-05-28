@@ -118,9 +118,10 @@ const RankSection: React.FC = () => {
     }
   )
 
-  const totalPage = useMemo(() => data?.pagination?.totalPage || 1, [
-    data?.pagination?.totalPage,
-  ])
+  const totalPage = useMemo(
+    () => data?.pagination?.totalPage || 1,
+    [data?.pagination?.totalPage]
+  )
 
   const chartData = useMemo(() => {
     if (!data) {
