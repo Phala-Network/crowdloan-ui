@@ -2,13 +2,14 @@ import { localeNames } from '@/i18n'
 import { useI18n } from '@/i18n'
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Link } from '@geist-ui/react'
+import { Link, useModal } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { changeLocale, IntlContext } from 'gatsby-plugin-intl'
 import { AccountModal } from '@/utils/web3/common'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import MobileMenu from './MobileMenu'
 import { useMediaQuery } from 'react-responsive'
+import InvitorInfoDialog from '../InvitorInfoDialog'
 
 const Logo = styled.img`
   height: 40px;
@@ -117,6 +118,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     hasAffiliationProgramLink = true,
   } = props
   const showMobileMenu = useMediaQuery({ minWidth: 0, maxWidth: 900 })
+  const invitorInfoDialogModal = useModal()
 
   const aboutKhalaLink = (
     <Link target="_blank" href={t('aboutKhalaLink')}>
@@ -137,7 +139,12 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   )
 
   const affiliationProgram = (
-    <Link style={{ color }}>{t('affiliationProgram')}</Link>
+    <div
+      style={{ color, cursor: 'pointer' }}
+      onClick={() => invitorInfoDialogModal.setVisible(true)}
+    >
+      {t('affiliationProgram')}
+    </div>
   )
 
   const createLocalLinks = (NodeType: string) =>
@@ -157,6 +164,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   return (
     <>
       <AccountModal {...modalBindings} />
+      <InvitorInfoDialog modal={invitorInfoDialogModal} />
       <NavbarWrapper>
         <Logo src={logo} />
         {!showMobileMenu && (
