@@ -90,7 +90,7 @@
   "Fee": "Fee",
   "insufficientFee": "insufficient fee",
   "tweetToTellYourFriend": "Tweet to the world!",
-  "generateMyReferalLink": "Generate my referal link",
+  "generateMyReferralLink": "Generate my referral link",
   "yourReferrerCannotBeYourself": "your referrer cannot be yourself",
   "process": "Process",
   "processT1": "Prep your KSM",
@@ -150,5 +150,5 @@
   "alert": "Alert",
   "install": "Install",
   "pleaseInstallText": "Please install polkadot extension and restart browser",
-  "twitterShareText": "Khala's participating in the Kusama Parachain Slot Auctions, and you're invited to join in! We'll both get extra rewards if you use my invitate link."
+  "twitterShareText": "Khala's participating in the Kusama Parachain Slot Auctions, and you're invited to join in! We'll both get extra rewards if you use my invite link."
 }

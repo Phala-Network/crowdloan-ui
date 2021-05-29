@@ -102,7 +102,7 @@ const CardReferrals: React.FC = () => {
                   color="black"
                   size="middle"
                 >
-                  {t('generateMyReferalLink')}
+                  {t('generateMyReferralLink')}
                 </PageHeaderButton>
               </Container>
 
