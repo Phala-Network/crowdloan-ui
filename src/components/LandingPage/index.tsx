@@ -18,6 +18,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 import EmailSubscribeButton from './EmailSubscribeButton'
 import { useI18n } from '@/i18n'
 import { Spacer } from '@geist-ui/react'
+import { Helmet } from 'react-helmet'
 
 const Page = styled.div`
   width: 100%;
@@ -40,77 +41,82 @@ const LandingPage: React.FC = () => {
   const { t } = useI18n()
 
   return (
-    <BgLayer noMask={true} backgroundUrl={`/landing/bg-${locale}.jpg`}>
-      <PageStyle></PageStyle>
-      <Navbar
-        color={color}
-        logo="/landing/logo.png"
-        hasAffiliationProgramLink={false}
-      />
-      <Page>
-        <Container>
-          <PageHeader
-            title={
-              locale === 'en' ? (
-                "Khala's Crowdloan Dapp is Coming!"
-              ) : (
-                <>
-                  Khala 的众贷 Dapp <br /> 即将开启！
-                </>
-              )
-            }
-            description={t('landingPageDescription')}
-          >
-            <Spacer y={3}></Spacer>
+    <>
+      <Helmet>
+        <title>Khala Crowdloan</title>
+      </Helmet>
+      <BgLayer noMask={true} backgroundUrl={`/landing/bg-${locale}.jpg`}>
+        <PageStyle></PageStyle>
+        <Navbar
+          color={color}
+          logo="/landing/logo.png"
+          hasAffiliationProgramLink={false}
+        />
+        <Page>
+          <Container>
+            <PageHeader
+              title={
+                locale === 'en' ? (
+                  "Khala's Crowdloan Dapp is Coming!"
+                ) : (
+                  <>
+                    Khala 的众贷 Dapp <br /> 即将开启！
+                  </>
+                )
+              }
+              description={t('landingPageDescription')}
+            >
+              <Spacer y={3}></Spacer>
 
-            <PageHeaderButtons>
-              <PageHeaderButton
-                color="primary"
-                size="middle"
-                onClick={() =>
-                  scrollIntoView(
-                    document.getElementById('ReferralRewardsCard'),
-                    {
-                      behavior: 'smooth',
-                      block: 'start',
-                    }
-                  )
-                }
-              >
-                {t('landingPageReferralRewards')}
-              </PageHeaderButton>
-
-              <InvitedNumber></InvitedNumber>
-            </PageHeaderButtons>
-
-            <PageHeaderButtons>
-              <EmailSubscribeButton></EmailSubscribeButton>
-
-              {locale === 'en' && (
-                <a
-                  target="_blank"
-                  href="https://t.me/phalanetwork"
-                  rel="noreferrer"
+              <PageHeaderButtons>
+                <PageHeaderButton
+                  color="primary"
+                  size="middle"
+                  onClick={() =>
+                    scrollIntoView(
+                      document.getElementById('ReferralRewardsCard'),
+                      {
+                        behavior: 'smooth',
+                        block: 'start',
+                      }
+                    )
+                  }
                 >
-                  <PageHeaderButton color="gray" hasArrowIcon size="middle">
-                    Telegram
-                  </PageHeaderButton>
-                </a>
-              )}
+                  {t('landingPageReferralRewards')}
+                </PageHeaderButton>
 
-              {locale === 'zh' && <WechatButton color={color}></WechatButton>}
-            </PageHeaderButtons>
-          </PageHeader>
+                <InvitedNumber></InvitedNumber>
+              </PageHeaderButtons>
 
-          <CardBasicReward></CardBasicReward>
-          <div id="ReferralRewardsCard"></div>
-          <CardReferrals></CardReferrals>
-          <CardProcess></CardProcess>
-          <CardWaysToSupport></CardWaysToSupport>
-          <CardQA></CardQA>
-        </Container>
-      </Page>
-    </BgLayer>
+              <PageHeaderButtons>
+                <EmailSubscribeButton></EmailSubscribeButton>
+
+                {locale === 'en' && (
+                  <a
+                    target="_blank"
+                    href="https://t.me/phalanetwork"
+                    rel="noreferrer"
+                  >
+                    <PageHeaderButton color="gray" hasArrowIcon size="middle">
+                      Telegram
+                    </PageHeaderButton>
+                  </a>
+                )}
+
+                {locale === 'zh' && <WechatButton color={color}></WechatButton>}
+              </PageHeaderButtons>
+            </PageHeader>
+
+            <CardBasicReward></CardBasicReward>
+            <div id="ReferralRewardsCard"></div>
+            <CardReferrals></CardReferrals>
+            <CardProcess></CardProcess>
+            <CardWaysToSupport></CardWaysToSupport>
+            <CardQA></CardQA>
+          </Container>
+        </Page>
+      </BgLayer>
+    </>
   )
 }
 

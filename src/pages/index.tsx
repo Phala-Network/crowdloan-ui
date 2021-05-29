@@ -12,6 +12,7 @@ import { useMeta } from '@/utils/meta'
 import Announcement from '@/components/Announcement'
 import Milestones from '@/components/Milestones'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
+import { Helmet } from 'react-helmet'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -59,6 +60,9 @@ const _Home: React.FC = () => {
   } = useMeta()
   return data ? (
     <CalculatorContextProvider>
+      <Helmet>
+        <title>Khala Crowdloan</title>
+      </Helmet>
       <GlobalStyle></GlobalStyle>
       <Navbar />
       <PageBase>
