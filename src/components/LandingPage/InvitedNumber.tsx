@@ -26,8 +26,7 @@ const InvitedNumber: React.FC = () => {
   const amount = meta?.campaignQuery?.data?.meta?.totalInvitedCount
   const text = locale === 'en' ? `${amount} invited` : `已邀请 ${amount} 人`
 
-  // todo return amount >= 1000 ? <InvitedNumberRoot>{text}</InvitedNumberRoot> : null
-  return <InvitedNumberRoot>{text}</InvitedNumberRoot>
+  return amount >= 1000 ? <InvitedNumberRoot>{text}</InvitedNumberRoot> : null
 }
 
 export default InvitedNumber
