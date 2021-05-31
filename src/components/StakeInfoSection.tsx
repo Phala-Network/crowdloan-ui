@@ -1,5 +1,5 @@
 import Section from '@/components/Section'
-import { Card, Modal, Table, useModal } from '@geist-ui/react'
+import { Card, Modal, Spacer, Table, useModal } from '@geist-ui/react'
 import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
 import styled, { css } from 'styled-components'
@@ -114,6 +114,9 @@ const Inviter = styled.div`
 
 const Detail = styled.div`
   margin-bottom: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   & .Title {
     display: flex;
@@ -211,22 +214,20 @@ const Chart = styled.div`
   }
 `
 
-const SpaceDivider = styled.div`
+const NoticeCard = styled.div`
+  margin-top: 3px;
   flex: 1;
-  height: auto;
-`
-
-const NoticeCard = styled(Card)`
-  border: 0 !important;
-  margin-top: 12px !important;
-  background: 0 !important;
-  flex: 1;
-  height: auto;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   place-content: center;
   text-align: center;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  color: ${(props) => props.theme.wh02};
+  background: ${(props) => props.theme.bl04};
+  border-radius: 8px;
 `
 
 const StakeInfoSection: React.FC = () => {
@@ -344,6 +345,8 @@ const StakeInfoSection: React.FC = () => {
     return ret
   }, [currentContributorQuery?.data?.meta?.latestContributions])
 
+  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+
   return (
     <Section
       className=""
@@ -358,8 +361,7 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              {currentContributorQuery?.data?.contributor?.amount ||
-                (currentAccount ? '0' : '-')}{' '}
+              {contributorAmount || (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">KSM</span>
             </p>
           </div>
@@ -405,46 +407,46 @@ const StakeInfoSection: React.FC = () => {
         </Inviter>
       </Amount>
 
-      {currentContributorQuery?.data?.contributor?.amount ? (
-        <>
-          <Modal {...listModal.bindings}>
-            <Modal.Content>
-              <ContributionList />
-            </Modal.Content>
-            <Modal.Action passive onClick={() => listModal.setVisible(false)}>
-              {t('close')}
-            </Modal.Action>
-          </Modal>
-          <Detail>
-            <div className="Title">
-              <span>{t('contributeDetails')}</span>
-              <a onClick={() => listModal.setVisible(true)}>
-                {t('more')} <Plus size={9} />
-              </a>
-            </div>
+      <Modal {...listModal.bindings}>
+        <Modal.Content>
+          <ContributionList />
+        </Modal.Content>
+        <Modal.Action passive onClick={() => listModal.setVisible(false)}>
+          {t('close')}
+        </Modal.Action>
+      </Modal>
 
-            <Table data={tableData} className="Table">
-              <Table.Column prop="time" label={t('time')} />
-              <Table.Column prop="amount" label={t('yourContribute')} />
-              <Table.Column prop="rewardAmount" label={t('yourReward')} />
-            </Table>
-          </Detail>
-
-          <SpaceDivider />
-        </>
-      ) : (
-        <NoticeCard>
-          <p>
-            <CloudOff size={32} />
-          </p>
-          <p>{t('noData')}</p>
-          {currentAccount ? null : (
-            <div>
-              <ConnectWallet />
-            </div>
+      <Detail>
+        <div className="Title">
+          <span>{t('contributeDetails')}</span>
+          {contributorAmount && (
+            <a onClick={() => listModal.setVisible(true)}>
+              {t('more')} <Plus size={9} />
+            </a>
           )}
-        </NoticeCard>
-      )}
+        </div>
+
+        {contributorAmount && (
+          <Table data={tableData} className="Table">
+            <Table.Column prop="time" label={t('time')} />
+            <Table.Column prop="amount" label={t('yourContribute')} />
+            <Table.Column prop="rewardAmount" label={t('yourReward')} />
+          </Table>
+        )}
+
+        {!contributorAmount && (
+          <NoticeCard>
+            <img
+              draggable={false}
+              src="/detail-placeholder.svg"
+              alt="detail-placeholder"
+            />
+            <Spacer y={0.5}></Spacer>
+            {currentAccount && t('noData')}
+            {!currentAccount && <ConnectWallet />}
+          </NoticeCard>
+        )}
+      </Detail>
 
       <Chart>
         <span className="title">{t('rewardVest')}</span>
