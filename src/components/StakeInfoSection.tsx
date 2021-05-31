@@ -13,6 +13,8 @@ import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request'
 import useReleasingData from '@/hooks/useReleasingData'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
+import AlertIcon from './AlertIcon'
+import InvitorInfoDialog from './InvitorInfoDialog'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -92,10 +94,19 @@ const Inviter = styled.div`
     line-height: 20px;
     color: rgba(255, 255, 255, 0.5);
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 8px;
   }
 
+  & .Icon {
+    margin: 0 6px;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
   & .Number {
+    flex: 1;
+    text-align: right;
     font-size: 14px;
     line-height: 20px;
     color: rgba(255, 255, 255, 0.9);
@@ -267,7 +278,7 @@ const StakeInfoSection: React.FC = () => {
   const listModal = useModal()
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
-
+  const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
     return {
       tooltip: {
@@ -382,6 +393,7 @@ const StakeInfoSection: React.FC = () => {
       lg={8}
       innerStyle={style__StakeInfoSection}
     >
+      <InvitorInfoDialog modal={invitorInfoDialogModal} />
       <Amount>
         <div className="Amounts">
           <div className="Amount Gr">
@@ -405,21 +417,32 @@ const StakeInfoSection: React.FC = () => {
           </div>
         </div>
         <Inviter>
-          <div className="Item">
-            <span className="Text">{t('participantsIntroduced')}</span>
-            <span className="Number">
-              {currentContributorQuery?.data?.contributor?.referralsCount ||
-                (currentAccount ? '0' : '-')}
-            </span>
-          </div>
-          <div className="Item">
-            <span className="Text">{t('affiliationReward')}</span>
-            <span className="Number">
-              {currentContributorQuery?.data?.contributor
-                ?.promotionRewardAmount || (currentAccount ? '0' : '-')}{' '}
-              PHA
-            </span>
-          </div>
+          {[
+            {
+              name: t('participantsIntroduced'),
+              value: currentContributorQuery?.data?.contributor?.referralsCount,
+              after: '',
+            },
+            {
+              name: t('affiliationReward'),
+              value: currentContributorQuery?.data?.contributor,
+              after: 'PHA',
+            },
+          ].map(({ name, value, after }) => {
+            return (
+              <div className="Item" key={name}>
+                <span className="Text">{name}</span>
+                <AlertIcon
+                  className="Icon"
+                  onClick={() => invitorInfoDialogModal.setVisible(true)}
+                />
+                <span className="Number">
+                  {value || (currentAccount ? '0' : '-')}
+                  {after && ` ${after}`}
+                </span>
+              </div>
+            )
+          })}
         </Inviter>
       </Amount>
 
