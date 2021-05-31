@@ -11,13 +11,11 @@ const BgLayerStyle = styled.div`
 
   .mask {
     position: absolute;
-    background-color: #222222;
-    opacity: 0.5;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    transition: opacity 0.1s linear;
+    backdrop-filter: blur(6px);
   }
 `
 
