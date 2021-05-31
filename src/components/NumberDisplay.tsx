@@ -4,7 +4,7 @@ import React from 'react'
 const NumberDisplay: React.FC<{ value: number; maxLength?: number }> = (
   props
 ) => {
-  const { value, maxLength = 12 } = props
+  const { value, maxLength = 10 } = props
 
   let display = value?.toString()
 
@@ -16,7 +16,7 @@ const NumberDisplay: React.FC<{ value: number; maxLength?: number }> = (
     }
 
     display += '...'
-  } else if (display?.length > 10) {
+  } else if (display?.length > 8) {
     display = display.split('.')[0]
   }
 
