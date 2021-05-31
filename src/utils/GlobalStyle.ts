@@ -38,6 +38,11 @@ const GlobalStyle = createGlobalStyle`
       z-index: 20000;
     }
   }
+  #geist-ui-toast {
+    .toast-container {
+      z-index: 30000;
+    }
+  }
   .BlackModal {
     padding: 0 !important;
     .modal-header {
