@@ -377,8 +377,16 @@ const StakeActionSection: React.FC = () => {
         }
       }
     ).catch((error: any) => {
+      console.warn(error)
+      const text = error.message.includes('1010')
+        ? t('insufficientFee')
+        : 'Invalid referrer.'
       setTxWaiting(false)
-      setToast({ text: error.toString(), type: 'error', delay: 5000 }) // todo
+      setToast({
+        text,
+        type: 'error',
+        delay: 6000,
+      })
     })
   }, [tx, txWaiting, currentAccount])
 
