@@ -114,6 +114,8 @@ const StakeActionInputWrapper = styled.div`
     background: transparent;
     border: none;
     caret-color: #d1ff52;
+    display: block;
+    width: 100%;
   }
 
   & .Label {
@@ -465,13 +467,14 @@ const StakeActionSection: React.FC = () => {
         </div>
         <div className="InputWrap">
           <RcInputNumber
+            style={{ width: 'calc(100% - 120px)' }}
             min={0.000001}
             max={999999999}
-            style={{ width: 'calc(100% - 120px)' }}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => setStakeInput(value)}
           />
+
           <div className="InputPostfix">
             {balance && (
               <span className="Label" onClick={setMaxStakeNumber}>
