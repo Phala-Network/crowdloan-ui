@@ -245,6 +245,7 @@ const StakeActionSection: React.FC = () => {
   const [stakeInput, setStakeInput] = useState(10)
 
   const referrerInput = useInput('')
+  const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
 
   const accountCallbackRef = useRef(null)
 
@@ -399,6 +400,10 @@ const StakeActionSection: React.FC = () => {
     setStakeInput(result)
   }
 
+  const onCalculatorChange = ({ referrerRewardAmount }) => {
+    setReferrerRewardAmount(referrerRewardAmount)
+  }
+
   return (
     <Section
       className="StakeActionSection"
@@ -497,6 +502,7 @@ const StakeActionSection: React.FC = () => {
       <Calculator
         ksmAmountInput={stakeInput?.toString() || '0'}
         hasReferrer={!!referrerInput.state}
+        onChange={onCalculatorChange}
       />
       <StakeActionForm>
         <div className="InviterWrap">
@@ -511,7 +517,10 @@ const StakeActionSection: React.FC = () => {
             <Input
               {...referrerInput.bindings}
               className="InviterInput"
-              placeholder={t('fillIntroducer')}
+              placeholder={t('fillIntroducer').replace(
+                '%d',
+                parseFloat(referrerRewardAmount.toFixed(2)).toString()
+              )}
             />
           )}
         </div>

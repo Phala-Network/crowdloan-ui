@@ -40,7 +40,7 @@
   "stakingIncome": "KSM抵押收益",
   "moreIncome": "超抵押收益",
   "introducer": "邀请人",
-  "fillIntroducer": "绑定邀请人获得xPHA额外奖励（选填）",
+  "fillIntroducer": "绑定邀请人获得 %d PHA额外奖励（选填）",
   "yourTotalReward": "您的总奖励",
   "participantsIntroduced": "邀请人数",
   "affiliationReward": "邀请奖励",
