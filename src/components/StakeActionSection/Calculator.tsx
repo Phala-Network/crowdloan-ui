@@ -10,7 +10,6 @@ import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import TextTooltip from '@/components/TextTooltip'
 import InputNumber from '@/components/InputNumber'
-import { Smile } from '@geist-ui/react-icons'
 import NumberDisplay from '@/components/NumberDisplay'
 
 const StakeActionInfoWrapper = styled.div`
@@ -132,9 +131,10 @@ const StakeActionInfoWrapper = styled.div`
 `
 
 const NoMoreReward = styled.div`
-  & p {
-    text-align: center;
-  }
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 20px;
 `
 
 export const CalculatorContext = createContext(null)
@@ -337,9 +337,11 @@ const Calculator: React.FC<{
     </StakeActionInfoWrapper>
   ) : (
     <NoMoreReward>
-      <p>
-        <Smile size={48} />
-      </p>
+      <img
+        draggable={false}
+        src="/calculator-placeholder.svg"
+        alt="calculator-placeholder"
+      />
       <p>{t('noMoreReward')}</p>
     </NoMoreReward>
   )
