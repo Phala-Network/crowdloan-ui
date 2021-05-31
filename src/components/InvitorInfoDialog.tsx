@@ -46,16 +46,12 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
     <Modal {...modal.bindings}>
       <Modal.Title>{t('affiliationReward')}</Modal.Title>
       <Modal.Content>
-        <div>
-          除质押奖池外，邀请好友来为 Phala 质押
-          KSM，双方都将获得一定比例的额外奖励。
-          被邀请人在第一次质押后不得再更改邀请人。
-        </div>
+        <div>{t('affiliationRewardText')}</div>
 
         {currentAccount && (
           <div>
             <Spacer y={1}></Spacer>
-            <div style={{ marginBottom: 6 }}>{t('introducer')}</div>
+            <div style={{ marginBottom: 6 }}>{t('yourIntroducer')}</div>
             {referrer && <div>{referrer}</div>}
             {!referrer && (
               <Container>
@@ -63,7 +59,7 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
                   onChange={(e) => setInvitor(e.target.value)}
                   value={invitor}
                   width="100%"
-                  placeholder="填写邀请人获得PHA奖励"
+                  placeholder={t('Fill_in_the_introducer_to_get_extra_rewards')}
                 />
                 {referrerCheck && (
                   <>

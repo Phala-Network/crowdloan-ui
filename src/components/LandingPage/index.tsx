@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
       <Helmet>
         <title>Khala Crowdloan</title>
       </Helmet>
-      <BgLayer noMask={true} backgroundUrl={`/landing/bg-${locale}.jpg`}>
+      <BgLayer noMask={true} backgroundUrl={`/landing/bg2.jpg`}>
         <PageStyle></PageStyle>
         <Navbar
           color={color}
