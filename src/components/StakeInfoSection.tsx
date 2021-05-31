@@ -9,12 +9,11 @@ import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
 import { CloudOff, Plus } from '@geist-ui/react-icons'
 import { ConnectWallet } from '@/components/ConnectWallet'
-import { useQuery } from 'react-query'
-import { GetContributionsResponse } from '@/utils/request'
 import useReleasingData from '@/hooks/useReleasingData'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
-import AlertIcon from './AlertIcon'
-import InvitorInfoDialog from './InvitorInfoDialog'
+import AlertIcon from '@/components/AlertIcon'
+import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import ContributionList from '@/components/ContributionList'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -229,46 +228,6 @@ const NoticeCard = styled(Card)`
   place-content: center;
   text-align: center;
 `
-
-const ContributionList: React.FC = () => {
-  const { t } = useI18n()
-  const { campaignId, dayjs } = useMeta()
-  const { currentAccount } = useWeb3()
-  const { locale } = React.useContext(IntlContext)
-  const { data } = useQuery<GetContributionsResponse>([
-    'getContributions',
-    {
-      perPage: 255,
-      page: 1,
-      contributor: currentAccount.address,
-      campaignId,
-    },
-  ])
-  const tableData = React.useMemo(() => {
-    if (!data?.contributions) {
-      return null
-    }
-    const ret = data?.contributions
-    ret.forEach((i) => {
-      i.time = dayjs(i.timestamp).locale(locale).format('lll')
-      Object.keys(i).forEach((ii) => {
-        if (typeof i[ii] === 'number') {
-          i[ii] ||= '0'
-        } else {
-          i[ii] ||= '-'
-        }
-      })
-    })
-    return ret
-  }, [data?.contributions])
-  return (
-    <Table data={tableData} className="Table">
-      <Table.Column prop="time" label={t('time')} />
-      <Table.Column prop="amount" label={t('yourContribute')} />
-      <Table.Column prop="rewardAmount" label={t('yourReward')} />
-    </Table>
-  )
-}
 
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
