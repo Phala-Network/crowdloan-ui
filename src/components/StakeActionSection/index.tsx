@@ -114,6 +114,8 @@ const StakeActionInputWrapper = styled.div`
     background: transparent;
     border: none;
     caret-color: #d1ff52;
+    display: block;
+    width: 100%;
   }
 
   & .Label {
@@ -375,8 +377,16 @@ const StakeActionSection: React.FC = () => {
         }
       }
     ).catch((error: any) => {
+      console.warn(error)
+      const text = error.message.includes('1010')
+        ? t('insufficientFee')
+        : 'Invalid referrer.'
       setTxWaiting(false)
-      setToast({ text: error.toString(), type: 'error', delay: 5000 }) // todo
+      setToast({
+        text,
+        type: 'error',
+        delay: 6000,
+      })
     })
   }, [tx, txWaiting, currentAccount])
 
@@ -465,13 +475,14 @@ const StakeActionSection: React.FC = () => {
         </div>
         <div className="InputWrap">
           <RcInputNumber
+            style={{ width: 'calc(100% - 120px)' }}
             min={0.000001}
             max={999999999}
-            style={{ width: 'calc(100% - 120px)' }}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => setStakeInput(value)}
           />
+
           <div className="InputPostfix">
             {balance && (
               <span className="Label" onClick={setMaxStakeNumber}>

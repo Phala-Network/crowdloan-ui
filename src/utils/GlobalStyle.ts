@@ -26,7 +26,21 @@ const GlobalStyle = createGlobalStyle`
   }
   #geist-ui-modal {
     .content {
-      width: 600px;
+      z-index: 20001;
+      @media (min-width: 768px) {
+        width: 600px;
+      }
+    }
+    .backdrop {
+      z-index: 20000;
+    }
+    .layer {
+      z-index: 20000;
+    }
+  }
+  #geist-ui-toast {
+    .toast-container {
+      z-index: 30000;
     }
   }
   .BlackModal {

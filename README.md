@@ -2,7 +2,13 @@
 
 ## Online
 
+### Test
+
 https://crowdloan-staging.phala.works
+
+### Production
+
+http://crowdloan.phala.network
 
 ## Code
 

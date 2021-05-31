@@ -1,5 +1,5 @@
 import Section from '@/components/Section'
-import { Card, Modal, Table, useModal } from '@geist-ui/react'
+import { Modal, Spacer, Table, useModal } from '@geist-ui/react'
 import ReactECharts from 'echarts-for-react'
 import * as React from 'react'
 import styled, { css } from 'styled-components'
@@ -7,12 +7,12 @@ import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
-import { CloudOff, Plus } from '@geist-ui/react-icons'
 import { ConnectWallet } from '@/components/ConnectWallet'
-import { useQuery } from 'react-query'
-import { GetContributionsResponse } from '@/utils/request'
 import useReleasingData from '@/hooks/useReleasingData'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
+import AlertIcon from '@/components/AlertIcon'
+import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import ContributionList from '@/components/ContributionList'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -92,10 +92,19 @@ const Inviter = styled.div`
     line-height: 20px;
     color: rgba(255, 255, 255, 0.5);
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 8px;
   }
 
+  & .Icon {
+    margin: 0 6px;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
   & .Number {
+    flex: 1;
+    text-align: right;
     font-size: 14px;
     line-height: 20px;
     color: rgba(255, 255, 255, 0.9);
@@ -104,6 +113,9 @@ const Inviter = styled.div`
 
 const Detail = styled.div`
   margin-bottom: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   & .Title {
     display: flex;
@@ -201,63 +213,21 @@ const Chart = styled.div`
   }
 `
 
-const SpaceDivider = styled.div`
+const NoticeCard = styled.div`
+  margin-top: 3px;
   flex: 1;
-  height: auto;
-`
-
-const NoticeCard = styled(Card)`
-  border: 0 !important;
-  margin-top: 12px !important;
-  background: 0 !important;
-  flex: 1;
-  height: auto;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   place-content: center;
   text-align: center;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  color: ${(props) => props.theme.wh02};
+  background: ${(props) => props.theme.bl04};
+  border-radius: 8px;
 `
-
-const ContributionList: React.FC = () => {
-  const { t } = useI18n()
-  const { campaignId, dayjs } = useMeta()
-  const { currentAccount } = useWeb3()
-  const { locale } = React.useContext(IntlContext)
-  const { data } = useQuery<GetContributionsResponse>([
-    'getContributions',
-    {
-      perPage: 255,
-      page: 1,
-      contributor: currentAccount.address,
-      campaignId,
-    },
-  ])
-  const tableData = React.useMemo(() => {
-    if (!data?.contributions) {
-      return null
-    }
-    const ret = data?.contributions
-    ret.forEach((i) => {
-      i.time = dayjs(i.timestamp).locale(locale).format('lll')
-      Object.keys(i).forEach((ii) => {
-        if (typeof i[ii] === 'number') {
-          i[ii] ||= '0'
-        } else {
-          i[ii] ||= '-'
-        }
-      })
-    })
-    return ret
-  }, [data?.contributions])
-  return (
-    <Table data={tableData} className="Table">
-      <Table.Column prop="time" label={t('time')} />
-      <Table.Column prop="amount" label={t('yourContribute')} />
-      <Table.Column prop="rewardAmount" label={t('yourReward')} />
-    </Table>
-  )
-}
 
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
@@ -267,7 +237,7 @@ const StakeInfoSection: React.FC = () => {
   const listModal = useModal()
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
-
+  const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
     return {
       tooltip: {
@@ -374,6 +344,8 @@ const StakeInfoSection: React.FC = () => {
     return ret
   }, [currentContributorQuery?.data?.meta?.latestContributions])
 
+  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+
   return (
     <Section
       className=""
@@ -382,13 +354,13 @@ const StakeInfoSection: React.FC = () => {
       lg={8}
       innerStyle={style__StakeInfoSection}
     >
+      <InvitorInfoDialog modal={invitorInfoDialogModal} />
       <Amount>
         <div className="Amounts">
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              {currentContributorQuery?.data?.contributor?.amount ||
-                (currentAccount ? '0' : '-')}{' '}
+              {contributorAmount || (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">KSM</span>
             </p>
           </div>
@@ -405,64 +377,88 @@ const StakeInfoSection: React.FC = () => {
           </div>
         </div>
         <Inviter>
-          <div className="Item">
-            <span className="Text">{t('participantsIntroduced')}</span>
-            <span className="Number">
-              {currentContributorQuery?.data?.contributor?.referralsCount ||
-                (currentAccount ? '0' : '-')}
-            </span>
-          </div>
-          <div className="Item">
-            <span className="Text">{t('affiliationReward')}</span>
-            <span className="Number">
-              {currentContributorQuery?.data?.contributor
-                ?.promotionRewardAmount || (currentAccount ? '0' : '-')}{' '}
-              PHA
-            </span>
-          </div>
+          {[
+            {
+              name: t('participantsIntroduced'),
+              value: currentContributorQuery?.data?.contributor?.referralsCount,
+              after: '',
+            },
+            {
+              name: t('affiliationReward'),
+              value: currentContributorQuery?.data?.contributor,
+              after: 'PHA',
+            },
+          ].map(({ name, value, after }) => {
+            return (
+              <div className="Item" key={name}>
+                <span className="Text">{name}</span>
+                <AlertIcon
+                  className="Icon"
+                  onClick={() => invitorInfoDialogModal.setVisible(true)}
+                />
+                <span className="Number">
+                  {value || (currentAccount ? '0' : '-')}
+                  {after && ` ${after}`}
+                </span>
+              </div>
+            )
+          })}
         </Inviter>
       </Amount>
 
-      {currentContributorQuery?.data?.contributor?.amount ? (
-        <>
-          <Modal {...listModal.bindings}>
-            <Modal.Content>
-              <ContributionList />
-            </Modal.Content>
-            <Modal.Action passive onClick={() => listModal.setVisible(false)}>
-              {t('close')}
-            </Modal.Action>
-          </Modal>
-          <Detail>
-            <div className="Title">
-              <span>{t('contributeDetails')}</span>
-              <a onClick={() => listModal.setVisible(true)}>
-                {t('more')} <Plus size={9} />
-              </a>
-            </div>
+      <Modal {...listModal.bindings}>
+        <Modal.Content>
+          <ContributionList />
+        </Modal.Content>
+        <Modal.Action passive onClick={() => listModal.setVisible(false)}>
+          {t('close')}
+        </Modal.Action>
+      </Modal>
 
-            <Table data={tableData} className="Table">
-              <Table.Column prop="time" label={t('time')} />
-              <Table.Column prop="amount" label={t('yourContribute')} />
-              <Table.Column prop="rewardAmount" label={t('yourReward')} />
-            </Table>
-          </Detail>
-
-          <SpaceDivider />
-        </>
-      ) : (
-        <NoticeCard>
-          <p>
-            <CloudOff size={32} />
-          </p>
-          <p>{t('noData')}</p>
-          {currentAccount ? null : (
-            <div>
-              <ConnectWallet />
-            </div>
+      <Detail>
+        <div className="Title">
+          <span>{t('contributeDetails')}</span>
+          {contributorAmount > 3 && (
+            <a onClick={() => listModal.setVisible(true)}>
+              <span style={{ marginRight: 5 }}>{t('more')}</span>
+              <svg
+                width="6"
+                height="10"
+                viewBox="0 0 6 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.33325 5L0.333252 10V0L5.33325 5Z"
+                  fill="white"
+                  fillOpacity="0.9"
+                />
+              </svg>
+            </a>
           )}
-        </NoticeCard>
-      )}
+        </div>
+
+        {contributorAmount && (
+          <Table data={tableData} className="Table">
+            <Table.Column prop="time" label={t('time')} />
+            <Table.Column prop="amount" label={t('yourContribute')} />
+            <Table.Column prop="rewardAmount" label={t('yourReward')} />
+          </Table>
+        )}
+
+        {!contributorAmount && (
+          <NoticeCard>
+            <img
+              draggable={false}
+              src="/detail-placeholder.svg"
+              alt="detail-placeholder"
+            />
+            <Spacer y={0.5}></Spacer>
+            {currentAccount && t('noData')}
+            {!currentAccount && <ConnectWallet />}
+          </NoticeCard>
+        )}
+      </Detail>
 
       <Chart>
         <span className="title">{t('rewardVest')}</span>
