@@ -8,15 +8,6 @@ const BgLayerStyle = styled.div`
   background-repeat: no-repeat;
   background-color: transparent;
   position: relative;
-
-  .mask {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    backdrop-filter: blur(6px);
-  }
 `
 
 type Props = {
@@ -34,8 +25,6 @@ const BgLayer: React.FC<Props> = (props) => {
       }}
       className={'bgLayer'}
     >
-      <div className={'mask'}></div>
-
       {children}
     </BgLayerStyle>
   )
