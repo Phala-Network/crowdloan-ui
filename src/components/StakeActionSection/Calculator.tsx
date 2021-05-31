@@ -212,9 +212,14 @@ const Calculator: React.FC<{
     const _contributingReward = parseFloat(
       (ksmAmount * (hasReferrer ? 100.5 : 100)).toFixed(9)
     )
-    setContributingReward(_contributingReward)
+
     return _contributingReward
-  }, [ksmAmount, hasReferrer])
+  }, [ksmAmount, hasReferrer, setContributingReward])
+
+  useEffect(() => {
+    if (contributingReward) setContributingReward(contributingReward)
+  }, [setContributingReward, contributingReward])
+
   const contributingIncome = useMemo(() => {
     if (!(typeof contributingReward === 'number' && phaPrice)) {
       return
