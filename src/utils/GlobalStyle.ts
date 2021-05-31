@@ -26,8 +26,10 @@ const GlobalStyle = createGlobalStyle`
   }
   #geist-ui-modal {
     .content {
-      max-width: 600px;
       z-index: 20001;
+      @media (min-width: 768px) {
+        width: 600px;
+      }
     }
     .backdrop {
       z-index: 20000;
