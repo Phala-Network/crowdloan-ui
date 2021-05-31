@@ -419,9 +419,22 @@ const StakeInfoSection: React.FC = () => {
       <Detail>
         <div className="Title">
           <span>{t('contributeDetails')}</span>
-          {contributorAmount && (
+          {contributorAmount > 3 && (
             <a onClick={() => listModal.setVisible(true)}>
-              {t('more')} <Plus size={9} />
+              <span style={{ marginRight: 5 }}>{t('more')}</span>
+              <svg
+                width="6"
+                height="10"
+                viewBox="0 0 6 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.33325 5L0.333252 10V0L5.33325 5Z"
+                  fill="white"
+                  fillOpacity="0.9"
+                />
+              </svg>
             </a>
           )}
         </div>
