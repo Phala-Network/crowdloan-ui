@@ -28,5 +28,11 @@ module.exports = {
     },
     `gatsby-plugin-styled-jsx`,
     `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ['G-HNBG19MJXJ'],
+      },
+    },
   ],
 }

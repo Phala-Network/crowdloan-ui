@@ -24,7 +24,7 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
     txWaiting,
     referrer,
     tryInvite,
-    txPaymenInfo,
+    txPaymentInfo,
     isLoading,
     setInvitor,
     invitor,
@@ -69,8 +69,8 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
                         {t('ok')}
                       </NormalButton>
                       <div>
-                        {txPaymenInfo
-                          ? `${t('Fee')}: ${txPaymenInfo.partialFee.toHuman()}`
+                        {txPaymentInfo
+                          ? `${t('Fee')}: ${txPaymentInfo.partialFee.toHuman()}`
                           : '...'}
                       </div>
                     </div>

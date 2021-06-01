@@ -215,6 +215,7 @@ const Chart = styled.div`
 
 const NoticeCard = styled.div`
   margin-top: 3px;
+  min-height: 100px;
   flex: 1;
   display: flex;
   flex-flow: column nowrap;

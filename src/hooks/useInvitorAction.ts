@@ -36,7 +36,7 @@ const createReferrerRemarkTx = ({
 export default function useInvitorAction(): {
   referrer: string
   tryInvite: () => Promise<void>
-  txPaymenInfo: any
+  txPaymentInfo: any
   isLoading: boolean
   setInvitor: React.Dispatch<React.SetStateAction<string>>
   invitor: string
@@ -46,7 +46,7 @@ export default function useInvitorAction(): {
   const [invitor, setInvitor] = useState('')
   const { currentAccount, currentInjector } = useWeb3()
   const [, setToast] = useToasts()
-  const [txPaymenInfo, setTxPaymentInfo] = useState(null)
+  const [txPaymentInfo, setTxPaymentInfo] = useState(null)
   const [tx, setTx] = useState(null)
   const [txWaiting, setTxWaiting] = useState(false)
   const [referrerCheck, setReferrerCheck] = useState(false)
@@ -63,10 +63,10 @@ export default function useInvitorAction(): {
 
   // set invitor from url
   useEffect(() => {
-    const { invitor } = queryString.parse(location.search)
+    const { invitor: invitorQueryString } = queryString.parse(location.search)
 
-    if (invitor) {
-      setInvitor(invitor as string)
+    if (invitorQueryString && !invitor) {
+      setInvitor(invitorQueryString as string)
     }
   }, [currentAccount])
 
@@ -164,7 +164,7 @@ export default function useInvitorAction(): {
   return {
     referrer,
     tryInvite,
-    txPaymenInfo,
+    txPaymentInfo,
     isLoading,
     setInvitor,
     invitor,

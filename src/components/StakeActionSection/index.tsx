@@ -262,7 +262,7 @@ const StakeActionSection: React.FC = () => {
   }, [referrer])
 
   const [tx, setTx] = useState(null)
-  const [txPaymenInfo, setTxPaymentInfo] = useState(null)
+  const [txPaymentInfo, setTxPaymentInfo] = useState(null)
   useEffect(() => {
     if (!(api && tx && currentAccount)) {
       setTxPaymentInfo(null)
@@ -451,7 +451,9 @@ const StakeActionSection: React.FC = () => {
             <Divider volume={0} />
             <Description
               title="Estimated Fee"
-              content={txPaymenInfo ? txPaymenInfo.partialFee.toHuman() : '...'}
+              content={
+                txPaymentInfo ? txPaymentInfo.partialFee.toHuman() : '...'
+              }
             />
           </Fieldset.Content>
         </Fieldset>

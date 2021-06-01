@@ -1,12 +1,13 @@
 import React, { useMemo, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Table, Pagination } from '@geist-ui/react'
+import { Pagination } from '@geist-ui/react'
 import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from '@/i18n'
 import { useQuery } from 'react-query'
 import { useMeta } from '@/utils/meta'
 import { GetContributorsResponse } from '@/utils/request'
+import RankTable from './RankTable'
 
 const style__Rank = css`
   background: transparent;
@@ -16,7 +17,6 @@ const style__Rank = css`
 `
 
 const TableWrap = styled.div`
-  min-width: 900px;
   width: 100%;
 
   .Table {
@@ -108,7 +108,6 @@ const RankSection: React.FC = () => {
   const { t } = useI18n()
   const { campaignId, currentContributorQuery, refetchCount } = useMeta()
   const { current: perPage } = useRef(10)
-
   const [page, setPage] = useState(1)
 
   const { data } = useQuery<GetContributorsResponse>(
@@ -146,20 +145,7 @@ const RankSection: React.FC = () => {
   return (
     <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
       <TableWrap>
-        <Table data={chartData} className="Table">
-          <Table.Column prop="rank" label={t('rank')} />
-          <Table.Column prop="address" label={t('KSMAccount')} />
-          <Table.Column prop="amount" label={t('contribute')} />
-          <Table.Column prop="rewardAmount" label={t('contributeReward')} />
-          <Table.Column
-            prop="referralsCount"
-            label={t('participantsIntroduced')}
-          />
-          <Table.Column
-            prop="promotionRewardAmount"
-            label={t('affiliationReward')}
-          />
-        </Table>
+        <RankTable data={chartData}></RankTable>
         <TableFooter>
           <div className="left">
             {t('myRanking')}：{currentContributorQuery.data?.meta?.rank || '-'}
