@@ -70,9 +70,11 @@ const StakeActionInfoWrapper = styled.div`
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 12px;
     line-height: 16px;
+    display: flex;
+    align-items: center;
+
     .tooltip {
       margin-left: 5px;
-      vertical-align: middle;
     }
   }
 
@@ -270,7 +272,7 @@ const Calculator: React.FC<{
   return shouldShowCalculator ? (
     <StakeActionInfoWrapper>
       <div className="Title">
-        {t('calculate')}
+        <div>{t('calculate')}</div>
         <TextTooltip
           text={[
             t('calculatePopInfo1'),
