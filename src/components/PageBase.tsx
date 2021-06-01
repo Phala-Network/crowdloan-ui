@@ -7,7 +7,7 @@ interface PageBaseOptions {
 }
 
 const PageWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   min-height: calc(100vh - 120px);
   padding: 76px 0 42px;
   margin: 0;
