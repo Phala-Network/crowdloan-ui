@@ -6,5 +6,7 @@ export default function useShareLink(): string {
 
   if (!currentAccountAddress) return ''
 
-  return location.href + '?invitor=' + currentAccountAddress
+  return (
+    location.origin + location.pathname + '?invitor=' + currentAccountAddress
+  )
 }

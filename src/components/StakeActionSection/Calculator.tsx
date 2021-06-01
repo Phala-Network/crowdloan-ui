@@ -142,11 +142,19 @@ export const CalculatorContext = createContext(null)
 const Calculator: React.FC<{
   ksmAmountInput: string
   hasReferrer: boolean
-}> = ({ ksmAmountInput, hasReferrer }) => {
+  onChange: ({ referrerRewardAmount: number }) => void
+}> = ({ ksmAmountInput, hasReferrer, onChange }) => {
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
   const contributionChart = campaignQuery?.data?.meta?.contributionChart
   const { setContributingReward } = useContext(CalculatorContext)
+
+  // just for external display
+  const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
+
+  useEffect(() => {
+    onChange({ referrerRewardAmount })
+  }, [referrerRewardAmount])
 
   const auctionAmount = useMemo(() => {
     return contributionChart
@@ -205,16 +213,17 @@ const Calculator: React.FC<{
   }, [ksmApyInput])
 
   const contributingReward = useMemo(() => {
-    if (!ksmAmount) {
-      return
-    }
+    if (!ksmAmount) return
 
-    const _contributingReward = parseFloat(
-      (ksmAmount * (hasReferrer ? 100.5 : 100)).toFixed(9)
-    )
+    const normalRewardAmount = ksmAmount * 100
+    const referrerRewardAmount = hasReferrer ? ksmAmount * 0.5 : 0
 
-    return _contributingReward
-  }, [ksmAmount, hasReferrer, setContributingReward])
+    return parseFloat((normalRewardAmount + referrerRewardAmount).toFixed(9))
+  }, [ksmAmount, hasReferrer])
+
+  useEffect(() => {
+    if (ksmAmount) setReferrerRewardAmount(ksmAmount * 0.5)
+  }, [ksmAmount])
 
   useEffect(() => {
     if (contributingReward) setContributingReward(contributingReward)

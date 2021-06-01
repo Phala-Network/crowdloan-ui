@@ -37,7 +37,7 @@
   "stakingIncome": "Staking Income",
   "moreIncome": "More Income than Staking",
   "introducer": "Invitor",
-  "fillIntroducer": "Fill in the introducer to get xPHA additional reward",
+  "fillIntroducer": "Fill in the introducer to get %d PHA additional reward",
   "yourTotalReward": "Your Total Reward",
   "participantsIntroduced": "Participants Introduced",
   "affiliationReward": "Affiliation Reward",
