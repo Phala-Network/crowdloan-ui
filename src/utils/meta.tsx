@@ -39,7 +39,9 @@ export const MetaContext = createContext<AppMeta>(null)
 export const useMeta = (): AppMeta => useContext(MetaContext)
 
 const _MetaProvider: React.FC = ({ children }) => {
-  const { current: campaignId } = React.useRef(process.env.CAMPAIGN_ID)
+  const { current: campaignId } = React.useRef(
+    parseFloat(process.env.CAMPAIGN_ID)
+  )
   const { currentAccount } = useWeb3()
 
   const [refetchCount, setRefetchCount] = useState(0)
