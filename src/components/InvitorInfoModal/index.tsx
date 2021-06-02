@@ -35,16 +35,17 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
     referrerCheck,
   } = useInvitorAction()
   const isXS = useMediaQuery({ maxWidth: 760 })
+  const isLogin = !!currentAccount
 
   const content = isLoading ? (
     <Loading></Loading>
   ) : (
     <>
       <Modal.Content>
-        {isXS && <Medal></Medal>}
+        {isXS && !isLogin && <Medal></Medal>}
         <div>{t('affiliationRewardText')}</div>
 
-        {currentAccount && (
+        {isLogin && (
           <div>
             <Spacer y={1}></Spacer>
             <div style={{ marginBottom: 6 }}>{t('yourIntroducer')}</div>
@@ -81,7 +82,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
           </div>
         )}
       </Modal.Content>
-      {!currentAccount && (
+      {!isLogin && (
         <div style={{ textAlign: isXS ? 'center' : 'right', marginTop: 20 }}>
           <NormalButton
             auto
