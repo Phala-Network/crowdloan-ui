@@ -491,7 +491,7 @@ const StakeActionSection: React.FC = () => {
           />
 
           <div className="InputPostfix">
-            {balance && balance.toNumber() !== 0 && (
+            {balance && balance.toString() !== '0' && (
               <span className="Label" onClick={setMaxStakeNumber}>
                 {t('max')}
               </span>
