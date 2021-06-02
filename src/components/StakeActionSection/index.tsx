@@ -11,6 +11,7 @@ import {
   Fieldset,
   Divider,
   Description,
+  Spacer,
 } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
@@ -28,6 +29,9 @@ import useCheckEndBlock from './useCheckEndBlock'
 import Calculator from './Calculator'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
 import Referrer from './Referrer'
+import ModalTitle from '@/components/ModalTitle'
+import NormalButton from '@/components/NormalButton'
+import ModalActions from '@/components/ModalActions'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -416,7 +420,9 @@ const StakeActionSection: React.FC = () => {
       <InvitorInfoModal modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
-        <Modal.Title>{t('transactionConfirmationTitle')}</Modal.Title>
+        <ModalTitle {...confirmModal.bindings}>
+          {t('transactionConfirmationTitle')}
+        </ModalTitle>
         <Modal.Subtitle></Modal.Subtitle>
         <Fieldset>
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
@@ -457,20 +463,27 @@ const StakeActionSection: React.FC = () => {
             />
           </Fieldset.Content>
         </Fieldset>
-        <Modal.Action
-          passive
-          disabled={txWaiting}
-          onClick={txWaiting ? undefined : () => confirmModal.setVisible(false)}
-        >
-          {t('cancel')}
-        </Modal.Action>
-        <Modal.Action
-          loading={txWaiting}
-          disabled={txWaiting}
-          onClick={txWaiting ? undefined : trySubmitTx}
-        >
-          {t('ok')}
-        </Modal.Action>
+        <ModalActions>
+          <NormalButton
+            auto
+            disabled={txWaiting}
+            onClick={
+              txWaiting ? undefined : () => confirmModal.setVisible(false)
+            }
+          >
+            {t('cancel')}
+          </NormalButton>
+          <Spacer x={0.5}></Spacer>
+          <NormalButton
+            auto
+            primary
+            loading={txWaiting}
+            disabled={txWaiting}
+            onClick={txWaiting ? undefined : trySubmitTx}
+          >
+            {t('ok')}
+          </NormalButton>
+        </ModalActions>
       </Modal>
 
       <StakeActionInputWrapper>

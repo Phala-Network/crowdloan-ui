@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 const Wrap = styled.div`
   margin-top: 20px;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const ModalActions: React.FC = (props) => {

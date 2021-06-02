@@ -32,7 +32,7 @@ const NormalButton: React.FC<Props> = (props) => {
 
   return (
     <ButtonWrap
-      color={primary ? 'rgb(209, 255, 82)' : '#222222'}
+      color={primary ? 'rgb(209, 255, 82)' : 'rgba(255, 255, 255, 0.5)'}
       effect={false}
       {...others}
     >
