@@ -9,7 +9,7 @@ import { AccountModal } from '@/utils/web3/common'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import MobileMenu from './MobileMenu'
 import { useMediaQuery } from 'react-responsive'
-import InvitorInfoModal from '../InvitorInfoModal'
+import InvitorInfoModal from '@/components/InvitorInfoModal'
 
 const Logo = styled.img`
   height: 40px;
@@ -117,7 +117,10 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     logo = '/logo.svg',
     hasAffiliationProgramLink = true,
   } = props
-  const showMobileMenu = useMediaQuery({ minWidth: 0, maxWidth: 900 })
+  const showMobileMenuByMediaQuery = useMediaQuery({
+    minWidth: 0,
+    maxWidth: 900,
+  })
   const invitorInfoDialogModal = useModal()
 
   const aboutKhalaLink = (
@@ -167,7 +170,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
       <InvitorInfoModal modal={invitorInfoDialogModal} />
       <NavbarWrapper>
         <Logo src={logo} />
-        {!showMobileMenu && (
+        {!showMobileMenuByMediaQuery && (
           <Menu color={color}>
             <li>{aboutKhalaLink}</li>
             <li>{learnSlotAuctionLink}</li>
@@ -190,8 +193,8 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             hasAffiliationProgramLink ? affiliationProgram : null,
             ...createLocalLinks('div'),
           ]}
-          show={showMobileMenu}
-        ></MobileMenu>
+          show={showMobileMenuByMediaQuery}
+        />
       </NavbarWrapper>
     </>
   )
