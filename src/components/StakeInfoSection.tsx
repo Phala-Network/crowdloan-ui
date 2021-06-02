@@ -11,7 +11,7 @@ import { ConnectWallet } from '@/components/ConnectWallet'
 import useReleasingData from '@/hooks/useReleasingData'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 import AlertIcon from '@/components/AlertIcon'
-import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
 
 const style__StakeInfoSection = css`

@@ -26,7 +26,7 @@ import StakeSuccessModal from '@/components/StakeSuccessModal'
 import queryString from 'query-string'
 import useCheckEndBlock from './useCheckEndBlock'
 import Calculator from './Calculator'
-import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import InvitorInfoModal from '@/components/InvitorInfoModal'
 import Referrer from './Referrer'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
@@ -413,7 +413,7 @@ const StakeActionSection: React.FC = () => {
       innerStyle={style__StakeActionSection}
     >
       <StakeSuccessModal modalProps={{ ...stakeSuccessModal.bindings }} />
-      <InvitorInfoDialog modal={invitorInfoDialogModal} />
+      <InvitorInfoModal modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
         <Modal.Title>{t('transactionConfirmationTitle')}</Modal.Title>

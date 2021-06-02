@@ -9,7 +9,7 @@ import { AccountModal } from '@/utils/web3/common'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import MobileMenu from './MobileMenu'
 import { useMediaQuery } from 'react-responsive'
-import InvitorInfoDialog from '../InvitorInfoDialog'
+import InvitorInfoModal from '../InvitorInfoModal'
 
 const Logo = styled.img`
   height: 40px;
@@ -164,7 +164,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   return (
     <>
       <AccountModal {...modalBindings} />
-      <InvitorInfoDialog modal={invitorInfoDialogModal} />
+      <InvitorInfoModal modal={invitorInfoDialogModal} />
       <NavbarWrapper>
         <Logo src={logo} />
         {!showMobileMenu && (

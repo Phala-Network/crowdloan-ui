@@ -12,12 +12,15 @@ import ReactDOM from 'react-dom'
 import { useI18n } from '@/i18n'
 import NormalButton from '@/components/NormalButton'
 import useInvitorAction from '@/hooks/useInvitorAction'
+import NormalModal from './NormalModal'
+import MobileModal from './MobileModal'
+import { useMediaQuery } from 'react-responsive'
 
 type Props = {
   modal: ReturnType<typeof useModal>
 }
 
-const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
+const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
   const { openModal, currentAccount } = useWeb3()
   const { t } = useI18n()
   const {
@@ -30,21 +33,12 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
     invitor,
     referrerCheck,
   } = useInvitorAction()
+  const isXS = useMediaQuery({ maxWidth: 760 })
 
-  if (isLoading) {
-    return (
-      <Modal {...modal.bindings}>
-        <Modal.Title>{t('affiliationReward')}</Modal.Title>
-        <Modal.Content>
-          <Loading></Loading>
-        </Modal.Content>
-      </Modal>
-    )
-  }
-
-  const modalComponent = (
-    <Modal {...modal.bindings}>
-      <Modal.Title>{t('affiliationReward')}</Modal.Title>
+  const content = isLoading ? (
+    <Loading></Loading>
+  ) : (
+    <>
       <Modal.Content>
         <div>{t('affiliationRewardText')}</div>
 
@@ -65,7 +59,11 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
                   <>
                     <Spacer x={1}></Spacer>
                     <div>
-                      <NormalButton loading={txWaiting} onClick={tryInvite}>
+                      <NormalButton
+                        primary
+                        loading={txWaiting}
+                        onClick={tryInvite}
+                      >
                         {t('ok')}
                       </NormalButton>
                       <div>
@@ -82,28 +80,26 @@ const InvitorInfoDialog: React.FC<Props> = ({ modal }) => {
         )}
       </Modal.Content>
       {!currentAccount && (
-        <Modal.Action
-          onClick={() => {
-            openModal()
-            modal.setVisible(false)
-          }}
-        >
-          {t('connectWallet')}
-        </Modal.Action>
+        <div style={{ textAlign: 'right', marginTop: 20 }}>
+          <NormalButton
+            auto
+            primary
+            onClick={() => {
+              openModal()
+              modal.setVisible(false)
+            }}
+          >
+            {t('connectWallet')}
+          </NormalButton>
+        </div>
       )}
-      {currentAccount && (
-        <Modal.Action
-          onClick={() => {
-            modal.setVisible(false)
-          }}
-        >
-          {t('ok')}
-        </Modal.Action>
-      )}
-    </Modal>
+    </>
   )
 
-  return ReactDOM.createPortal(modalComponent, document.body)
+  return ReactDOM.createPortal(
+    React.createElement(isXS ? MobileModal : NormalModal, { modal }, content),
+    document.body
+  )
 }
 
-export default InvitorInfoDialog
+export default InvitorInfoModal
