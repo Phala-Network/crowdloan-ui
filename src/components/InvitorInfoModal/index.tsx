@@ -15,6 +15,7 @@ import useInvitorAction from '@/hooks/useInvitorAction'
 import NormalModal from './NormalModal'
 import MobileModal from './MobileModal'
 import { useMediaQuery } from 'react-responsive'
+import Medal from './Medal'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -40,6 +41,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
   ) : (
     <>
       <Modal.Content>
+        {isXS && <Medal></Medal>}
         <div>{t('affiliationRewardText')}</div>
 
         {currentAccount && (
@@ -80,7 +82,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
         )}
       </Modal.Content>
       {!currentAccount && (
-        <div style={{ textAlign: 'right', marginTop: 20 }}>
+        <div style={{ textAlign: isXS ? 'center' : 'right', marginTop: 20 }}>
           <NormalButton
             auto
             primary
