@@ -10,7 +10,7 @@ import React from 'react'
 import { useWeb3 } from '@/utils/web3'
 import ReactDOM from 'react-dom'
 import { useI18n } from '@/i18n'
-import NormalButton from './NormalButton'
+import NormalButton from '@/components/NormalButton'
 import useInvitorAction from '@/hooks/useInvitorAction'
 
 type Props = {
