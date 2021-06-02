@@ -1,7 +1,6 @@
 import React from 'react'
 import { useWeb3 } from '@/utils/web3'
-import { Divider, Modal } from '@geist-ui/react'
-import { ModalProps } from '@geist-ui/react/dist/modal/modal'
+import { Divider, Modal, useModal } from '@geist-ui/react'
 import styled from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useIntl } from 'gatsby-plugin-intl'
@@ -9,9 +8,12 @@ import { useQuery } from 'react-query'
 import { GetContributionsResponse } from '@/utils/request/types'
 import { useMeta } from '@/utils/meta'
 import useTwitterLink from '@/hooks/useTwitterLink'
+import ModalTitle from '@/components/ModalTitle'
+import NormalButton from '@/components/NormalButton'
+import ModalActions from '@/components/ModalActions'
 
 type Props = {
-  modalProps: Partial<ModalProps>
+  modalProps: ReturnType<typeof useModal>
   blockId?: string
 }
 
@@ -45,8 +47,8 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
   const link = `https://kusama.subscan.io/block/${blockId}`
 
   return (
-    <Modal {...modalProps}>
-      <Modal.Title>{t('success')}</Modal.Title>
+    <Modal {...modalProps.bindings}>
+      <ModalTitle {...modalProps.bindings}>{t('success')}</ModalTitle>
       <Modal.Content>
         {locale === 'zh' && (
           <div>
@@ -80,9 +82,11 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
           </div>
         )}
       </Modal.Content>
-      <Modal.Action passive onClick={modalProps.onClose}>
-        {t('ok')}
-      </Modal.Action>
+      <ModalActions>
+        <NormalButton primary auto onClick={() => modalProps.setVisible(false)}>
+          {t('ok')}
+        </NormalButton>
+      </ModalActions>
     </Modal>
   )
 }

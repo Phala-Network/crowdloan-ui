@@ -416,7 +416,7 @@ const StakeActionSection: React.FC = () => {
       lg={8}
       innerStyle={style__StakeActionSection}
     >
-      <StakeSuccessModal modalProps={{ ...stakeSuccessModal.bindings }} />
+      <StakeSuccessModal modalProps={stakeSuccessModal} />
       <InvitorInfoModal modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
