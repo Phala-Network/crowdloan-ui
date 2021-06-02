@@ -1,5 +1,5 @@
-import { useModal } from '@geist-ui/react'
-import React from 'react'
+import { useBodyScroll, useModal } from '@geist-ui/react'
+import React, { useEffect } from 'react'
 import { useI18n } from '@/i18n'
 import styled from 'styled-components'
 
@@ -36,8 +36,14 @@ const ModalContent = styled.div`
 const MobileModal: React.FC<Props> = (props) => {
   const { modal, children } = props
   const { t } = useI18n()
+  const [, setHidden] = useBodyScroll()
+  const modalIsOpen = modal?.bindings?.open
 
-  if (!modal?.bindings?.open) return null
+  useEffect(() => {
+    setHidden(modalIsOpen)
+  }, [modalIsOpen])
+
+  if (!modalIsOpen) return null
 
   return (
     <Modal>
