@@ -108,6 +108,26 @@ export type NavbarProps = {
   hasAffiliationProgramLink?: boolean
 }
 
+const AffiliationProgram = ({
+  setIsOpened = (b) => b,
+  color,
+  invitorInfoDialogModal,
+}) => {
+  const { t } = useI18n()
+
+  return (
+    <div
+      style={{ color, cursor: 'pointer' }}
+      onClick={() => {
+        invitorInfoDialogModal.setVisible(true)
+        setIsOpened?.(false)
+      }}
+    >
+      {t('affiliationProgram')}
+    </div>
+  )
+}
+
 const Navbar: React.FC<NavbarProps> = (props) => {
   const { t } = useI18n()
   const { locale } = useContext(IntlContext)
@@ -142,12 +162,10 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   )
 
   const affiliationProgram = (
-    <div
-      style={{ color, cursor: 'pointer' }}
-      onClick={() => invitorInfoDialogModal.setVisible(true)}
-    >
-      {t('affiliationProgram')}
-    </div>
+    <AffiliationProgram
+      color={color}
+      invitorInfoDialogModal={invitorInfoDialogModal}
+    ></AffiliationProgram>
   )
 
   const createLocalLinks = (NodeType: string) =>
