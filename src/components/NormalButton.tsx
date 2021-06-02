@@ -23,12 +23,19 @@ const ButtonWrap = styled(Button)`
   }
 `
 
-type Props = React.ComponentProps<typeof Button>
+type Props = React.ComponentProps<typeof Button> & {
+  primary?: boolean
+}
 
 const NormalButton: React.FC<Props> = (props) => {
-  const { children, ...others } = props
+  const { children, primary, ...others } = props
+
   return (
-    <ButtonWrap color="rgb(209, 255, 82)" {...others} effect={false}>
+    <ButtonWrap
+      color={primary ? 'rgb(209, 255, 82)' : '#222222'}
+      effect={false}
+      {...others}
+    >
       {children}
     </ButtonWrap>
   )
