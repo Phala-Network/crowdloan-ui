@@ -1,6 +1,6 @@
-import { Button, Spacer, Tooltip } from '@geist-ui/react'
+import { Button, Spacer, Tooltip, useBodyScroll } from '@geist-ui/react'
 import { TooltipProps } from '@geist-ui/react/dist/tooltip/tooltip'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import AlertIcon from '@/components/AlertIcon'
 import Backdrop from '@/components/Backdrop'
@@ -34,6 +34,11 @@ const TextTooltip: React.FC<Props> = (props) => {
   const { text = [], ...others } = props
   const [visible, setVisible] = useState(false)
   const isXS = useMediaQuery({ minWidth: 640 })
+  const [, setHidden] = useBodyScroll()
+
+  useEffect(() => {
+    setHidden(visible)
+  }, [visible])
 
   const content = (
     <div>
