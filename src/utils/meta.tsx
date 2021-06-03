@@ -35,7 +35,7 @@ export type AppMeta = {
   refetchCount: number
 }
 
-console.warn('process.env', process.env)
+console.warn('process.env', process.env.REACT_APP_CAMPAIGN_ID)
 
 export const MetaContext = createContext<AppMeta>(null)
 export const useMeta = (): AppMeta => useContext(MetaContext)
