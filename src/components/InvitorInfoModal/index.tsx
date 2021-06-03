@@ -1,11 +1,4 @@
-import {
-  Container,
-  Input,
-  Loading,
-  Modal,
-  Spacer,
-  useModal,
-} from '@geist-ui/react'
+import { Input, Loading, Modal, Spacer, useModal } from '@geist-ui/react'
 import React from 'react'
 import { useWeb3 } from '@/utils/web3'
 import ReactDOM from 'react-dom'
@@ -53,7 +46,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
             {referrer && <div>{referrer}</div>}
             {!referrer && (
               <>
-                <Container>
+                <div style={{ display: !isXS ? 'flex' : 'block' }}>
                   <Input
                     onChange={(e) => setInvitor(e.target.value)}
                     value={invitor}
@@ -64,7 +57,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
                   />
                   {referrerCheck && (
                     <>
-                      <Spacer x={1}></Spacer>
+                      <Spacer x={0.6}></Spacer>
                       <div>
                         <NormalButton
                           primary
@@ -83,7 +76,8 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
                       </div>
                     </>
                   )}
-                </Container>
+                </div>
+                <Spacer y={1}></Spacer>
                 <ContributorInfo />
               </>
             )}
