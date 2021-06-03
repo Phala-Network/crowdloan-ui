@@ -11,7 +11,7 @@ import {
   InjectedAccountWithMeta,
   InjectedExtension,
 } from '@polkadot/extension-inject/types'
-import { web3FromSource } from '@polkadot/extension-dapp'
+import { web3Accounts, web3FromSource } from '@polkadot/extension-dapp'
 import {
   isWeb3Injected,
   web3AccountsSubscribe,
@@ -67,6 +67,10 @@ const _Web3Provider: React.FC<{
         const _extensions = await web3Enable(POLKADOT_WEB3_APP_NAME)
 
         console.warn('_extensions', _extensions)
+
+        web3Accounts().then((accounts) => {
+          console.warn('allAccounts', accounts)
+        })
 
         if (_extensions.length > 0) {
           setIsEnabled(true)
