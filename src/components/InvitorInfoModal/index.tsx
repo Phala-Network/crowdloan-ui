@@ -16,6 +16,7 @@ import NormalModal from './NormalModal'
 import MobileModal from './MobileModal'
 import { useMediaQuery } from 'react-responsive'
 import Medal from './Medal'
+import ContributorInfo from './ContributorInfo'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -41,7 +42,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
     <Loading></Loading>
   ) : (
     <>
-      <Modal.Content>
+      <Modal.Content style={{ fontSize: 14 }}>
         {isXS && !isLogin && <Medal></Medal>}
         <div>{t('affiliationRewardText')}</div>
 
@@ -51,33 +52,40 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
             <div style={{ marginBottom: 6 }}>{t('yourIntroducer')}</div>
             {referrer && <div>{referrer}</div>}
             {!referrer && (
-              <Container>
-                <Input
-                  onChange={(e) => setInvitor(e.target.value)}
-                  value={invitor}
-                  width="100%"
-                  placeholder={t('Fill_in_the_introducer_to_get_extra_rewards')}
-                />
-                {referrerCheck && (
-                  <>
-                    <Spacer x={1}></Spacer>
-                    <div>
-                      <NormalButton
-                        primary
-                        loading={txWaiting}
-                        onClick={tryInvite}
-                      >
-                        {t('ok')}
-                      </NormalButton>
+              <>
+                <Container>
+                  <Input
+                    onChange={(e) => setInvitor(e.target.value)}
+                    value={invitor}
+                    width="100%"
+                    placeholder={t(
+                      'Fill_in_the_introducer_to_get_extra_rewards'
+                    )}
+                  />
+                  {referrerCheck && (
+                    <>
+                      <Spacer x={1}></Spacer>
                       <div>
-                        {txPaymentInfo
-                          ? `${t('Fee')}: ${txPaymentInfo.partialFee.toHuman()}`
-                          : '...'}
+                        <NormalButton
+                          primary
+                          loading={txWaiting}
+                          onClick={tryInvite}
+                        >
+                          {t('ok')}
+                        </NormalButton>
+                        <div>
+                          {txPaymentInfo
+                            ? `${t(
+                                'Fee'
+                              )}: ${txPaymentInfo.partialFee.toHuman()}`
+                            : '...'}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
-              </Container>
+                    </>
+                  )}
+                </Container>
+                <ContributorInfo />
+              </>
             )}
           </div>
         )}
