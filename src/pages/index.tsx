@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import styled, { createGlobalStyle } from 'styled-components'
 import PageBase from '@/components/PageBase'
 import { Grid, Loading } from '@geist-ui/react'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import StakeActionSection from '@/components/StakeActionSection'
 import StakeInfoSection from '@/components/StakeInfoSection'
 import RankSection from '@/components/RankSection'
@@ -13,9 +13,6 @@ import Announcement from '@/components/Announcement'
 import Milestones from '@/components/Milestones'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 import { Helmet } from 'react-helmet'
-import VConsole from 'vconsole'
-
-new VConsole()
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -58,6 +55,9 @@ const CalculatorContextProvider: React.FC = (props) => {
 }
 
 const _Home: React.FC = () => {
+  useEffect(() => {
+    import('vconsole').then((VConsole) => new VConsole.default())
+  }, [])
   const {
     campaignQuery: { data },
   } = useMeta()
