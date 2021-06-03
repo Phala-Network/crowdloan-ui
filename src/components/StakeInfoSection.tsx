@@ -11,8 +11,9 @@ import { ConnectWallet } from '@/components/ConnectWallet'
 import useReleasingData from '@/hooks/useReleasingData'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 import AlertIcon from '@/components/AlertIcon'
-import InvitorInfoDialog from '@/components/InvitorInfoDialog'
+import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
+import ModalTitle from '@/components/ModalTitle'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -386,7 +387,7 @@ const StakeInfoSection: React.FC = () => {
             },
             {
               name: t('affiliationReward'),
-              value: currentContributorQuery?.data?.contributor,
+              value: currentContributorQuery?.data?.contributor?.rewardAmount,
               after: 'PHA',
             },
           ].map(({ name, value, after }) => {
@@ -408,12 +409,12 @@ const StakeInfoSection: React.FC = () => {
       </Amount>
 
       <Modal {...listModal.bindings}>
+        <ModalTitle {...listModal.bindings}>
+          {t('contributeDetails')}
+        </ModalTitle>
         <Modal.Content>
           <ContributionList />
         </Modal.Content>
-        <Modal.Action passive onClick={() => listModal.setVisible(false)}>
-          {t('close')}
-        </Modal.Action>
       </Modal>
 
       <Detail>

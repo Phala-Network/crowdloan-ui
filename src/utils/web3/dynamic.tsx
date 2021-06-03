@@ -11,7 +11,7 @@ import {
   InjectedAccountWithMeta,
   InjectedExtension,
 } from '@polkadot/extension-inject/types'
-import { web3FromSource } from '@polkadot/extension-dapp'
+import { web3Accounts, web3FromSource } from '@polkadot/extension-dapp'
 import {
   isWeb3Injected,
   web3AccountsSubscribe,
@@ -65,24 +65,27 @@ const _Web3Provider: React.FC<{
     if (!isEnabled) {
       ;(async () => {
         const _extensions = await web3Enable(POLKADOT_WEB3_APP_NAME)
+
         if (_extensions.length > 0) {
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
-            const lastLoginAccount = injectedAccounts.find(
-              (item) => item.address === currentAccountLocal?.address
-            )
-
-            setCurrentAccount(lastLoginAccount)
-            setAccounts(injectedAccounts)
-          })
+          web3Accounts().then(setAccounts)
+          unsubscribe = await web3AccountsSubscribe(setAccounts)
         }
       })()
     }
 
-    return () => unsubscribe && unsubscribe()
+    return () => unsubscribe?.()
   }, [enableCount])
+
+  useEffect(() => {
+    const lastLoginAccount = accounts.find(
+      (item) => item.address === currentAccountLocal?.address
+    )
+
+    setCurrentAccount(lastLoginAccount)
+  }, [accounts])
 
   useEffect(() => {
     ;(async () => {

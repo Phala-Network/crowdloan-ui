@@ -70,10 +70,8 @@ const StakeActionInfoWrapper = styled.div`
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 12px;
     line-height: 16px;
-    .tooltip {
-      margin-left: 5px;
-      vertical-align: middle;
-    }
+    display: flex;
+    align-items: center;
   }
 
   & .Rate {
@@ -270,8 +268,9 @@ const Calculator: React.FC<{
   return shouldShowCalculator ? (
     <StakeActionInfoWrapper>
       <div className="Title">
-        {t('calculate')}
+        <div>{t('calculate')}</div>
         <TextTooltip
+          style={{ marginLeft: 5 }}
           text={[
             t('calculatePopInfo1'),
             t('calculatePopInfo2'),

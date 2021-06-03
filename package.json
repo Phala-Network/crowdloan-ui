@@ -52,6 +52,7 @@
     "scroll-into-view-if-needed": "^2.2.28",
     "styled-components": "^5.2.3",
     "styled-jsx": "^3.4.4",
+    "vconsole": "^3.7.0",
     "yarn": "^1.22.10"
   },
   "scripts": {

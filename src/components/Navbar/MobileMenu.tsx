@@ -79,7 +79,7 @@ const ConnectButton = styled.div<{ color: string }>`
 type Props = {
   color?: string
   show?: boolean
-  items?: React.ReactNode[]
+  items?: JSX.Element[]
 }
 
 const MobileMenu: React.FC<Props> = (props) => {
@@ -118,7 +118,7 @@ const MobileMenu: React.FC<Props> = (props) => {
               {items.map((item, index) => {
                 return item ? (
                   <MenuItem key={index}>
-                    {item}
+                    {React.cloneElement(item, { setIsOpened })}
                     <ArrowIcon></ArrowIcon>
                   </MenuItem>
                 ) : null
