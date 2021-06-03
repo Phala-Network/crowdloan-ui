@@ -35,15 +35,12 @@ export type AppMeta = {
   refetchCount: number
 }
 
-console.warn('process.env', process.env.REACT_APP_CAMPAIGN_ID)
-console.warn('process.env', process.env.BRANCH)
-
 export const MetaContext = createContext<AppMeta>(null)
 export const useMeta = (): AppMeta => useContext(MetaContext)
 
 const _MetaProvider: React.FC = ({ children }) => {
   const { current: campaignId } = React.useRef(
-    parseFloat(process.env.REACT_APP_CAMPAIGN_ID)
+    parseFloat(process.env.GATSBY_CAMPAIGN_ID)
   )
   const { currentAccount } = useWeb3()
 
