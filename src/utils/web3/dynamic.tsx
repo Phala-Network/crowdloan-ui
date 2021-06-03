@@ -66,14 +66,11 @@ const _Web3Provider: React.FC<{
       ;(async () => {
         const _extensions = await web3Enable(POLKADOT_WEB3_APP_NAME)
 
-        console.warn('_extensions', _extensions)
-
-        web3Accounts().then(setAccounts)
-
         if (_extensions.length > 0) {
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
+          web3Accounts().then(setAccounts)
           unsubscribe = await web3AccountsSubscribe(setAccounts)
         }
       })()
