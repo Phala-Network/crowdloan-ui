@@ -68,30 +68,27 @@ const _Web3Provider: React.FC<{
 
         console.warn('_extensions', _extensions)
 
-        web3Accounts().then((accounts) => {
-          console.warn('allAccounts', accounts)
-        })
+        web3Accounts().then(setAccounts)
 
         if (_extensions.length > 0) {
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
-            console.warn('injectedAccounts', injectedAccounts)
-
-            const lastLoginAccount = injectedAccounts.find(
-              (item) => item.address === currentAccountLocal?.address
-            )
-
-            setCurrentAccount(lastLoginAccount)
-            setAccounts(injectedAccounts)
-          })
+          unsubscribe = await web3AccountsSubscribe(setAccounts)
         }
       })()
     }
 
-    return () => unsubscribe && unsubscribe()
+    return () => unsubscribe?.()
   }, [enableCount])
+
+  useEffect(() => {
+    const lastLoginAccount = accounts.find(
+      (item) => item.address === currentAccountLocal?.address
+    )
+
+    setCurrentAccount(lastLoginAccount)
+  }, [accounts])
 
   useEffect(() => {
     ;(async () => {
