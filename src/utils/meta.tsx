@@ -36,6 +36,7 @@ export type AppMeta = {
 }
 
 console.warn('process.env', process.env.REACT_APP_CAMPAIGN_ID)
+console.warn('process.env', process.env.BRANCH)
 
 export const MetaContext = createContext<AppMeta>(null)
 export const useMeta = (): AppMeta => useContext(MetaContext)
