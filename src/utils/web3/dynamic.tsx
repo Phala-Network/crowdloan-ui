@@ -65,11 +65,16 @@ const _Web3Provider: React.FC<{
     if (!isEnabled) {
       ;(async () => {
         const _extensions = await web3Enable(POLKADOT_WEB3_APP_NAME)
+
+        console.warn('_extensions', _extensions)
+
         if (_extensions.length > 0) {
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
           unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
+            console.warn('injectedAccounts', injectedAccounts)
+
             const lastLoginAccount = injectedAccounts.find(
               (item) => item.address === currentAccountLocal?.address
             )

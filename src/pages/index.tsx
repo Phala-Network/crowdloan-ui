@@ -13,6 +13,9 @@ import Announcement from '@/components/Announcement'
 import Milestones from '@/components/Milestones'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 import { Helmet } from 'react-helmet'
+import VConsole from 'vconsole'
+
+new VConsole()
 
 const StyledContainer = styled(Grid.Container)`
   .item {
