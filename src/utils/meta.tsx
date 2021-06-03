@@ -40,7 +40,7 @@ export const useMeta = (): AppMeta => useContext(MetaContext)
 
 const _MetaProvider: React.FC = ({ children }) => {
   const { current: campaignId } = React.useRef(
-    parseFloat(process.env.CAMPAIGN_ID)
+    parseFloat(process.env.REACT_APP_CAMPAIGN_ID)
   )
   const { currentAccount } = useWeb3()
 
