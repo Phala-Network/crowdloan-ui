@@ -19,6 +19,7 @@ import EmailSubscribeButton from './EmailSubscribeButton'
 import { useI18n } from '@/i18n'
 import { Spacer } from '@geist-ui/react'
 import { Helmet } from 'react-helmet'
+import gtag from '@/utils/gtag'
 
 const Page = styled.div`
   width: 100%;
@@ -72,7 +73,10 @@ const LandingPage: React.FC = () => {
                 <PageHeaderButton
                   color="primary"
                   size="middle"
-                  onClick={() =>
+                  onClick={() => {
+                    gtag('click', {
+                      type: 'Referral Rewards',
+                    })
                     scrollIntoView(
                       document.getElementById('ReferralRewardsCard'),
                       {
@@ -80,7 +84,7 @@ const LandingPage: React.FC = () => {
                         block: 'start',
                       }
                     )
-                  }
+                  }}
                 >
                   {t('landingPageReferralRewards')}
                 </PageHeaderButton>
