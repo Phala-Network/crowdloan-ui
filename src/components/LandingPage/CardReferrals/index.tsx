@@ -16,6 +16,7 @@ import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import InvitorContent from './InvitorContent'
 import { useIntl } from 'gatsby-plugin-intl'
+import gtag from '@/utils/gtag'
 
 const Content = styled.div`
   font-family: Lato;
@@ -62,7 +63,12 @@ const CardReferrals: React.FC = () => {
                 color="black"
                 hasArrowIcon
                 size="middle"
-                onClick={() => openModal()}
+                onClick={() => {
+                  openModal()
+                  gtag('click', {
+                    type: 'Connect Wallet',
+                  })
+                }}
               >
                 {t('referralRewardsConnect')}
               </PageHeaderButton>
@@ -83,7 +89,16 @@ const CardReferrals: React.FC = () => {
               <Spacer y={1}></Spacer>
 
               <Container>
-                <a href={twitterLink} target="_blank" rel="noreferrer">
+                <a
+                  onClick={() => {
+                    gtag('click', {
+                      type: 'Tweet',
+                    })
+                  }}
+                  href={twitterLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <PageHeaderButton color="sp1" size="middle">
                     {t('tweetToTellYourFriend')}
                   </PageHeaderButton>
@@ -97,6 +112,9 @@ const CardReferrals: React.FC = () => {
                     setToast({
                       text: t('copySuccess'),
                       type: 'success',
+                    })
+                    gtag('click', {
+                      type: 'Generate',
                     })
                   }}
                   color="black"

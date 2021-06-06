@@ -65,8 +65,12 @@ export default function useInvitorAction(): {
   useEffect(() => {
     const { invitor: invitorQueryString } = queryString.parse(location.search)
 
-    if (invitorQueryString && !invitor) {
-      setInvitor(invitorQueryString as string)
+    if (
+      invitorQueryString &&
+      typeof invitorQueryString === 'string' &&
+      !invitor
+    ) {
+      setInvitor(invitorQueryString)
     }
   }, [currentAccount])
 

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import PageHeaderButton from '@/components/LandingPage/PageHeaderButton'
 import useInvitorAction from '@/hooks/useInvitorAction'
 import { useI18n } from '@/i18n'
+import gtag from '@/utils/gtag'
 
 const Input = styled.input`
   flex: 1;
@@ -55,6 +56,11 @@ const InvitorContent: React.FC = () => {
       {!referrer && (
         <Container>
           <Input
+            onClick={() => {
+              gtag('click', {
+                type: 'Input Invitor',
+              })
+            }}
             onChange={(e) => setInvitor(e.target.value)}
             value={invitor}
             placeholder="Your Invitor’s Kusama Address"
@@ -64,7 +70,16 @@ const InvitorContent: React.FC = () => {
 
           {referrerCheck && (
             <div>
-              <PageHeaderButton color="sp1" size="middle" onClick={tryInvite}>
+              <PageHeaderButton
+                color="sp1"
+                size="middle"
+                onClick={() => {
+                  tryInvite()
+                  gtag('click', {
+                    type: 'Bond',
+                  })
+                }}
+              >
                 {t('bond')}
               </PageHeaderButton>
               <div>
