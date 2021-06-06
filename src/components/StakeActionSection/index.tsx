@@ -259,8 +259,8 @@ const StakeActionSection: React.FC = () => {
     } else {
       const { invitor } = queryString.parse(location.search)
 
-      if (invitor) {
-        referrerInput.setState(invitor as string)
+      if (typeof invitor === 'string') {
+        referrerInput.setState(invitor)
       }
     }
   }, [referrer])
