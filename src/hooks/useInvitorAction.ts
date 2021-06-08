@@ -159,12 +159,12 @@ export default function useInvitorAction(): {
       setTx(api.tx.utility.batch(txs))
       setReferrerCheck(true)
     } catch (error) {
+      console.error(error)
       setReferrerCheck(false)
       setToast({
         text: 'Invalid referrer.',
         type: 'error',
       })
-      return
     }
   }, [invitor, initialized, api, campaign, currentAccount])
 
