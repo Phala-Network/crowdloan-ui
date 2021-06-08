@@ -56,7 +56,7 @@ export default function useInvitorAction(): {
   const {
     refetch,
     currentContributorQuery,
-    campaignQuery: { data: campaign, isLoading },
+    campaignQuery: { data: campaignData, isLoading },
   } = useMeta()
   const { t } = useI18n()
 
@@ -138,7 +138,7 @@ export default function useInvitorAction(): {
   useEffect(() => {
     const invitorValue = invitor.trim()
 
-    if (!initialized || !invitorValue || !currentAccount) {
+    if (!initialized || !invitorValue || !currentAccount || isLoading) {
       setReferrerCheck(false)
       return
     }
@@ -147,7 +147,7 @@ export default function useInvitorAction(): {
 
     try {
       const referrer = decodeAddress(invitorValue)
-      const paraId = parseInt(campaign.campaign.parachainId)
+      const paraId = parseInt(campaignData.campaign.parachainId)
 
       txs.push(
         createReferrerRemarkTx({
@@ -168,7 +168,7 @@ export default function useInvitorAction(): {
         type: 'error',
       })
     }
-  }, [invitor, initialized, api, campaign, currentAccount])
+  }, [invitor, initialized, api, campaignData, currentAccount, isLoading])
 
   return {
     referrer,
