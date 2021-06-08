@@ -20,6 +20,7 @@ import { useI18n } from '@/i18n'
 import { Spacer } from '@geist-ui/react'
 import { Helmet } from 'react-helmet'
 import gtag from '@/utils/gtag'
+import useSentry from '@/hooks/useSentry'
 
 const Page = styled.div`
   width: 100%;
@@ -40,6 +41,7 @@ const LandingPage: React.FC = () => {
   const color = '#03FFFF'
   const { locale } = useIntl()
   const { t } = useI18n()
+  useSentry()
 
   return (
     <>

@@ -13,6 +13,7 @@ import Announcement from '@/components/Announcement'
 import Milestones from '@/components/Milestones'
 import { CalculatorContext } from '@/components/StakeActionSection/Calculator'
 import { Helmet } from 'react-helmet'
+import useSentry from '@/hooks/useSentry'
 
 const StyledContainer = styled(Grid.Container)`
   .item {
@@ -63,6 +64,8 @@ const _Home: React.FC = () => {
   const {
     campaignQuery: { data },
   } = useMeta()
+  useSentry()
+
   return data ? (
     <CalculatorContextProvider>
       <Helmet>
