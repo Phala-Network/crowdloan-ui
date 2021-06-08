@@ -7,6 +7,7 @@ import { usePolkadotApi } from '@/utils/polkadot'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { ApiPromise } from '@polkadot/api'
 import { useI18n } from '@/i18n'
+import * as Sentry from '@sentry/browser'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -160,6 +161,7 @@ export default function useInvitorAction(): {
       setReferrerCheck(true)
     } catch (error) {
       console.error(error)
+      Sentry.captureException(error)
       setReferrerCheck(false)
       setToast({
         text: 'Invalid referrer.',
