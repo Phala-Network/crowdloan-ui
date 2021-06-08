@@ -165,7 +165,6 @@ export default function useInvitorAction(): {
         text: 'Invalid referrer.',
         type: 'error',
       })
-      return
     }
   }, [invitor, initialized, api, campaign, currentAccount])
 
