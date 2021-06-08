@@ -7,6 +7,7 @@ import { usePolkadotApi } from '@/utils/polkadot'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { ApiPromise } from '@polkadot/api'
 import { useI18n } from '@/i18n'
+import * as Sentry from '@sentry/browser'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -55,7 +56,7 @@ export default function useInvitorAction(): {
   const {
     refetch,
     currentContributorQuery,
-    campaignQuery: { data: campaign, isLoading },
+    campaignQuery: { data: campaignData, isLoading },
   } = useMeta()
   const { t } = useI18n()
 
@@ -137,7 +138,7 @@ export default function useInvitorAction(): {
   useEffect(() => {
     const invitorValue = invitor.trim()
 
-    if (!initialized || !invitorValue || !currentAccount) {
+    if (!initialized || !invitorValue || !currentAccount || isLoading) {
       setReferrerCheck(false)
       return
     }
@@ -146,7 +147,7 @@ export default function useInvitorAction(): {
 
     try {
       const referrer = decodeAddress(invitorValue)
-      const paraId = parseInt(campaign.campaign.parachainId)
+      const paraId = parseInt(campaignData.campaign.parachainId)
 
       txs.push(
         createReferrerRemarkTx({
@@ -160,13 +161,14 @@ export default function useInvitorAction(): {
       setReferrerCheck(true)
     } catch (error) {
       console.error(error)
+      Sentry.captureException(error)
       setReferrerCheck(false)
       setToast({
         text: 'Invalid referrer.',
         type: 'error',
       })
     }
-  }, [invitor, initialized, api, campaign, currentAccount])
+  }, [invitor, initialized, api, campaignData, currentAccount, isLoading])
 
   return {
     referrer,
