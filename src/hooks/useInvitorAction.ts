@@ -137,7 +137,10 @@ export default function useInvitorAction(): {
   useEffect(() => {
     const invitorValue = invitor.trim()
 
-    if (!initialized || !invitorValue) return
+    if (!initialized || !invitorValue || !currentAccount) {
+      setReferrerCheck(false)
+      return
+    }
 
     const txs = []
 
