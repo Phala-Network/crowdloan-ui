@@ -53,7 +53,7 @@ const createReferrerRemarkTx = ({ paraId, api, referrer }) => {
 const style__StakeActionSection = css`
   background: linear-gradient(
       106.53deg,
-      rgba(209, 255, 82, 0.2) 0%,
+      rgba(3, 255, 255, 0.2) 0%,
       rgba(100, 238, 172, 0.2) 100%
     ),
     #222222;
@@ -102,7 +102,7 @@ const StakeActionInputWrapper = styled.div`
     border-radius: 8px;
     word-break: keep-all;
     &:focus-within {
-      box-shadow: inset 0px 0px 0px 1px rgba(209, 255, 82, 0.5);
+      box-shadow: inset 0px 0px 0px 1px rgba(3, 255, 255, 0.5);
     }
   }
 
@@ -117,7 +117,7 @@ const StakeActionInputWrapper = styled.div`
     font-weight: 600;
     background: transparent;
     border: none;
-    caret-color: #03FFFF;
+    caret-color: #03ffff;
     display: block;
     width: 100%;
   }
@@ -130,7 +130,7 @@ const StakeActionInputWrapper = styled.div`
     right: 72px;
     top: 8.5px;
     background: rgba(255, 255, 255, 0.2);
-    color: #03FFFF;
+    color: #03ffff;
     border-radius: 4px;
     margin: 0px 8px;
     font-size: 12px;
@@ -196,7 +196,7 @@ const StakeActionForm = styled.div`
 
   & .ActionBtn.btn {
     height: 56px;
-    background: #03FFFF;
+    background: #03ffff;
     border-radius: 8px;
     font-size: 20px;
     line-height: 28px;
@@ -205,10 +205,10 @@ const StakeActionForm = styled.div`
     width: 100%;
     margin-top: 20px;
     &:focus {
-      background: #03FFFF;
+      background: #03ffff;
     }
     &:hover {
-      background: rgba(209, 255, 82, 0.8);
+      background: rgba(3, 255, 255, 0.8);
     }
     &:disabled,
     &[disabled] {
