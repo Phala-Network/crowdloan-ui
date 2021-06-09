@@ -117,7 +117,7 @@ const StakeActionInputWrapper = styled.div`
     font-weight: 600;
     background: transparent;
     border: none;
-    caret-color: #d1ff52;
+    caret-color: #03FFFF;
     display: block;
     width: 100%;
   }
@@ -130,7 +130,7 @@ const StakeActionInputWrapper = styled.div`
     right: 72px;
     top: 8.5px;
     background: rgba(255, 255, 255, 0.2);
-    color: #d1ff52;
+    color: #03FFFF;
     border-radius: 4px;
     margin: 0px 8px;
     font-size: 12px;
@@ -196,7 +196,7 @@ const StakeActionForm = styled.div`
 
   & .ActionBtn.btn {
     height: 56px;
-    background: #d1ff52;
+    background: #03FFFF;
     border-radius: 8px;
     font-size: 20px;
     line-height: 28px;
@@ -205,7 +205,7 @@ const StakeActionForm = styled.div`
     width: 100%;
     margin-top: 20px;
     &:focus {
-      background: #d1ff52;
+      background: #03FFFF;
     }
     &:hover {
       background: rgba(209, 255, 82, 0.8);

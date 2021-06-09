@@ -133,7 +133,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   const { locale } = useContext(IntlContext)
   const { modalBindings } = useWeb3()
   const {
-    color = '#d1ff52',
+    color = '#03FFFF',
     logo = '/logo.svg',
     hasAffiliationProgramLink = true,
   } = props

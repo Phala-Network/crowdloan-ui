@@ -52,7 +52,7 @@ const Amount = styled.div`
       }
 
       &.Yg {
-        color: #d1ff52;
+        color: #03ffff;
         &::before {
           content: '';
           width: 2px;
@@ -60,7 +60,7 @@ const Amount = styled.div`
           left: 0;
           top: 7.5px;
           position: absolute;
-          background: #d1ff52;
+          background: #03ffff;
         }
       }
 
@@ -300,10 +300,10 @@ const StakeInfoSection: React.FC = () => {
           type: 'line',
           showSymbol: true,
           hoverAnimation: false,
-          lineStyle: { color: '#d1ff52' },
+          lineStyle: { color: '#03FFFF' },
           itemStyle: {
             normal: {
-              color: '#d1ff52',
+              color: '#03FFFF',
               borderColor: 'rgba(255, 255, 255, 0.9)',
               borderWidth: 1,
             },

@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
       color: rgba(255, 255, 255, 0.9);
       a {
         display: inline-box;
-        color: #d1ff52;
+        color: #03FFFF;
         line-height: 16px;
         span {
           vertical-align: middle;
@@ -80,10 +80,10 @@ const GlobalStyle = createGlobalStyle`
         color: rgba(255, 255, 255, 0.9);
       }
       .green {
-        color: #d1ff52;
+        color: #03FFFF;
       }
       a {
-        color: #d1ff52;
+        color: #03FFFF;
         text-decoration-line: underline;
       }
     }
@@ -94,7 +94,7 @@ const GlobalStyle = createGlobalStyle`
         margin-right: 8px;
         display: inline-block;
         padding: 5px 25px;
-        background: #D1FF52;
+        background: #03FFFF;
         border-radius: 4px;
         font-size: 14px;
         line-height: 20px;

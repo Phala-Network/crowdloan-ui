@@ -22,7 +22,7 @@ const MobileContent = styled.div`
   padding: 16px;
 
   a {
-    color: #d1ff52;
+    color: #03ffff;
   }
 `
 

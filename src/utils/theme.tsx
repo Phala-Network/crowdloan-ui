@@ -17,7 +17,7 @@ const breakpoints: GeistUIThemesBreakpoints = {
 }
 
 const _palette = {
-  yg01: '#D1FF52',
+  yg01: '#03FFFF',
   gr01: '#64EEAC',
   re01: '#EB5757',
   bl01: 'rgba(0, 0, 0, .9)',

@@ -60,7 +60,7 @@ const AuctionChart = styled.div`
           left: 0;
           top: 7.5px;
           position: absolute;
-          background: #d1ff52;
+          background: #03ffff;
         }
       }
 
@@ -141,7 +141,7 @@ const AuctionChartSection: React.FC = () => {
         {
           name: 'PHA',
           type: 'line',
-          itemStyle: { color: '#d1ff52' },
+          itemStyle: { color: '#03FFFF' },
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,

@@ -30,7 +30,7 @@ const PageLoadingWrapper = styled.div`
 
 const GlobalStyle = createGlobalStyle`
   ::selection {
-    background: #D1FF52;
+    background: #03FFFF;
     color: #fff;
   }
 `
