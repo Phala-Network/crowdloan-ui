@@ -429,7 +429,7 @@ const StakeInfoSection: React.FC = () => {
         <div className="Title">
           <span>{t('contributeDetails')}</span>
 
-          {latestContributions?.length > 3 && (
+          {latestContributions?.length > 2 && (
             <a onClick={() => listModal.setVisible(true)}>
               <span>{t('more')}</span>
               <MoreIcon />
