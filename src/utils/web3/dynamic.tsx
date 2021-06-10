@@ -17,6 +17,7 @@ import {
   web3AccountsSubscribe,
   web3Enable,
 } from '@polkadot/extension-dapp'
+import polkadotJsAccountFilter from './polkadotJsAccountFilter'
 
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
@@ -70,11 +71,12 @@ const _Web3Provider: React.FC<{
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          web3Accounts().then((accounts) => {
-            console.error('accounts', accounts)
-            setAccounts(accounts)
-          })
-          unsubscribe = await web3AccountsSubscribe(setAccounts)
+          web3Accounts().then((accounts) =>
+            setAccounts(polkadotJsAccountFilter(accounts))
+          )
+          unsubscribe = await web3AccountsSubscribe((accounts) =>
+            setAccounts(polkadotJsAccountFilter(accounts))
+          )
         }
       })()
     }
