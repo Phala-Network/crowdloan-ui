@@ -79,7 +79,7 @@ const _Home: React.FC = () => {
         <StakeActionSection />
         <StakeInfoSection />
         <Grid xs={24} md={24} lg={8}>
-          <StyledContainer gap={1} direction="row">
+          <StyledContainer gap={1.4} direction="row">
             <AuctionChartSection />
             <PriceChartSection />
           </StyledContainer>
