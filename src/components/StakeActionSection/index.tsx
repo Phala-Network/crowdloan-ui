@@ -24,7 +24,6 @@ import { useMeta } from '@/utils/meta'
 import RcInputNumber from 'rc-input-number'
 import AlertIcon from '@/components/AlertIcon'
 import StakeSuccessModal from '@/components/StakeSuccessModal'
-import queryString from 'query-string'
 import useCheckEndBlock from './useCheckEndBlock'
 import Calculator from './Calculator'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
@@ -32,6 +31,7 @@ import Referrer from './Referrer'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
+import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -257,10 +257,10 @@ const StakeActionSection: React.FC = () => {
     if (referrer) {
       referrerInput.setState(referrer)
     } else {
-      const { invitor } = queryString.parse(location.search)
+      const value = getReferralAddressFromURL()
 
-      if (typeof invitor === 'string') {
-        referrerInput.setState(invitor)
+      if (value && !referrer) {
+        referrerInput.setState(value)
       }
     }
   }, [referrer])
