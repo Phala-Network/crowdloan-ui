@@ -162,6 +162,10 @@ const Detail = styled.div`
       }
     }
 
+    .cell {
+      min-height: 2.2rem;
+    }
+
     th {
       background: #222222;
       border: none !important;
@@ -335,6 +339,7 @@ const StakeInfoSection: React.FC = () => {
     return latestContributions?.map((item) => {
       return {
         ...item,
+        amount: item.amount.toFixed(2) + ' KSM',
         time: dayjs(item.timestamp).format('YYYY.MM.DD HH:mm'),
       }
     })
