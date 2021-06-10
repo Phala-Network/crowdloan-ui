@@ -5,7 +5,6 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
-import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import useReleasingData from '@/hooks/useReleasingData'
@@ -235,7 +234,6 @@ const NoticeCard = styled.div`
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
   const { dayjs, currentContributorQuery } = useMeta()
-  const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
   const listModal = useModal()
   const { contributingReward } = React.useContext(CalculatorContext)
@@ -334,21 +332,12 @@ const StakeInfoSection: React.FC = () => {
   const contributorAmount = currentContributorQuery?.data?.contributor?.amount
 
   const tableData = React.useMemo(() => {
-    if (!latestContributions) {
-      return null
-    }
-    const ret = latestContributions
-    ret.forEach((i) => {
-      i.time = dayjs(i.timestamp).locale(locale).format('lll')
-      Object.keys(i).forEach((ii) => {
-        if (typeof i[ii] === 'number') {
-          i[ii] ||= '0'
-        } else {
-          i[ii] ||= '-'
-        }
-      })
+    return latestContributions?.map((item) => {
+      return {
+        ...item,
+        time: dayjs(item.timestamp).format('YYYY.MM.DD HH:mm'),
+      }
     })
-    return ret
   }, [latestContributions])
 
   return (
@@ -432,7 +421,7 @@ const StakeInfoSection: React.FC = () => {
           )}
         </div>
 
-        {contributorAmount && (
+        {contributorAmount && tableData && (
           <Table data={tableData} className="Table">
             <Table.Column prop="time" label={t('time')} />
             <Table.Column prop="amount" label={t('yourContribute')} />
