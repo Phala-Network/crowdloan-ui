@@ -11,13 +11,15 @@ import {
   InjectedAccountWithMeta,
   InjectedExtension,
 } from '@polkadot/extension-inject/types'
-import { web3Accounts, web3FromSource } from '@polkadot/extension-dapp'
 import {
+  web3Accounts,
+  web3FromSource,
   isWeb3Injected,
   web3AccountsSubscribe,
   web3Enable,
 } from '@polkadot/extension-dapp'
 import polkadotJsAccountFilter from './polkadotJsAccountFilter'
+import { Keyring } from '@polkadot/api'
 
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
@@ -71,7 +73,13 @@ const _Web3Provider: React.FC<{
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          web3Accounts().then((accounts) => {
+          web3Accounts().then(async (accounts) => {
+            const keyring = new Keyring()
+
+            accounts.map((item) => keyring.addFromAddress(item.address))
+
+            console.warn('keyring.getPairs()', keyring.getPairs())
+
             return setAccounts(polkadotJsAccountFilter(accounts))
           })
           unsubscribe = await web3AccountsSubscribe((accounts) =>

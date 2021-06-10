@@ -57,9 +57,9 @@ const CalculatorContextProvider: React.FC = (props) => {
 
 const _Home: React.FC = () => {
   // don't delete it, just for test mobile
-  // useEffect(() => {
-  //   import('vconsole').then((VConsole) => new VConsole.default())
-  // }, [])
+  useEffect(() => {
+    import('vconsole').then((VConsole) => new VConsole.default())
+  }, [])
 
   const {
     campaignQuery: { data },
