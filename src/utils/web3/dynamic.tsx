@@ -71,9 +71,10 @@ const _Web3Provider: React.FC<{
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          web3Accounts().then((accounts) =>
-            setAccounts(polkadotJsAccountFilter(accounts))
-          )
+          web3Accounts().then((accounts) => {
+            alert(JSON.stringify(accounts))
+            return setAccounts(polkadotJsAccountFilter(accounts))
+          })
           unsubscribe = await web3AccountsSubscribe((accounts) =>
             setAccounts(polkadotJsAccountFilter(accounts))
           )
