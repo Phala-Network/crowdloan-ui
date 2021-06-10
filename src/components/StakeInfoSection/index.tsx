@@ -351,6 +351,7 @@ const StakeInfoSection: React.FC = () => {
           )
         },
         time: dayjs(item.timestamp).format('YYYY.MM.DD HH:mm'),
+        rewardAmount: item.rewardAmount.toFixed(2) + ' PHA',
       }
     })
   }, [latestContributions])
