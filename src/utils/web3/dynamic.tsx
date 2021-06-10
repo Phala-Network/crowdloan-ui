@@ -85,6 +85,8 @@ const _Web3Provider: React.FC<{
     )
 
     setCurrentAccount(lastLoginAccount)
+
+    console.error('accounts', accounts)
   }, [accounts])
 
   useEffect(() => {
