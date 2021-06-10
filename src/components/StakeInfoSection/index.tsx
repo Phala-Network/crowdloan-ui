@@ -339,7 +339,17 @@ const StakeInfoSection: React.FC = () => {
     return latestContributions?.map((item) => {
       return {
         ...item,
-        amount: item.amount.toFixed(2) + ' KSM',
+        amountWithIcon: (
+          actions: any,
+          rowData: { rowValue: { amount: number } }
+        ) => {
+          return (
+            <>
+              {rowData.rowValue?.amount?.toFixed(2) + ' KSM'}
+              <div className="link-icon"></div>
+            </>
+          )
+        },
         time: dayjs(item.timestamp).format('YYYY.MM.DD HH:mm'),
       }
     })
@@ -429,7 +439,7 @@ const StakeInfoSection: React.FC = () => {
         {contributorAmount && tableData && (
           <Table data={tableData} className="Table">
             <Table.Column prop="time" label={t('time')} />
-            <Table.Column prop="amount" label={t('yourContribute')} />
+            <Table.Column prop="amountWithIcon" label={t('yourContribute')} />
             <Table.Column prop="rewardAmount" label={t('yourReward')} />
           </Table>
         )}
