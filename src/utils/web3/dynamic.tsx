@@ -19,7 +19,16 @@ import {
   web3Enable,
 } from '@polkadot/extension-dapp'
 import polkadotJsAccountFilter from './polkadotJsAccountFilter'
-import { Keyring } from '@polkadot/api'
+import { keyring } from '@polkadot/ui-keyring'
+import { usePolkadotApi } from '../polkadot'
+
+function isKeyringLoaded() {
+  try {
+    return !!keyring.keyring
+  } catch {
+    return false
+  }
+}
 
 const _Web3Provider: React.FC<{
   modal: ReturnType<typeof useModal>
@@ -27,7 +36,7 @@ const _Web3Provider: React.FC<{
   const [isEnabled, setIsEnabled] =
     useState<ExtensionContextValue['isEnabled']>(false)
   const [error, setError] = useState<ExtensionContextValue['error']>()
-
+  const { api, initialized } = usePolkadotApi()
   const [enableCount, setEnableCount] = useState<number>(-1)
   const enable = useCallback(
     () => setEnableCount(enableCount + 1),
@@ -56,7 +65,7 @@ const _Web3Provider: React.FC<{
   }, [])
 
   useEffect(() => {
-    if (enableCount < 0) {
+    if (enableCount < 0 || !initialized) {
       return
     }
     if (!isWeb3Injected) {
@@ -73,13 +82,13 @@ const _Web3Provider: React.FC<{
           setError(undefined)
           setExtensions(_extensions)
           web3Accounts().then(async (accounts) => {
-            const keyring = new Keyring()
+            isKeyringLoaded() ||
+              keyring.loadAll(
+                { genesisHash: api.genesisHash, type: 'ethereum' },
+                accounts
+              )
 
-            accounts.map((item) => keyring.addFromAddress(item.address))
-
-            console.warn('keyring.getPairs()', keyring.getPairs())
-
-            alert(JSON.stringify(keyring.getPairs()))
+            console.log(keyring.getPairs())
 
             return setAccounts(polkadotJsAccountFilter(accounts))
           })
@@ -91,7 +100,7 @@ const _Web3Provider: React.FC<{
     }
 
     return () => unsubscribe?.()
-  }, [enableCount])
+  }, [enableCount, initialized])
 
   useEffect(() => {
     const lastLoginAccount = accounts.find(
