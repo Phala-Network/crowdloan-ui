@@ -9,7 +9,7 @@ export default function useCheckEndBlock(): [
   boolean,
   React.Dispatch<React.SetStateAction<boolean>>
 ] {
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(true)
   const { api, initialized } = usePolkadotApi()
   const { campaignId } = useMeta()
   const { data: campaignData, isLoading: getCampaignIsLoading } =
@@ -23,10 +23,9 @@ export default function useCheckEndBlock(): [
 
     api.rpc.chain
       .subscribeNewHeads((header) => {
-        if (header.number.toNumber() > campaignData.campaign.endBlock) {
-          // disable stake button
-          setDisabled(true)
-        }
+        const result = header.number.toNumber() > campaignData.campaign.endBlock
+
+        setDisabled(result)
       })
       .then((_unsubscribe) => (unsubscribe = _unsubscribe))
 

@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import MilestonesItem from './MilestonesItem'
 import PositionIcon from './PositionIcon'
 import { useMediaQuery } from 'react-responsive'
-import { useMeta } from '../../utils/meta'
+import { useMeta } from '@/utils/meta'
 import { useQuery } from 'react-query'
-import { GetCampaignResponse } from '../../utils/request/types'
+import { GetCampaignResponse } from '@/utils/request/types'
 import dayjs from 'dayjs'
+import useCheckEndBlock from '@/hooks/useCheckEndBlock'
 
 const MilestonesWrap = styled.ul<{ width: number; left: number }>`
   box-sizing: border-box;
@@ -25,6 +26,7 @@ const MilestonesWrap = styled.ul<{ width: number; left: number }>`
 
 const Milestones: React.FC = () => {
   const { campaignId } = useMeta()
+  const [disable] = useCheckEndBlock()
   const { data, isLoading, isError } = useQuery<GetCampaignResponse>([
     'getCampaign',
     { campaignId },
@@ -33,6 +35,9 @@ const Milestones: React.FC = () => {
   const isSM = useMediaQuery({ maxWidth: 960 })
   const isMD = useMediaQuery({ minWidth: 960, maxWidth: 1280 })
   const isLG = useMediaQuery({ minWidth: 1280 })
+
+  if (disable) return null
+
   const today = dayjs(new Date())
 
   if (isSM || isError || isLoading) {
