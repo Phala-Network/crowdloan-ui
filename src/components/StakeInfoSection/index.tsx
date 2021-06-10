@@ -14,6 +14,7 @@ import AlertIcon from '@/components/AlertIcon'
 import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
 import ModalTitle from '@/components/ModalTitle'
+import MoreIcon from './MoreIcon'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -419,23 +420,15 @@ const StakeInfoSection: React.FC = () => {
 
       <Detail>
         <div className="Title">
-          <span>{t('contributeDetails')}</span>
+          <span>
+            {t('contributeDetails')}
+            {contributorAmount}
+          </span>
+
           {contributorAmount > 3 && (
             <a onClick={() => listModal.setVisible(true)}>
-              <span style={{ marginRight: 5 }}>{t('more')}</span>
-              <svg
-                width="6"
-                height="10"
-                viewBox="0 0 6 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.33325 5L0.333252 10V0L5.33325 5Z"
-                  fill="white"
-                  fillOpacity="0.9"
-                />
-              </svg>
+              <span>{t('more')}</span>
+              <MoreIcon />
             </a>
           )}
         </div>
