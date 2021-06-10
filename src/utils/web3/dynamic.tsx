@@ -33,7 +33,6 @@ const _Web3Provider: React.FC<{
     () => setEnableCount(enableCount + 1),
     [enableCount]
   )
-
   const [currentAccount, setCurrentAccount] =
     useState<InjectedAccountWithMeta>()
   const [currentInjector, setCurrentInjector] = useState<InjectedExtension>()
@@ -79,6 +78,8 @@ const _Web3Provider: React.FC<{
             accounts.map((item) => keyring.addFromAddress(item.address))
 
             console.warn('keyring.getPairs()', keyring.getPairs())
+
+            alert(JSON.stringify(keyring.getPairs()))
 
             return setAccounts(polkadotJsAccountFilter(accounts))
           })
