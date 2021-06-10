@@ -329,11 +329,15 @@ const StakeInfoSection: React.FC = () => {
     }
   }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts, localData])
 
+  const latestContributions =
+    currentContributorQuery?.data?.meta?.latestContributions
+  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+
   const tableData = React.useMemo(() => {
-    if (!currentContributorQuery?.data?.meta?.latestContributions) {
+    if (!latestContributions) {
       return null
     }
-    const ret = currentContributorQuery?.data?.meta?.latestContributions
+    const ret = latestContributions
     ret.forEach((i) => {
       i.time = dayjs(i.timestamp).locale(locale).format('lll')
       Object.keys(i).forEach((ii) => {
@@ -345,9 +349,7 @@ const StakeInfoSection: React.FC = () => {
       })
     })
     return ret
-  }, [currentContributorQuery?.data?.meta?.latestContributions])
-
-  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+  }, [latestContributions])
 
   return (
     <Section
@@ -420,12 +422,9 @@ const StakeInfoSection: React.FC = () => {
 
       <Detail>
         <div className="Title">
-          <span>
-            {t('contributeDetails')}
-            {contributorAmount}
-          </span>
+          <span>{t('contributeDetails')}</span>
 
-          {contributorAmount > 3 && (
+          {latestContributions?.length > 3 && (
             <a onClick={() => listModal.setVisible(true)}>
               <span>{t('more')}</span>
               <MoreIcon />
