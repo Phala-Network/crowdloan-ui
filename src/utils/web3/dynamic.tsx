@@ -70,7 +70,10 @@ const _Web3Provider: React.FC<{
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          web3Accounts().then(setAccounts)
+          web3Accounts().then((accounts) => {
+            console.error('accounts', accounts)
+            setAccounts(accounts)
+          })
           unsubscribe = await web3AccountsSubscribe(setAccounts)
         }
       })()
@@ -85,8 +88,6 @@ const _Web3Provider: React.FC<{
     )
 
     setCurrentAccount(lastLoginAccount)
-
-    console.error('accounts', accounts)
   }, [accounts])
 
   useEffect(() => {
