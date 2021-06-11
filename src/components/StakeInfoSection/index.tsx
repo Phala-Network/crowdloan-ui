@@ -293,17 +293,17 @@ const StakeInfoSection: React.FC = () => {
         axisLine: {
           show: false,
         },
-        axisLabel: {
-          formatter(value) {
-            const date = new Date(value)
+        // axisLabel: {
+        //   formatter(value) {
+        //     const date = new Date(value)
 
-            return [
-              date.getFullYear(),
-              date.getMonth() + 1,
-              date.getDate(),
-            ].join('.')
-          },
-        },
+        //     return [
+        //       date.getFullYear(),
+        //       date.getMonth() + 1,
+        //       date.getDate(),
+        //     ].join('.')
+        //   },
+        // },
       },
       yAxis: [
         {

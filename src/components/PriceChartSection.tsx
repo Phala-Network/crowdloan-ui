@@ -116,13 +116,13 @@ const defaultChartOptions = {
       },
     },
     splitNumber: 20,
-    axisLabel: {
-      formatter(value) {
-        const date = new Date(value)
+    // axisLabel: {
+    //   formatter(value) {
+    //     const date = new Date(value)
 
-        return [date.getMonth() + 1, date.getDate()].join('.')
-      },
-    },
+    //     return [date.getMonth() + 1, date.getDate()].join('.')
+    //   },
+    // },
   },
   grid: [
     {
