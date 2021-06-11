@@ -242,6 +242,9 @@ const StakeInfoSection: React.FC = () => {
   const listModal = useModal()
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
+  const localData2 = useReleasingData(
+    currentContributorQuery?.data?.contributor?.rewardAmount
+  )
   const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
     return {
@@ -311,7 +314,7 @@ const StakeInfoSection: React.FC = () => {
               borderWidth: 1,
             },
           },
-          data: currentContributorQuery?.data?.meta?.simulateReleasingCharts,
+          data: localData2,
         },
         {
           type: 'line',
@@ -329,7 +332,7 @@ const StakeInfoSection: React.FC = () => {
         },
       ],
     }
-  }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts, localData])
+  }, [localData2, localData])
 
   const latestContributions =
     currentContributorQuery?.data?.meta?.latestContributions

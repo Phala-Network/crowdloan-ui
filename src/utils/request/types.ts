@@ -139,8 +139,19 @@ export type GetContributorOptions = {
 export type GetContributorResponse = {
   contributor: {
     address: string
+    /**
+     * amount 是用户投资的金额（KSM）
+     */
     amount: number
+    /**
+     * rewardAmount 是用户获得的赞助奖励金额（PHA）也就是 amount * 100 按现在的算法（软顶是边界情况）
+     */
     rewardAmount: number
+    /**
+     * promotionRewardAmount 是推荐奖励 也就是 amount * 0.005
+     * 不过要注意的是 promotionRewardAmount 是预计算的 也就是说用户获得的 PHA 应该是 rewardAmount，
+     * 如果有推荐人 referrar 那么就是 rewardAmount + promotionRewardAmount
+     */
     referralsCount: number
     promotionRewardAmount: number
     referrer?: string
