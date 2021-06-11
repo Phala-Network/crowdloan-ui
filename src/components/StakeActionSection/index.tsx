@@ -524,11 +524,11 @@ const StakeActionSection: React.FC = () => {
         <div className="InputWrap">
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
-            min={0.000001}
+            min={0.1}
             max={999999999}
             placeholder="0"
             value={stakeInput}
-            onChange={(value) => setStakeInput(value)}
+            onChange={(value) => setStakeInput(parseFloat(value.toFixed(8)))}
           />
 
           <div className="InputPostfix">
