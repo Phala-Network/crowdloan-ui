@@ -59,24 +59,31 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
               </Link>
               可查看本笔支持详情
             </div>
+            <Divider></Divider>
+            <div>
+              <Link target="_blank" href={twitterLink}>
+                发推
+              </Link>{' '}
+              邀请您的朋友贡献，您将获得他们支持奖励 0.5％ 的等值奖励。
+            </div>
           </div>
         )}
 
         {locale === 'en' && (
           <div>
-            <div>Thanks for your support!</div>
+            <div>Thanks for your support！</div>
             <div>
               <Link target="_blank" href={link}>
                 Click
               </Link>{' '}
-              to view the support details
+              to view the support details.
             </div>
             <Divider></Divider>
             <div>
               <Link target="_blank" href={twitterLink}>
                 Tweet
               </Link>{' '}
-              to invite your friend to contribute, each will receive an
+              to invite your friends to contribute and you will each receive an
               additional reward: an extra 0.5% on the additional contribution.
             </div>
           </div>

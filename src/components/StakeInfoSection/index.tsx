@@ -454,7 +454,9 @@ const StakeInfoSection: React.FC = () => {
             />
             <Spacer y={0.5}></Spacer>
             {currentAccount && t('noData')}
-            {!currentAccount && <ConnectWallet />}
+            {!currentAccount && (
+              <ConnectWallet>{t('PleaseConnectWallet')}</ConnectWallet>
+            )}
           </NoticeCard>
         )}
       </Detail>

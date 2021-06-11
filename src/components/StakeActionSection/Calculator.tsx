@@ -161,6 +161,7 @@ const Calculator: React.FC<{
   }, [contributionChart])
 
   const shouldShowCalculator = useMemo(() => {
+    // ruan ding
     return campaignQuery.data?.campaign?.cap > auctionAmount
   }, [campaignQuery.data?.campaign?.cap, auctionAmount])
 
