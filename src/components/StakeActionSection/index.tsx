@@ -32,6 +32,8 @@ import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
+import dayjs from 'dayjs'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -247,7 +249,7 @@ const StakeActionSection: React.FC = () => {
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
   const [stakeInput, setStakeInput] = useState(10)
-
+  const { locale } = useIntl()
   const referrerInput = useInput('')
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
 
@@ -426,30 +428,56 @@ const StakeActionSection: React.FC = () => {
         <Modal.Subtitle></Modal.Subtitle>
         <Fieldset>
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
-            <ModalLine>
-              在阁下申请与我们开始交易之前，必须小心地考虑以阁下的情况以及财务处境，使用差价合约是否适合。
-            </ModalLine>
-            <ModalLine>
+            {locale === 'zh' && (
+              <ModalLine>
+                届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
+                您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
+                KSM，如果竞拍成功，您的 KSM 将在{' '}
+                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
+                  'YYYY 年 MM 月 DD 日'
+                )}
+                解锁，如果失败，拍卖结束后立即解锁；
+                {referrerInput.state.trim()
+                  ? `您的邀请人是 ${referrerInput.state.trim()}；`
+                  : null}
+                您的 PHA 奖励将在 Khala 赢得一个插槽并成功运行为平行链时释放
+                34％
+                到您的的地址。剩余的66％将在11个月内线性释放。交易市场动荡不定，您应独自承担本网站上进行的任何交易和非交易活动，本网站信息不代表财务建议。
+              </ModalLine>
+            )}
+            {locale === 'en' && (
+              <ModalLine>
+                You will contribute {txValue} KSM for Khala in the Kusama Slot
+                Auction, If Khala wins, your KSM will be unbonded on{' '}
+                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
+                  'DD, MM, YYYY'
+                )}
+                , if it fails, it will be unbonded immediately after the auction
+                ends;{' '}
+                {referrerInput.state.trim()
+                  ? `Your referrer is ${referrerInput.state.trim()}; `
+                  : null}
+                When Khala wins a slot and runs as parachain, 34% of the PHA
+                rewards vest to your addresses immediately, with 66% vesting
+                monthly over 11 months.Trading markets are volatile and shift
+                quickly, you are responsible and liable for any trading and
+                non-trading activity on the Site, The information on this
+                website does not represent financial advice.
+              </ModalLine>
+            )}
+            {/* <ModalLine>
               您将在Kusama卡槽拍卖中为Khala质押{txValue}直到
               {campaign.meta.estimateEndReleasingIn}。您的PHA奖励将在
               {campaign.meta.estimateFirstReleasingIn}解锁
               {campaign.meta.firstReleasingPercentage}%，之后每隔
               {campaign.meta.estimateReleasingDaysInterval}天解锁
               {campaign.meta.estimateReleasingPercentagePerInterval}%，
-              届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
-            </ModalLine>
+            </ModalLine> */}
           </Fieldset.Content>
           <Divider />
           <Fieldset.Content
             style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
           >
-            {referrerInput.state.trim() ? (
-              <Description
-                title="Referrer"
-                content={referrerInput.state.trim()}
-              />
-            ) : null}
-            <Divider volume={0} />
             <Description
               title="Contribution Value"
               content={txValue || '...'}
