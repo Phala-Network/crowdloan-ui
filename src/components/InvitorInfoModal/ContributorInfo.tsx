@@ -13,8 +13,6 @@ const ContributorInfo: React.FC = () => {
     currentContributorQuery?.data?.contributor || {}
   const { locale } = useIntl()
 
-  console.log('currentContributorQuery', currentContributorQuery)
-
   if (locale === 'en') {
     return (
       <div>
