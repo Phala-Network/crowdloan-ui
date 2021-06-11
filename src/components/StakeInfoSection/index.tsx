@@ -359,6 +359,8 @@ const StakeInfoSection: React.FC = () => {
     })
   }, [latestContributions])
 
+  console.log('currentContributorQuery', currentContributorQuery)
+
   return (
     <Section
       className=""
@@ -380,8 +382,9 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Yg">
             <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
-              {currentContributorQuery?.data?.contributor
-                ?.promotionRewardAmount ||
+              {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
+                currentContributorQuery?.data?.contributor
+                  ?.promotionRewardAmount ||
                 0 ||
                 (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">PHA</span>
@@ -397,7 +400,9 @@ const StakeInfoSection: React.FC = () => {
             },
             {
               name: t('affiliationReward'),
-              value: currentContributorQuery?.data?.contributor?.rewardAmount,
+              value:
+                currentContributorQuery?.data?.contributor
+                  ?.promotionRewardAmount,
               after: 'PHA',
             },
           ].map(({ name, value, after }) => {
