@@ -577,13 +577,13 @@ const StakeActionSection: React.FC = () => {
           className="ActionBtn"
           onClick={tryContribute}
         >
-          {buttonDisabledBecauseOfStakeValue
+          {!balance
+            ? t('connectWallet')
+            : buttonDisabledBecauseOfStakeValue
             ? t('InsufficientBalance')
             : stakeLeastAlert
             ? t('pleaseSupportAtLeast')
-            : balance
-            ? t('StakeActionSection.ToContribute')
-            : t('connectWallet')}
+            : t('StakeActionSection.ToContribute')}
         </Button>
       </StakeActionForm>
     </Section>
