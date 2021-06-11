@@ -550,7 +550,7 @@ const StakeActionSection: React.FC = () => {
           {stakeLeastAlert
             ? t('pleaseSupportAtLeast')
             : balance
-            ? t('stake')
+            ? t('StakeActionSection.ToContribute')
             : t('connectWallet')}
         </Button>
       </StakeActionForm>
