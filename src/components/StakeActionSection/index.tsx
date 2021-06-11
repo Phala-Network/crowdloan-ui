@@ -430,9 +430,7 @@ const StakeActionSection: React.FC = () => {
       <InvitorInfoModal modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
-        <ModalTitle {...confirmModal.bindings}>
-          {t('transactionConfirmationTitle')}
-        </ModalTitle>
+        <ModalTitle {...confirmModal.bindings}>{t('PleaseConfirm')}</ModalTitle>
         <Modal.Subtitle></Modal.Subtitle>
         <Fieldset>
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
@@ -516,7 +514,7 @@ const StakeActionSection: React.FC = () => {
             disabled={txWaiting}
             onClick={txWaiting ? undefined : trySubmitTx}
           >
-            {t('PleaseConfirm')}
+            {t('ok')}
           </NormalButton>
         </ModalActions>
       </Modal>
