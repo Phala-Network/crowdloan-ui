@@ -99,20 +99,13 @@ const ReferrerTable: React.FC<Props> = () => {
     return null
   }
 
-  const tableData = React.useMemo(() => {
-    return data?.contributions?.map?.((item) => {
-      try {
-        return {
-          ...item,
-          address:
-            item?.address?.slice?.(0, 6) + '...' + item?.address?.slice?.(-6),
-        }
-      } catch (error) {
-        console.error(error)
-        return []
-      }
-    })
-  }, [data?.contributions])
+  const tableData = data?.contributions?.map?.((item) => {
+    return {
+      ...item,
+      address:
+        item?.address?.slice?.(0, 6) + '...' + item?.address?.slice?.(-6),
+    }
+  })
 
   return (
     <Root>
