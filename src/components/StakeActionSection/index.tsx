@@ -342,7 +342,7 @@ const StakeActionSection: React.FC = () => {
           createReferrerRemarkTx({
             paraId,
             api,
-            referrer: decodeAddress(referrerInputValue),
+            referrer: decodeAddress(referrerInputValue, true, 2),
           })
         )
       } catch (error) {
