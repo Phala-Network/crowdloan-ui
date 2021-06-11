@@ -231,7 +231,7 @@ const PriceChartSection: React.FC = () => {
             </div>
             <div className="Detail">
               <div className="Item">
-                <span className="Text">Price</span>
+                <span className="Text">{t('Price')}</span>
                 <span className="Number">
                   $
                   {ksmData?.data?.length ? (
@@ -242,7 +242,7 @@ const PriceChartSection: React.FC = () => {
                 </span>
               </div>
               <div className="Item">
-                <span className="Text">Stake</span>
+                <span className="Text">{t('Stake')}</span>
                 <span className="Number">
                   {typeof ksmData?.stakeParticipatingRate === 'number' ? (
                     ksmData.stakeParticipatingRate + '%'
@@ -252,7 +252,7 @@ const PriceChartSection: React.FC = () => {
                 </span>
               </div>
               <div className="Item">
-                <span className="Text">Reward</span>
+                <span className="Text">{t('APY')}</span>
                 <span className="Number">
                   {typeof ksmData?.stakeApr === 'number' ? (
                     ksmData.stakeApr + '%'
@@ -289,7 +289,7 @@ const PriceChartSection: React.FC = () => {
             </div>
             <div className="Detail">
               <div className="Item">
-                <span className="Text">Price</span>
+                <span className="Text">{t('Price')}</span>
                 <span className="Number">
                   $
                   {phaData?.data?.length ? (
