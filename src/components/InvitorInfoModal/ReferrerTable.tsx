@@ -85,7 +85,7 @@ const ReferrerTable: React.FC<Props> = () => {
   const { currentAccount } = useWeb3()
   const { t } = useI18n()
 
-  const { data, isLoading } = useQuery<GetContributionsResponse>([
+  const { data, isLoading, isError } = useQuery<GetContributionsResponse>([
     'getContributions',
     {
       perPage: 255,
@@ -95,16 +95,17 @@ const ReferrerTable: React.FC<Props> = () => {
     },
   ])
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return null
   }
 
   const tableData = React.useMemo(
     () =>
-      data?.contributions?.map((item) => {
+      data?.contributions?.map?.((item) => {
         return {
           ...item,
-          address: item.address.slice(0, 6) + '...' + item.address.slice(-6),
+          address:
+            item?.address?.slice?.(0, 6) + '...' + item?.address?.slice?.(-6),
         }
       }),
     [data?.contributions]
@@ -112,7 +113,7 @@ const ReferrerTable: React.FC<Props> = () => {
 
   return (
     <Root>
-      <Table data={[...tableData]} className="Table">
+      <Table data={tableData} className="Table">
         <Table.Column prop="address" label={t('ReferrerTable.Account')} />
         <Table.Column prop="amount" label={t('ReferrerTable.ContributedKSM')} />
         <Table.Column
