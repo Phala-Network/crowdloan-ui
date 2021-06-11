@@ -481,7 +481,7 @@ const StakeActionSection: React.FC = () => {
             disabled={txWaiting}
             onClick={txWaiting ? undefined : trySubmitTx}
           >
-            {t('ok')}
+            {t('PleaseConfirm')}
           </NormalButton>
         </ModalActions>
       </Modal>

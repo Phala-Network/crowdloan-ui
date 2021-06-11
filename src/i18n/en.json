@@ -1,4 +1,5 @@
 {
+  "PleaseConfirm": "Please Confirm",
   "StakeActionSection.ToContribute": "To Contribute",
   "APY": "APY",
   "Stake": "Stake",
@@ -46,8 +47,8 @@
   "participantsIntroduced": "Participants Referred",
   "affiliationReward": "Referral Reward",
   "affiliationRewardText": "When participants invite others who contribute, each will receive an additional reward: an extra 0.5% on the additional contribution. The participants may not change the referrer after the first contribution.",
-  "yourIntroducer": "Your Introducer",
-  "Fill_in_the_introducer_to_get_extra_rewards": "Fill in the introducer to get extra rewards",
+  "yourIntroducer": "Your Referrals",
+  "Fill_in_the_introducer_to_get_extra_rewards": "Your referrer's Kusama address",
   "contributeDetails": "Contribution Details",
   "more": "More",
   "time": "Time",
