@@ -404,14 +404,14 @@ const StakeActionSection: React.FC = () => {
 
   const setMaxStakeNumber = () => setStakeInput(getBalance())
 
-  const getBalance = useCallback(() => {
+  const getBalance = () => {
     const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
     const result = new Demical(balance.toString())
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
     return result
-  }, [chainInfo, balance])
+  }
 
   const onCalculatorChange = ({ referrerRewardAmount }) => {
     setReferrerRewardAmount(referrerRewardAmount)
