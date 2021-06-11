@@ -85,7 +85,7 @@ const ReferrerTable: React.FC<Props> = () => {
   const { currentAccount } = useWeb3()
   const { t } = useI18n()
 
-  const { data, isLoading } = useQuery<GetContributionsResponse>([
+  const { data, isLoading, isError } = useQuery<GetContributionsResponse>([
     'getContributions',
     {
       perPage: 255,
@@ -95,7 +95,7 @@ const ReferrerTable: React.FC<Props> = () => {
     },
   ])
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return null
   }
 
