@@ -44,7 +44,7 @@ const PriceChart = styled.div`
           left: 0;
           top: 3px;
           position: absolute;
-          background: #d1ff52;
+          background: #03ffff;
         }
       }
 
@@ -116,6 +116,13 @@ const defaultChartOptions = {
       },
     },
     splitNumber: 20,
+    // axisLabel: {
+    //   formatter(value) {
+    //     const date = new Date(value)
+
+    //     return [date.getMonth() + 1, date.getDate()].join('.')
+    //   },
+    // },
   },
   grid: [
     {
@@ -154,7 +161,7 @@ const defaultChartOptions = {
     {
       name: 'PHA',
       type: 'line',
-      itemStyle: { color: '#d1ff52' },
+      itemStyle: { color: '#03FFFF' },
       showSymbol: false,
       hoverAnimation: false,
       yAxisIndex: 1,
@@ -231,7 +238,7 @@ const PriceChartSection: React.FC = () => {
             </div>
             <div className="Detail">
               <div className="Item">
-                <span className="Text">Price</span>
+                <span className="Text">{t('Price')}</span>
                 <span className="Number">
                   $
                   {ksmData?.data?.length ? (
@@ -242,7 +249,7 @@ const PriceChartSection: React.FC = () => {
                 </span>
               </div>
               <div className="Item">
-                <span className="Text">Stake</span>
+                <span className="Text">{t('Stake')}</span>
                 <span className="Number">
                   {typeof ksmData?.stakeParticipatingRate === 'number' ? (
                     ksmData.stakeParticipatingRate + '%'
@@ -252,7 +259,7 @@ const PriceChartSection: React.FC = () => {
                 </span>
               </div>
               <div className="Item">
-                <span className="Text">Reward</span>
+                <span className="Text">{t('APY')}</span>
                 <span className="Number">
                   {typeof ksmData?.stakeApr === 'number' ? (
                     ksmData.stakeApr + '%'
@@ -289,7 +296,7 @@ const PriceChartSection: React.FC = () => {
             </div>
             <div className="Detail">
               <div className="Item">
-                <span className="Text">Price</span>
+                <span className="Text">{t('Price')}</span>
                 <span className="Number">
                   $
                   {phaData?.data?.length ? (

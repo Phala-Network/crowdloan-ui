@@ -97,7 +97,7 @@ const TableFooter = styled.div`
       font-size: 14px;
 
       &.active {
-        background: #d1ff52;
+        background: #03ffff;
         border-radius: 4px;
       }
     }

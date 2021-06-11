@@ -13,12 +13,10 @@ export default function useTwitterLink(): string {
 
   const twitterLink =
     'https://twitter.com/intent/tweet' +
-    `?text=${text}` +
+    `?text=${encodeURIComponent(text)}` +
     `&url=${shareLink}` +
     // '&via=PhalaNetwork' +
-    '&hashtags=Kusama,Khala' +
-    '&original_referer=' +
-    location.href
+    '&hashtags=Kusama,Khala,Phala'
 
   return twitterLink
 }

@@ -24,14 +24,16 @@ import { useMeta } from '@/utils/meta'
 import RcInputNumber from 'rc-input-number'
 import AlertIcon from '@/components/AlertIcon'
 import StakeSuccessModal from '@/components/StakeSuccessModal'
-import queryString from 'query-string'
-import useCheckEndBlock from './useCheckEndBlock'
+import useCheckEndBlock from '@/hooks/useCheckEndBlock'
 import Calculator from './Calculator'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
 import Referrer from './Referrer'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
+import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
+import dayjs from 'dayjs'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -53,7 +55,7 @@ const createReferrerRemarkTx = ({ paraId, api, referrer }) => {
 const style__StakeActionSection = css`
   background: linear-gradient(
       106.53deg,
-      rgba(209, 255, 82, 0.2) 0%,
+      rgba(3, 255, 255, 0.2) 0%,
       rgba(100, 238, 172, 0.2) 100%
     ),
     #222222;
@@ -102,7 +104,7 @@ const StakeActionInputWrapper = styled.div`
     border-radius: 8px;
     word-break: keep-all;
     &:focus-within {
-      box-shadow: inset 0px 0px 0px 1px rgba(209, 255, 82, 0.5);
+      box-shadow: inset 0px 0px 0px 1px rgba(3, 255, 255, 0.5);
     }
   }
 
@@ -117,7 +119,7 @@ const StakeActionInputWrapper = styled.div`
     font-weight: 600;
     background: transparent;
     border: none;
-    caret-color: #d1ff52;
+    caret-color: #03ffff;
     display: block;
     width: 100%;
   }
@@ -130,7 +132,7 @@ const StakeActionInputWrapper = styled.div`
     right: 72px;
     top: 8.5px;
     background: rgba(255, 255, 255, 0.2);
-    color: #d1ff52;
+    color: #03ffff;
     border-radius: 4px;
     margin: 0px 8px;
     font-size: 12px;
@@ -196,7 +198,7 @@ const StakeActionForm = styled.div`
 
   & .ActionBtn.btn {
     height: 56px;
-    background: #d1ff52;
+    background: #03ffff;
     border-radius: 8px;
     font-size: 20px;
     line-height: 28px;
@@ -205,10 +207,10 @@ const StakeActionForm = styled.div`
     width: 100%;
     margin-top: 20px;
     &:focus {
-      background: #d1ff52;
+      background: #03ffff;
     }
     &:hover {
-      background: rgba(209, 255, 82, 0.8);
+      background: rgba(3, 255, 255, 0.8);
     }
     &:disabled,
     &[disabled] {
@@ -247,9 +249,13 @@ const StakeActionSection: React.FC = () => {
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
   const [stakeInput, setStakeInput] = useState(10)
-
+  const { locale } = useIntl()
   const referrerInput = useInput('')
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
+  const [
+    buttonDisabledBecauseOfStakeValue,
+    setButtonDisabledBecauseOfStakeValue,
+  ] = useState(false)
 
   const accountCallbackRef = useRef(null)
 
@@ -257,10 +263,10 @@ const StakeActionSection: React.FC = () => {
     if (referrer) {
       referrerInput.setState(referrer)
     } else {
-      const { invitor } = queryString.parse(location.search)
+      const value = getReferralAddressFromURL()
 
-      if (typeof invitor === 'string') {
-        referrerInput.setState(invitor)
+      if (value && !referrer) {
+        referrerInput.setState(value)
       }
     }
   }, [referrer])
@@ -285,7 +291,9 @@ const StakeActionSection: React.FC = () => {
 
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
-  }, [stakeInput])
+
+    setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
+  }, [stakeInput, balance])
 
   const tryContribute = useCallback(async () => {
     if (stakeInput < 0.1) {
@@ -395,13 +403,15 @@ const StakeActionSection: React.FC = () => {
     })
   }, [tx, txWaiting, currentAccount])
 
-  const setMaxStakeNumber = () => {
-    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
-    const result = new Demical(balance.toString())
+  const setMaxStakeNumber = () => setStakeInput(getBalance())
+
+  const getBalance = () => {
+    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
+    const result = new Demical(balance?.toString?.() || '0')
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
-    setStakeInput(result)
+    return result
   }
 
   const onCalculatorChange = ({ referrerRewardAmount }) => {
@@ -420,36 +430,59 @@ const StakeActionSection: React.FC = () => {
       <InvitorInfoModal modal={invitorInfoDialogModal} />
 
       <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
-        <ModalTitle {...confirmModal.bindings}>
-          {t('transactionConfirmationTitle')}
-        </ModalTitle>
+        <ModalTitle {...confirmModal.bindings}>{t('PleaseConfirm')}</ModalTitle>
         <Modal.Subtitle></Modal.Subtitle>
         <Fieldset>
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
-            <ModalLine>
-              在阁下申请与我们开始交易之前，必须小心地考虑以阁下的情况以及财务处境，使用差价合约是否适合。
-            </ModalLine>
-            <ModalLine>
+            {locale === 'zh' && (
+              <ModalLine>
+                您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
+                KSM，如果竞拍成功，您的 KSM 将在{' '}
+                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
+                  'YYYY 年 MM 月 DD 日'
+                )}
+                解锁，如果失败，拍卖结束后立即解锁；
+                {referrerInput.state.trim()
+                  ? `您的邀请人是 ${referrerInput.state.trim()}；`
+                  : null}
+                您的 PHA 奖励将在 Khala 赢得一个插槽并成功运行为平行链时释放
+                34％
+                到您的的地址。剩余的66％将在11个月内线性释放。交易市场动荡不定，您应独自承担本网站上进行的任何交易和非交易活动，本网站信息不代表财务建议。
+              </ModalLine>
+            )}
+            {locale === 'en' && (
+              <ModalLine>
+                You will contribute {txValue} KSM for Khala in the Kusama Slot
+                Auction, If Khala wins, your KSM will be unbonded on{' '}
+                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
+                  'DD, MM, YYYY'
+                )}
+                , if it fails, it will be unbonded immediately after the auction
+                ends;{' '}
+                {referrerInput.state.trim()
+                  ? `Your referrer is ${referrerInput.state.trim()}; `
+                  : null}
+                When Khala wins a slot and runs as parachain, 34% of the PHA
+                rewards vest to your addresses immediately, with 66% vesting
+                monthly over 11 months.Trading markets are volatile and shift
+                quickly, you are responsible and liable for any trading and
+                non-trading activity on the Site, The information on this
+                website does not represent financial advice.
+              </ModalLine>
+            )}
+            {/* <ModalLine>
               您将在Kusama卡槽拍卖中为Khala质押{txValue}直到
               {campaign.meta.estimateEndReleasingIn}。您的PHA奖励将在
               {campaign.meta.estimateFirstReleasingIn}解锁
               {campaign.meta.firstReleasingPercentage}%，之后每隔
               {campaign.meta.estimateReleasingDaysInterval}天解锁
               {campaign.meta.estimateReleasingPercentagePerInterval}%，
-              届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
-            </ModalLine>
+            </ModalLine> */}
           </Fieldset.Content>
           <Divider />
           <Fieldset.Content
             style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
           >
-            {referrerInput.state.trim() ? (
-              <Description
-                title="Referrer"
-                content={referrerInput.state.trim()}
-              />
-            ) : null}
-            <Divider volume={0} />
             <Description
               title="Contribution Value"
               content={txValue || '...'}
@@ -496,11 +529,13 @@ const StakeActionSection: React.FC = () => {
         <div className="InputWrap">
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
-            min={0.000001}
-            max={999999999}
+            min={0.1}
+            max={9999999999}
             placeholder="0"
             value={stakeInput}
-            onChange={(value) => setStakeInput(value)}
+            onChange={(value) => {
+              return setStakeInput(parseFloat((value || 0).toFixed(8)))
+            }}
           />
 
           <div className="InputPostfix">
@@ -541,16 +576,20 @@ const StakeActionSection: React.FC = () => {
         </div>
         <Button
           disabled={
-            stakeActionButtonDisabled || disableStakeButtonByCheckEndBLock
+            stakeActionButtonDisabled ||
+            disableStakeButtonByCheckEndBLock ||
+            buttonDisabledBecauseOfStakeValue
           }
           effect={false}
           className="ActionBtn"
           onClick={tryContribute}
         >
-          {stakeLeastAlert
+          {buttonDisabledBecauseOfStakeValue
+            ? t('InsufficientBalance')
+            : stakeLeastAlert
             ? t('pleaseSupportAtLeast')
             : balance
-            ? t('stake')
+            ? t('StakeActionSection.ToContribute')
             : t('connectWallet')}
         </Button>
       </StakeActionForm>

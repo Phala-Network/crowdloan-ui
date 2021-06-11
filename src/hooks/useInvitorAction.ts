@@ -2,12 +2,12 @@ import { useToasts } from '@geist-ui/react'
 import { useEffect, useState } from 'react'
 import { useMeta } from '@/utils/meta'
 import { useWeb3 } from '@/utils/web3'
-import queryString from 'query-string'
 import { usePolkadotApi } from '@/utils/polkadot'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { ApiPromise } from '@polkadot/api'
 import { useI18n } from '@/i18n'
 import * as Sentry from '@sentry/browser'
+import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -64,14 +64,10 @@ export default function useInvitorAction(): {
 
   // set invitor from url
   useEffect(() => {
-    const { invitor: invitorQueryString } = queryString.parse(location.search)
+    const value = getReferralAddressFromURL()
 
-    if (
-      invitorQueryString &&
-      typeof invitorQueryString === 'string' &&
-      !invitor
-    ) {
-      setInvitor(invitorQueryString)
+    if (value && !invitor) {
+      setInvitor(value)
     }
   }, [currentAccount])
 

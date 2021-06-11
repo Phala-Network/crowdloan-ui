@@ -36,7 +36,7 @@ const PageBase: React.FC<PageBaseOptions> = ({ children }): JSX.Element => {
   return (
     <PageWrapper>
       <GridWrapper>
-        <Grid.Container gap={1} wrap="wrap" justify="center">
+        <Grid.Container gap={1.4} wrap="wrap" justify="center">
           {children}
         </Grid.Container>
       </GridWrapper>

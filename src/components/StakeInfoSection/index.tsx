@@ -5,7 +5,6 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
-import { IntlContext } from 'gatsby-plugin-intl'
 import { useWeb3 } from '@/utils/web3'
 import { ConnectWallet } from '@/components/ConnectWallet'
 import useReleasingData from '@/hooks/useReleasingData'
@@ -14,6 +13,7 @@ import AlertIcon from '@/components/AlertIcon'
 import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
 import ModalTitle from '@/components/ModalTitle'
+import MoreIcon from './MoreIcon'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -52,7 +52,7 @@ const Amount = styled.div`
       }
 
       &.Yg {
-        color: #d1ff52;
+        color: #03ffff;
         &::before {
           content: '';
           width: 2px;
@@ -60,7 +60,7 @@ const Amount = styled.div`
           left: 0;
           top: 7.5px;
           position: absolute;
-          background: #d1ff52;
+          background: #03ffff;
         }
       }
 
@@ -162,6 +162,10 @@ const Detail = styled.div`
       }
     }
 
+    .cell {
+      min-height: 2.2rem;
+    }
+
     th {
       background: #222222;
       border: none !important;
@@ -234,11 +238,15 @@ const NoticeCard = styled.div`
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
   const { dayjs, currentContributorQuery } = useMeta()
-  const { locale } = React.useContext(IntlContext)
   const { currentAccount } = useWeb3()
   const listModal = useModal()
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
+  const localData2 = useReleasingData(
+    currentContributorQuery?.data?.contributor?.rewardAmount +
+      currentContributorQuery?.data?.contributor?.promotionRewardAmount
+  )
+
   const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
     return {
@@ -246,6 +254,21 @@ const StakeInfoSection: React.FC = () => {
         trigger: 'axis',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         borderColor: 'rgba(255, 255, 255, 0.4)',
+        formatter: (params) => {
+          return `
+            ${params[0].dataIndex === 0 ? 'TBA' : params[0].value[0]}
+            <br/>
+            ${params[0].marker}
+            <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
+              ${params[0].value[1]}
+            </span>
+            <br/>
+            ${params[1].marker}
+            <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
+              ${params[1].value[1]}
+            </span>
+          `
+        },
         textStyle: {
           color: 'white',
         },
@@ -270,6 +293,17 @@ const StakeInfoSection: React.FC = () => {
         axisLine: {
           show: false,
         },
+        // axisLabel: {
+        //   formatter(value) {
+        //     const date = new Date(value)
+
+        //     return [
+        //       date.getFullYear(),
+        //       date.getMonth() + 1,
+        //       date.getDate(),
+        //     ].join('.')
+        //   },
+        // },
       },
       yAxis: [
         {
@@ -300,15 +334,15 @@ const StakeInfoSection: React.FC = () => {
           type: 'line',
           showSymbol: true,
           hoverAnimation: false,
-          lineStyle: { color: '#d1ff52' },
+          lineStyle: { color: '#03FFFF' },
           itemStyle: {
             normal: {
-              color: '#d1ff52',
+              color: '#03FFFF',
               borderColor: 'rgba(255, 255, 255, 0.9)',
               borderWidth: 1,
             },
           },
-          data: currentContributorQuery?.data?.meta?.simulateReleasingCharts,
+          data: localData2,
         },
         {
           type: 'line',
@@ -326,27 +360,32 @@ const StakeInfoSection: React.FC = () => {
         },
       ],
     }
-  }, [currentContributorQuery?.data?.meta?.simulateReleasingCharts, localData])
+  }, [localData2, localData])
+
+  const latestContributions =
+    currentContributorQuery?.data?.meta?.latestContributions
+  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
 
   const tableData = React.useMemo(() => {
-    if (!currentContributorQuery?.data?.meta?.latestContributions) {
-      return null
-    }
-    const ret = currentContributorQuery?.data?.meta?.latestContributions
-    ret.forEach((i) => {
-      i.time = dayjs(i.timestamp).locale(locale).format('lll')
-      Object.keys(i).forEach((ii) => {
-        if (typeof i[ii] === 'number') {
-          i[ii] ||= '0'
-        } else {
-          i[ii] ||= '-'
-        }
-      })
+    return latestContributions?.map((item) => {
+      return {
+        ...item,
+        amountWithIcon: (
+          actions: any,
+          rowData: { rowValue: { amount: number } }
+        ) => {
+          return (
+            <>
+              {rowData.rowValue?.amount?.toFixed(2) + ' KSM'}
+              <div className="link-icon"></div>
+            </>
+          )
+        },
+        time: dayjs(item.timestamp).format('YYYY.MM.DD HH:mm'),
+        rewardAmount: item.rewardAmount.toFixed(2) + ' PHA',
+      }
     })
-    return ret
-  }, [currentContributorQuery?.data?.meta?.latestContributions])
-
-  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
+  }, [latestContributions])
 
   return (
     <Section
@@ -387,7 +426,9 @@ const StakeInfoSection: React.FC = () => {
             },
             {
               name: t('affiliationReward'),
-              value: currentContributorQuery?.data?.contributor?.rewardAmount,
+              value:
+                currentContributorQuery?.data?.contributor
+                  ?.promotionRewardAmount,
               after: 'PHA',
             },
           ].map(({ name, value, after }) => {
@@ -420,30 +461,19 @@ const StakeInfoSection: React.FC = () => {
       <Detail>
         <div className="Title">
           <span>{t('contributeDetails')}</span>
-          {contributorAmount > 3 && (
+
+          {latestContributions?.length > 2 && (
             <a onClick={() => listModal.setVisible(true)}>
-              <span style={{ marginRight: 5 }}>{t('more')}</span>
-              <svg
-                width="6"
-                height="10"
-                viewBox="0 0 6 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.33325 5L0.333252 10V0L5.33325 5Z"
-                  fill="white"
-                  fillOpacity="0.9"
-                />
-              </svg>
+              <span>{t('more')}</span>
+              <MoreIcon />
             </a>
           )}
         </div>
 
-        {contributorAmount && (
+        {contributorAmount && tableData && (
           <Table data={tableData} className="Table">
             <Table.Column prop="time" label={t('time')} />
-            <Table.Column prop="amount" label={t('yourContribute')} />
+            <Table.Column prop="amountWithIcon" label={t('yourContribute')} />
             <Table.Column prop="rewardAmount" label={t('yourReward')} />
           </Table>
         )}
@@ -457,7 +487,9 @@ const StakeInfoSection: React.FC = () => {
             />
             <Spacer y={0.5}></Spacer>
             {currentAccount && t('noData')}
-            {!currentAccount && <ConnectWallet />}
+            {!currentAccount && (
+              <ConnectWallet>{t('PleaseConnectWallet')}</ConnectWallet>
+            )}
           </NoticeCard>
         )}
       </Detail>

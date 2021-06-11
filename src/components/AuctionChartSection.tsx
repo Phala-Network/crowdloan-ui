@@ -60,7 +60,7 @@ const AuctionChart = styled.div`
           left: 0;
           top: 7.5px;
           position: absolute;
-          background: #d1ff52;
+          background: #03ffff;
         }
       }
 
@@ -114,7 +114,7 @@ const AuctionChartSection: React.FC = () => {
       },
       grid: [
         {
-          top: '20px',
+          top: '0px',
           left: '16px',
           right: '16px',
           bottom: '24px',
@@ -141,7 +141,7 @@ const AuctionChartSection: React.FC = () => {
         {
           name: 'PHA',
           type: 'line',
-          itemStyle: { color: '#d1ff52' },
+          itemStyle: { color: '#03FFFF' },
           showSymbol: false,
           hoverAnimation: false,
           yAxisIndex: 0,
@@ -163,7 +163,7 @@ const AuctionChartSection: React.FC = () => {
         <div className="ChartTitle">
           <span className="Text">{t('stakingRewardPool')}:</span>
           <span className="Amount">
-            {campaignData?.campaign?.totalRewardAmount || '...'}
+            {campaignData?.campaign?.raisedAmount || '...'} KSM
           </span>
         </div>
 

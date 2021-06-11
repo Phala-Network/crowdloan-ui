@@ -133,8 +133,8 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   const { locale } = useContext(IntlContext)
   const { modalBindings } = useWeb3()
   const {
-    color = '#d1ff52',
-    logo = '/logo.svg',
+    color = '#03FFFF',
+    logo = '/logo.png',
     hasAffiliationProgramLink = true,
   } = props
   const showMobileMenuByMediaQuery = useMediaQuery({

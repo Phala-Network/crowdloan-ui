@@ -25,7 +25,10 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
     let releasingDate = dayjs(estimateFirstReleasingIn)
 
     // first day
-    _data.push([releasingDate.format('YYYY-MM-DD'), releasingAmount])
+    _data.push([
+      releasingDate.format('YYYY-MM-DD'),
+      parseFloat(releasingAmount.toFixed(4)),
+    ])
 
     let times =
       dayjs(estimateEndReleasingIn).diff(estimateFirstReleasingIn, 'day') /
@@ -49,7 +52,7 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
     // last day
     _data.push([
       dayjs(estimateEndReleasingIn).format('YYYY-MM-DD'),
-      totalAmount,
+      parseFloat(totalAmount.toFixed(4)),
     ])
 
     setData(_data)
