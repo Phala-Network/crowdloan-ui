@@ -146,7 +146,8 @@ const Calculator: React.FC<{
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
   const { setContributingReward } = useContext(CalculatorContext)
-  const shouldShowCalculator = useSoftTop()
+  const { isSoftTop } = useSoftTop()
+  const shouldShowCalculator = !isSoftTop
 
   // just for external display
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)

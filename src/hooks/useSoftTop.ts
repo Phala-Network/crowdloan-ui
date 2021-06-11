@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useMeta } from '../utils/meta'
 
-export default function useSoftTop(): boolean {
+export default function useSoftTop(): { isSoftTop: boolean } {
   const { campaignQuery } = useMeta()
   const contributionChart = campaignQuery?.data?.meta?.contributionChart
 
@@ -12,8 +12,8 @@ export default function useSoftTop(): boolean {
   }, [contributionChart])
 
   const isSoftTop = useMemo(() => {
-    return campaignQuery.data?.campaign?.cap > auctionAmount
+    return campaignQuery.data?.campaign?.cap <= auctionAmount
   }, [campaignQuery.data?.campaign?.cap, auctionAmount])
 
-  return isSoftTop
+  return { isSoftTop }
 }

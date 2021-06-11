@@ -10,6 +10,7 @@ import MobileModal from './MobileModal'
 import { useMediaQuery } from 'react-responsive'
 import Medal from './Medal'
 import ContributorInfo from './ContributorInfo'
+import useSoftTop from '../../hooks/useSoftTop'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -29,6 +30,8 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
     referrerCheck,
   } = useInvitorAction()
   const isXS = useMediaQuery({ maxWidth: 760 })
+  const { isSoftTop } = useSoftTop()
+
   const isLogin = !!currentAccount
 
   const content = isLoading ? (
@@ -42,7 +45,11 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
         {isLogin && (
           <div>
             <Spacer y={1}></Spacer>
-            <div style={{ marginBottom: 6 }}>{t('yourIntroducer')}</div>
+
+            <div style={{ marginBottom: 6 }}>
+              {isSoftTop ? t('InvitorInfoModal.softTop') : t('yourIntroducer')}
+            </div>
+
             {referrer && <div>{referrer}</div>}
             {!referrer && (
               <>
