@@ -525,7 +525,7 @@ const StakeActionSection: React.FC = () => {
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
             min={0.1}
-            max={999999999}
+            max={99999999}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => {

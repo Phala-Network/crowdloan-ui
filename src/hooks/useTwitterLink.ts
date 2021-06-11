@@ -16,9 +16,7 @@ export default function useTwitterLink(): string {
     `?text=${text}` +
     `&url=${shareLink}` +
     // '&via=PhalaNetwork' +
-    '&hashtags=Kusama,Khala,Phala' +
-    '&original_referer=' +
-    location.origin
+    '&hashtags=Kusama,Khala,Phala'
 
   return twitterLink
 }

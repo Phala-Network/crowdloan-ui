@@ -1,4 +1,7 @@
 {
+  "ReferrerTable.Account": "账户",
+  "ReferrerTable.ContributedKSM": "支持量",
+  "ReferrerTable.ReferralRewards": "邀请奖励",
   "InvitorInfoModal.softTop": "已到达奖励软顶，支持不再有奖励",
   "PleaseConfirm": "请您确认",
   "StakeActionSection.ToContribute": "去支持",

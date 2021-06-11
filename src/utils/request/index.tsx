@@ -79,6 +79,7 @@ const requestFunctions = {
     page = 1,
     perPage = 10,
     contributor,
+    referrer,
   }: GetContributionsOptions) => {
     const res = await axios.get(
       apiUrls.getCampaign + campaignId + apiUrls.getCampaign__contributions,
@@ -87,6 +88,7 @@ const requestFunctions = {
           page,
           per_page: perPage,
           contributor,
+          referrer,
         },
       }
     )

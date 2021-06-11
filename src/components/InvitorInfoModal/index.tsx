@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive'
 import Medal from './Medal'
 import ContributorInfo from './ContributorInfo'
 import useSoftTop from '../../hooks/useSoftTop'
+import ReferrerTable from './ReferrerTable'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -89,6 +90,7 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
               </>
             )}
             <Spacer y={0.5}></Spacer>
+            <ReferrerTable></ReferrerTable>
           </div>
         )}
       </Modal.Content>

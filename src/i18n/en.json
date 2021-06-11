@@ -1,4 +1,7 @@
 {
+  "ReferrerTable.Account": "Account",
+  "ReferrerTable.ContributedKSM": "Contributed KSM",
+  "ReferrerTable.ReferralRewards": "Referral Rewards",
   "InvitorInfoModal.softTop": "There has no more PHA that can be distributed to contributors.",
   "Price": "Price",
   "PleaseConfirm": "Please Confirm",
