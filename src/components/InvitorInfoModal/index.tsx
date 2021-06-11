@@ -10,7 +10,6 @@ import MobileModal from './MobileModal'
 import { useMediaQuery } from 'react-responsive'
 import Medal from './Medal'
 import ContributorInfo from './ContributorInfo'
-import ContributionList from '@/components/ContributionList'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -83,7 +82,6 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
               </>
             )}
             <Spacer y={0.5}></Spacer>
-            <ContributionList />
           </div>
         )}
       </Modal.Content>
