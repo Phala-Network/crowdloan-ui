@@ -528,7 +528,9 @@ const StakeActionSection: React.FC = () => {
             max={999999999}
             placeholder="0"
             value={stakeInput}
-            onChange={(value) => setStakeInput(parseFloat(value.toFixed(8)))}
+            onChange={(value) => {
+              return setStakeInput(parseFloat((value || 0).toFixed(8)))
+            }}
           />
 
           <div className="InputPostfix">
