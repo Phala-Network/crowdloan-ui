@@ -252,6 +252,10 @@ const StakeActionSection: React.FC = () => {
   const { locale } = useIntl()
   const referrerInput = useInput('')
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
+  const [
+    buttonDisabledBecauseOfStakeValue,
+    setButtonDisabledBecauseOfStakeValue,
+  ] = useState(false)
 
   const accountCallbackRef = useRef(null)
 
@@ -287,6 +291,7 @@ const StakeActionSection: React.FC = () => {
 
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
+    setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
   }, [stakeInput])
 
   const tryContribute = useCallback(async () => {
@@ -397,14 +402,16 @@ const StakeActionSection: React.FC = () => {
     })
   }, [tx, txWaiting, currentAccount])
 
-  const setMaxStakeNumber = () => {
+  const setMaxStakeNumber = () => setStakeInput(getBalance())
+
+  const getBalance = useCallback(() => {
     const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
     const result = new Demical(balance.toString())
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
-    setStakeInput(result)
-  }
+    return result
+  }, [chainInfo, balance])
 
   const onCalculatorChange = ({ referrerRewardAmount }) => {
     setReferrerRewardAmount(referrerRewardAmount)
@@ -571,13 +578,17 @@ const StakeActionSection: React.FC = () => {
         </div>
         <Button
           disabled={
-            stakeActionButtonDisabled || disableStakeButtonByCheckEndBLock
+            stakeActionButtonDisabled ||
+            disableStakeButtonByCheckEndBLock ||
+            buttonDisabledBecauseOfStakeValue
           }
           effect={false}
           className="ActionBtn"
           onClick={tryContribute}
         >
-          {stakeLeastAlert
+          {buttonDisabledBecauseOfStakeValue
+            ? t('InsufficientBalance')
+            : stakeLeastAlert
             ? t('pleaseSupportAtLeast')
             : balance
             ? t('StakeActionSection.ToContribute')

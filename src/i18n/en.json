@@ -1,4 +1,5 @@
 {
+  "InsufficientBalance": "Insufficient Balance",
   "ReferrerTable.Account": "Account",
   "ReferrerTable.ContributedKSM": "Contributed KSM",
   "ReferrerTable.ReferralRewards": "Referral Rewards",

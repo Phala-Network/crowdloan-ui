@@ -1,4 +1,5 @@
 {
+  "InsufficientBalance": "余额不足",
   "ReferrerTable.Account": "账户",
   "ReferrerTable.ContributedKSM": "支持量",
   "ReferrerTable.ReferralRewards": "邀请奖励",
