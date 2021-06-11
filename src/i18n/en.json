@@ -57,13 +57,13 @@
   "contributeDetails": "Contribution Details",
   "more": "More",
   "time": "Time",
-  "yourContribute": "Contribution",
+  "yourContribute": "Your Contribution",
   "yourReward": "Reward",
   "rewardVest": "Reward Vesting",
   "rewardVestTip": "If Phala wins the Slot Auction, rewards will be distributed according to the following payment schedule. If a slot is not won, you can unbond your KSM immediately after the Auctions end.",
   "heightestBid": "Highest Bid",
   "averageBid": "Average Bid",
-  "khalaBid": "Khala Bid",
+  "khalaBid": "Khala",
   "phalaBid": "Phala Bid",
   "noMoreReward": "No more reward.",
   "calculatePopInfo1": "Contribution Reward：Stake KSM to contribute Khala's PHA rewards",
@@ -163,5 +163,5 @@
   "alert": "Alert",
   "install": "Install",
   "pleaseInstallText": "No polkadot{.js} extension found, please install it first",
-  "twitterShareText": "Support Khala's Crowdloan in the Kusama Parachain Slot Auction! Each $KSM contributed will earn 100 $PHA on a slot win! Invite friends to net an extra 0.5% reward for you AND your friend! Click the link below to participate!"
+  "twitterShareText": "Support Khala's Crowdloan in Kusama Slot Auction! Each $KSM contributed will earn 100 $PHA on a slot win! Participate link "
 }
