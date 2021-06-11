@@ -292,7 +292,7 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
 
-    // setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
+    setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
   }, [stakeInput])
 
   const tryContribute = useCallback(async () => {
@@ -406,8 +406,8 @@ const StakeActionSection: React.FC = () => {
   const setMaxStakeNumber = () => setStakeInput(getBalance())
 
   const getBalance = () => {
-    const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
-    const result = new Demical(balance.toString())
+    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
+    const result = new Demical(balance?.toString())
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
@@ -533,7 +533,7 @@ const StakeActionSection: React.FC = () => {
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
             min={0.1}
-            max={99999999}
+            max={9999999999}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => {
