@@ -12,15 +12,13 @@ import {
   InjectedExtension,
 } from '@polkadot/extension-inject/types'
 import {
-  web3Accounts,
   web3FromSource,
   isWeb3Injected,
-  web3AccountsSubscribe,
   web3Enable,
 } from '@polkadot/extension-dapp'
-import polkadotJsAccountFilter from './polkadotJsAccountFilter'
 import { keyring } from '@polkadot/ui-keyring'
 import { usePolkadotApi } from '../polkadot'
+import getInjectedAccounts, { InjectedAccountExt } from '../getInjectedAccounts'
 
 function isKeyringLoaded() {
   try {
@@ -28,6 +26,18 @@ function isKeyringLoaded() {
   } catch {
     return false
   }
+}
+
+interface UseAccounts {
+  allAccounts: InjectedAccountExt[]
+  areAccountsLoaded: boolean
+  hasAccounts: boolean
+}
+
+const EMPTY: UseAccounts = {
+  allAccounts: [],
+  areAccountsLoaded: false,
+  hasAccounts: false,
 }
 
 const _Web3Provider: React.FC<{
@@ -49,11 +59,9 @@ const _Web3Provider: React.FC<{
   const [extensions, setExtensions] = useState<
     ExtensionContextValue['extensions']
   >([])
-  const [accounts, setAccounts] = useState<ExtensionContextValue['accounts']>(
-    []
-  )
   const [currentAccountLocal, setCurrentAccountLocal] =
     useLocalStorage<{ address: string }>('currentAccount')
+  const [stateAccounts, setStateAccounts] = useState<UseAccounts>(EMPTY)
 
   useEffect(() => {
     ;(async () => {
@@ -72,7 +80,7 @@ const _Web3Provider: React.FC<{
       setError(ERR_POLKADOT_WEB3_NOT_INJECTED)
       return
     }
-    let unsubscribe
+
     if (!isEnabled) {
       ;(async () => {
         const _extensions = await web3Enable(POLKADOT_WEB3_APP_NAME)
@@ -81,34 +89,24 @@ const _Web3Provider: React.FC<{
           setIsEnabled(true)
           setError(undefined)
           setExtensions(_extensions)
-          web3Accounts().then(async (accounts) => {
-            isKeyringLoaded() ||
-              keyring.loadAll(
-                { genesisHash: api.genesisHash, type: 'ethereum' },
-                accounts
-              )
 
-            console.log(keyring.getPairs())
+          if (!isKeyringLoaded()) {
+            const injectedAccounts = await getInjectedAccounts()
 
-            return setAccounts(polkadotJsAccountFilter(accounts))
-          })
-          unsubscribe = await web3AccountsSubscribe((accounts) =>
-            setAccounts(polkadotJsAccountFilter(accounts))
-          )
+            keyring.loadAll({ genesisHash: api.genesisHash }, injectedAccounts)
+          }
         }
       })()
     }
-
-    return () => unsubscribe?.()
   }, [enableCount, initialized])
 
   useEffect(() => {
-    const lastLoginAccount = accounts.find(
+    const lastLoginAccount = stateAccounts.allAccounts.find(
       (item) => item.address === currentAccountLocal?.address
     )
 
     setCurrentAccount(lastLoginAccount)
-  }, [accounts])
+  }, [stateAccounts])
 
   useEffect(() => {
     ;(async () => {
@@ -130,13 +128,37 @@ const _Web3Provider: React.FC<{
     [setCallbackRef]
   )
 
+  useEffect((): (() => void) => {
+    if (!isEnabled) return
+
+    const subscription = keyring.accounts.subject.subscribe(async () => {
+      const allAccounts = keyring.getAccounts()
+      const hasAccounts = allAccounts.length !== 0
+      const injectedAccounts = await getInjectedAccounts()
+
+      setStateAccounts({
+        allAccounts: injectedAccounts.filter((account) =>
+          allAccounts.some(
+            (allAccountsItem) => allAccountsItem.address === account.address
+          )
+        ),
+        areAccountsLoaded: true,
+        hasAccounts,
+      })
+    })
+
+    return (): void => {
+      setTimeout(() => subscription.unsubscribe(), 0)
+    }
+  }, [isEnabled])
+
   const contextValue = useMemo<ExtensionContextValue>(
     () => ({
       enable,
       error,
       isEnabled,
       extensions,
-      accounts,
+      accounts: stateAccounts.allAccounts,
       accountModal: modal,
       openModal,
       currentAccount,
@@ -144,7 +166,7 @@ const _Web3Provider: React.FC<{
       setCurrentAccount,
       modalBindings: {
         modal,
-        accounts,
+        accounts: stateAccounts.allAccounts,
         setCurrentAccount,
         isEnabled,
         callbackRef,
@@ -158,7 +180,7 @@ const _Web3Provider: React.FC<{
       error,
       isEnabled,
       extensions,
-      accounts,
+      stateAccounts,
       modal,
       currentAccount,
       currentInjector,

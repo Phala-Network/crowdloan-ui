@@ -60,7 +60,7 @@ const ItemButton = styled(Button)`
   }
 `
 
-function web3IsInjected() {
+export function web3IsInjected(): boolean {
   return Object.keys(window?.['injectedWeb3']).length !== 0
 }
 
