@@ -85,10 +85,10 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
                     </>
                   )}
                 </div>
-                <Spacer y={1}></Spacer>
-                <ContributorInfo />
               </>
             )}
+            <Spacer y={1}></Spacer>
+            <ContributorInfo />
             <Spacer y={0.5}></Spacer>
             <ReferrerTable></ReferrerTable>
           </div>
