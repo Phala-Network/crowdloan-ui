@@ -13,7 +13,7 @@
   "accounts": "账户",
   "PleaseConnectWallet": "请先连接钱包",
   "selectAnAccount": "选择账户",
-  "accountNoticeAddAccount": "未发现账号，请在您的 polkadot{.js} 插件中添加或恢复账号",
+  "accountNoticeAddAccount": "未发现账号，请在您的 polkadot.js 插件中添加或恢复账号",
   "accountNoticeAllowAccess": "请在Polkadot扩展允许访问账户。",
   "stakingRewardPool": "Khala 众贷量",
   "stakingTotal": "质押总量",
