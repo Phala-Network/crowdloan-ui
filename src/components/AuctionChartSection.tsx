@@ -114,7 +114,7 @@ const AuctionChartSection: React.FC = () => {
       },
       grid: [
         {
-          top: '20px',
+          top: '0px',
           left: '16px',
           right: '16px',
           bottom: '24px',
