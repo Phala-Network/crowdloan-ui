@@ -32,7 +32,6 @@ import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
-import dayjs from 'dayjs'
 import { useIntl } from 'gatsby-plugin-intl'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
