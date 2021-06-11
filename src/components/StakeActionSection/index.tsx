@@ -32,7 +32,6 @@ import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
-import dayjs from 'dayjs'
 import { useIntl } from 'gatsby-plugin-intl'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
@@ -342,7 +341,7 @@ const StakeActionSection: React.FC = () => {
           createReferrerRemarkTx({
             paraId,
             api,
-            referrer: decodeAddress(referrerInputValue, true, 2),
+            referrer: decodeAddress(referrerInputValue),
           })
         )
       } catch (error) {
@@ -437,11 +436,8 @@ const StakeActionSection: React.FC = () => {
             {locale === 'zh' && (
               <ModalLine>
                 您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
-                KSM，如果竞拍成功，您的 KSM 将在{' '}
-                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
-                  'YYYY 年 MM 月 DD 日'
-                )}
-                解锁，如果失败，拍卖结束后立即解锁；
+                KSM，如果竞拍成功，您的 KSM
+                将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
                 {referrerInput.state.trim()
                   ? `您的邀请人是 ${referrerInput.state.trim()}；`
                   : null}
@@ -453,12 +449,9 @@ const StakeActionSection: React.FC = () => {
             {locale === 'en' && (
               <ModalLine>
                 You will contribute {txValue} KSM for Khala in the Kusama Slot
-                Auction, If Khala wins, your KSM will be unbonded on{' '}
-                {dayjs(campaign.meta.estimateFirstReleasingIn).format(
-                  'DD, MM, YYYY'
-                )}
-                , if it fails, it will be unbonded immediately after the auction
-                ends;{' '}
+                Auction, If Khala wins, your KSM will be unlocked at the end of
+                the lease period, if it fails, it will be unbonded immediately
+                after the auction ends;{' '}
                 {referrerInput.state.trim()
                   ? `Your referrer is ${referrerInput.state.trim()}; `
                   : null}
