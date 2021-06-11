@@ -407,7 +407,7 @@ const StakeActionSection: React.FC = () => {
 
   const getBalance = () => {
     const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
-    const result = new Demical(balance?.toString())
+    const result = new Demical(balance?.toString?.() || '0')
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
