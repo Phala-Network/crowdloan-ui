@@ -243,8 +243,10 @@ const StakeInfoSection: React.FC = () => {
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
   const localData2 = useReleasingData(
-    currentContributorQuery?.data?.contributor?.amount * 100
+    currentContributorQuery?.data?.contributor?.rewardAmount +
+      currentContributorQuery?.data?.contributor?.promotionRewardAmount
   )
+
   const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
     return {
