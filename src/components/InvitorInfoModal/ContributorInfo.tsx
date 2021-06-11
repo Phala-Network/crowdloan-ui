@@ -9,7 +9,7 @@ const PrimaryColorSpan = styled.span`
 
 const ContributorInfo: React.FC = () => {
   const { currentContributorQuery } = useMeta()
-  const { referralsCount, rewardAmount } =
+  const { referralsCount, promotionRewardAmount } =
     currentContributorQuery?.data?.contributor || {}
   const { locale } = useIntl()
 
@@ -19,7 +19,7 @@ const ContributorInfo: React.FC = () => {
         You have invited{' '}
         <PrimaryColorSpan>{referralsCount ?? 0}</PrimaryColorSpan> people, and
         you are currently rewarded with an additional{' '}
-        <PrimaryColorSpan>{rewardAmount ?? 0}</PrimaryColorSpan> PHA
+        <PrimaryColorSpan>{promotionRewardAmount ?? 0}</PrimaryColorSpan> PHA
       </div>
     )
   } else {
@@ -27,7 +27,8 @@ const ContributorInfo: React.FC = () => {
       <div>
         您邀请了 <PrimaryColorSpan>{referralsCount ?? 0}</PrimaryColorSpan>{' '}
         人，目前为您额外带来{' '}
-        <PrimaryColorSpan>{rewardAmount ?? 0}</PrimaryColorSpan> PHA奖励
+        <PrimaryColorSpan>{promotionRewardAmount ?? 0}</PrimaryColorSpan>{' '}
+        PHA奖励
       </div>
     )
   }

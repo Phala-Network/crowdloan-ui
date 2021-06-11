@@ -243,7 +243,7 @@ const StakeInfoSection: React.FC = () => {
   const { contributingReward } = React.useContext(CalculatorContext)
   const localData = useReleasingData(contributingReward)
   const localData2 = useReleasingData(
-    currentContributorQuery?.data?.contributor?.rewardAmount
+    currentContributorQuery?.data?.contributor?.amount * 100
   )
   const invitorInfoDialogModal = useModal()
   const chartOptions = React.useMemo(() => {
@@ -380,9 +380,8 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Yg">
             <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
-              {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
-                currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount ||
+              {currentContributorQuery?.data?.contributor
+                ?.promotionRewardAmount ||
                 0 ||
                 (currentAccount ? '0' : '-')}{' '}
               <span className="Unit">PHA</span>
