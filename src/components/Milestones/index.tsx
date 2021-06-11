@@ -46,7 +46,7 @@ const Milestones: React.FC = () => {
 
   const milestones = data?.meta?.milestones?.concat()?.reverse?.()
 
-  if (!milestones) {
+  if (!milestones || !milestones?.[0]) {
     return null
   }
 

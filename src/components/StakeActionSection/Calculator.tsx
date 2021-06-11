@@ -11,6 +11,7 @@ import { useMeta } from '@/utils/meta'
 import TextTooltip from '@/components/TextTooltip'
 import InputNumber from '@/components/InputNumber'
 import NumberDisplay from '@/components/NumberDisplay'
+import useSoftTop from '../../hooks/useSoftTop'
 
 const StakeActionInfoWrapper = styled.div`
   width: 100%;
@@ -144,8 +145,8 @@ const Calculator: React.FC<{
 }> = ({ ksmAmountInput, hasReferrer, onChange }) => {
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
-  const contributionChart = campaignQuery?.data?.meta?.contributionChart
   const { setContributingReward } = useContext(CalculatorContext)
+  const shouldShowCalculator = useSoftTop()
 
   // just for external display
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
@@ -153,17 +154,6 @@ const Calculator: React.FC<{
   useEffect(() => {
     onChange({ referrerRewardAmount })
   }, [referrerRewardAmount])
-
-  const auctionAmount = useMemo(() => {
-    return contributionChart
-      ? contributionChart?.[contributionChart.length - 1]?.[1]
-      : 0
-  }, [contributionChart])
-
-  const shouldShowCalculator = useMemo(() => {
-    // ruan ding
-    return campaignQuery.data?.campaign?.cap > auctionAmount
-  }, [campaignQuery.data?.campaign?.cap, auctionAmount])
 
   const timeDelta = useMemo(() => {
     const endDate = campaignQuery?.data?.meta?.estimateEndReleasingIn
