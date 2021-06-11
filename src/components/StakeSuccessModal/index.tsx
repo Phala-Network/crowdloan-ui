@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useWeb3 } from '@/utils/web3'
 import { Divider, Modal, useModal } from '@geist-ui/react'
 import styled from 'styled-components'
@@ -33,7 +33,7 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
   const { campaignId } = useMeta()
   const { locale } = useIntl()
   const twitterLink = useTwitterLink()
-  const { data } = useQuery<GetContributionsResponse>([
+  const { data, refetch } = useQuery<GetContributionsResponse>([
     'getContributions',
     {
       perPage: 1,
@@ -45,6 +45,10 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
 
   const blockId = data?.contributions?.[0]?.onChainHash || '7551103'
   const link = `https://kusama.subscan.io/block/${blockId}`
+
+  useEffect(() => {
+    refetch()
+  }, [modalProps.visible])
 
   return (
     <Modal {...modalProps.bindings}>
