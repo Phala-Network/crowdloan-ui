@@ -293,7 +293,7 @@ const StakeActionSection: React.FC = () => {
     setStakeActionButtonDisabled(!stakeInput)
 
     setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
-  }, [stakeInput])
+  }, [stakeInput, balance])
 
   const tryContribute = useCallback(async () => {
     if (stakeInput < 0.1) {
