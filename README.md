@@ -22,8 +22,8 @@ https://app.netlify.com/teams/phala/overview
 
 5CamWSbitWL4k7BpUJHLojgmhDhXRNHtGCBGW1J93wepogxV
 
-“您邀请了 x 人，目前额外为您带来 x PHA 奖励，点击生成您的邀请链接”，最后这句“点击生成…”是下划线的链接文本，颜色是那个蓝，点击后的交互就和之前预热时那个生成一样
+GATSBY_BACKEND_ENDPOINT=https://crowdloan-api.phala.network
+GATSBY_POLKADOT_ENDPOINT=wss://kusama-rpc.polkadot.io
 
-英文是：click to generate your referral link
-
-搞完后告我下，我在测试环境看下
+GATSBY_BACKEND_ENDPOINT=https://crowdloan-api-test.phala.network
+GATSBY_POLKADOT_ENDPOINT=wss://crowdloan-api-test.phala.network/ws
