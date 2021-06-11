@@ -359,8 +359,6 @@ const StakeInfoSection: React.FC = () => {
     })
   }, [latestContributions])
 
-  console.log('currentContributorQuery', currentContributorQuery)
-
   return (
     <Section
       className=""
