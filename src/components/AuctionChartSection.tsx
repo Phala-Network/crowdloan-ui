@@ -163,7 +163,7 @@ const AuctionChartSection: React.FC = () => {
         <div className="ChartTitle">
           <span className="Text">{t('stakingRewardPool')}:</span>
           <span className="Amount">
-            {campaignData?.campaign?.totalRewardAmount || '...'}
+            {campaignData?.campaign?.raisedAmount || '...'} KSM
           </span>
         </div>
 
