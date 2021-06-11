@@ -254,6 +254,21 @@ const StakeInfoSection: React.FC = () => {
         trigger: 'axis',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         borderColor: 'rgba(255, 255, 255, 0.4)',
+        formatter: (params) => {
+          return `
+            ${params[0].dataIndex === 0 ? 'TBA' : params[0].value[0]}
+            <br/>
+            ${params[0].marker}
+            <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
+              ${params[0].value[1]}
+            </span>
+            <br/>
+            ${params[1].marker}
+            <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
+              ${params[1].value[1]}
+            </span>
+          `
+        },
         textStyle: {
           color: 'white',
         },
