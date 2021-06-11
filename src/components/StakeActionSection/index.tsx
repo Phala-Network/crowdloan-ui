@@ -438,7 +438,6 @@ const StakeActionSection: React.FC = () => {
           <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
             {locale === 'zh' && (
               <ModalLine>
-                届时您可以通过您的KSM地址领取奖励，详情请关注本页面或Phala社区。
                 您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
                 KSM，如果竞拍成功，您的 KSM 将在{' '}
                 {dayjs(campaign.meta.estimateFirstReleasingIn).format(
