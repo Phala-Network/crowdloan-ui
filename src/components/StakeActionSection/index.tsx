@@ -570,24 +570,33 @@ const StakeActionSection: React.FC = () => {
             />
           )}
         </div>
-        <Button
-          disabled={
-            stakeActionButtonDisabled ||
-            disableStakeButtonByCheckEndBLock ||
-            buttonDisabledBecauseOfStakeValue
-          }
-          effect={false}
-          className="ActionBtn"
-          onClick={tryContribute}
-        >
-          {!balance
-            ? t('connectWallet')
-            : buttonDisabledBecauseOfStakeValue
-            ? t('InsufficientBalance')
-            : stakeLeastAlert
-            ? t('pleaseSupportAtLeast')
-            : t('StakeActionSection.ToContribute')}
-        </Button>
+        {balance && (
+          <Button
+            disabled={
+              stakeActionButtonDisabled ||
+              disableStakeButtonByCheckEndBLock ||
+              buttonDisabledBecauseOfStakeValue
+            }
+            effect={false}
+            className="ActionBtn"
+            onClick={tryContribute}
+          >
+            {buttonDisabledBecauseOfStakeValue
+              ? t('InsufficientBalance')
+              : stakeLeastAlert
+              ? t('pleaseSupportAtLeast')
+              : t('StakeActionSection.ToContribute')}
+          </Button>
+        )}
+        {!balance && (
+          <Button
+            effect={false}
+            className="ActionBtn"
+            onClick={() => openWeb3Modal()}
+          >
+            {t('connectWallet')}
+          </Button>
+        )}
       </StakeActionForm>
     </Section>
   )
