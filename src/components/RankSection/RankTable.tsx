@@ -13,7 +13,9 @@ const RankTable: React.FC<Props> = (props) => {
   const { t } = useI18n()
 
   const rankColumn = <Table.Column prop="rank" label={t('rank')} />
-  const addressColum = <Table.Column prop="address" label={t('KSMAccount')} />
+  const addressColum = (
+    <Table.Column prop="addressFormat" label={t('KSMAccount')} />
+  )
   const amountColum = <Table.Column prop="amount" label={t('contribute')} />
   const rewardAmountColumn = (
     <Table.Column prop="rewardAmount" label={t('contributeReward')} />
