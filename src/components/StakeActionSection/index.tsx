@@ -439,7 +439,7 @@ const StakeActionSection: React.FC = () => {
             {locale === 'zh' && (
               <ModalLine>
                 您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
-                KSM，如果竞拍成功，您的 KSM
+                ，如果竞拍成功，您的 KSM
                 将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
                 {referrerInput.state.trim()
                   ? `您的邀请人是 ${referrerInput.state.trim()}；`
@@ -451,7 +451,7 @@ const StakeActionSection: React.FC = () => {
             )}
             {locale === 'en' && (
               <ModalLine>
-                You will contribute {txValue} KSM for Khala in the Kusama Slot
+                You will contribute {txValue} for Khala in the Kusama Slot
                 Auction, If Khala wins, your KSM will be unlocked at the end of
                 the lease period, if it does not win, it will be unbonded
                 immediately after the auction ends;{' '}
