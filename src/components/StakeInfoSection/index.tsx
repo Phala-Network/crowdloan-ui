@@ -14,6 +14,7 @@ import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
 import ModalTitle from '@/components/ModalTitle'
 import MoreIcon from './MoreIcon'
+import toFixed from '@/utils/toFixed'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -375,7 +376,6 @@ const StakeInfoSection: React.FC = () => {
 
   const latestContributions =
     currentContributorQuery?.data?.meta?.latestContributions
-  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
 
   const tableData = React.useMemo(() => {
     return latestContributions?.map((item) => {
@@ -398,6 +398,12 @@ const StakeInfoSection: React.FC = () => {
     })
   }, [latestContributions])
 
+  const {
+    amount: contributorAmount = 0,
+    rewardAmount = 0,
+    promotionRewardAmount = 0,
+  } = currentContributorQuery?.data?.contributor || {}
+
   return (
     <Section
       className=""
@@ -412,19 +418,17 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              {contributorAmount || (currentAccount ? '0' : '-')}{' '}
-              <span className="Unit">KSM</span>
+              {currentAccount ? toFixed(contributorAmount) : '-'}
+              <span className="Unit"> KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
             <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
-              {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
-                currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount ||
-                0 ||
-                (currentAccount ? '0' : '-')}{' '}
-              <span className="Unit">PHA</span>
+              {currentAccount
+                ? toFixed(rewardAmount + promotionRewardAmount)
+                : '-'}
+              <span className="Unit"> PHA</span>
             </p>
           </div>
         </div>
