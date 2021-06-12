@@ -439,7 +439,7 @@ const StakeActionSection: React.FC = () => {
             {locale === 'zh' && (
               <ModalLine>
                 您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
-                KSM，如果竞拍成功，您的 KSM
+                ，如果竞拍成功，您的 KSM
                 将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
                 {referrerInput.state.trim()
                   ? `您的邀请人是 ${referrerInput.state.trim()}；`
@@ -451,29 +451,20 @@ const StakeActionSection: React.FC = () => {
             )}
             {locale === 'en' && (
               <ModalLine>
-                You will contribute {txValue} KSM for Khala in the Kusama Slot
+                You will contribute {txValue} for Khala in the Kusama Slot
                 Auction, If Khala wins, your KSM will be unlocked at the end of
-                the lease period, if it fails, it will be unbonded immediately
-                after the auction ends;{' '}
+                the lease period, if it does not win, it will be unbonded
+                immediately after the auction ends;{' '}
                 {referrerInput.state.trim()
                   ? `Your referrer is ${referrerInput.state.trim()}; `
                   : null}
                 When Khala wins a slot and runs as parachain, 34% of the PHA
-                rewards vest to your addresses immediately, with 66% vesting
-                monthly over 11 months.Trading markets are volatile and shift
-                quickly, you are responsible and liable for any trading and
-                non-trading activity on the Site, The information on this
-                website does not represent financial advice.
+                rewards vest to your addresses immediately, with the remaining
+                66% vesting monthly over 11 months.Market prices are volatile
+                and shift quickly; you are responsible for your own trading
+                decisions. Information on this website is not financial advice.
               </ModalLine>
             )}
-            {/* <ModalLine>
-              您将在Kusama卡槽拍卖中为Khala质押{txValue}直到
-              {campaign.meta.estimateEndReleasingIn}。您的PHA奖励将在
-              {campaign.meta.estimateFirstReleasingIn}解锁
-              {campaign.meta.firstReleasingPercentage}%，之后每隔
-              {campaign.meta.estimateReleasingDaysInterval}天解锁
-              {campaign.meta.estimateReleasingPercentagePerInterval}%，
-            </ModalLine> */}
           </Fieldset.Content>
           <Divider />
           <Fieldset.Content
@@ -535,11 +526,11 @@ const StakeActionSection: React.FC = () => {
           />
 
           <div className="InputPostfix">
-            {balance && balance.toString() !== '0' && (
+            {/* {balance && balance.toString() !== '0' && (
               <span className="Label" onClick={setMaxStakeNumber}>
                 {t('max')}
               </span>
-            )}
+            )} */}
 
             <span className="Unit">KSM</span>
           </div>
