@@ -481,7 +481,7 @@ const StakeInfoSection: React.FC = () => {
           )}
         </div>
 
-        {contributorAmount && tableData && (
+        {contributorAmount > 0 && (
           <Table data={tableData} className="Table">
             <Table.Column prop="time" label={t('time')} />
             <Table.Column prop="amountWithIcon" label={t('yourContribute')} />

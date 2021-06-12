@@ -8,6 +8,7 @@ import { useQuery } from 'react-query'
 import { useMeta } from '@/utils/meta'
 import { GetContributorsResponse } from '@/utils/request'
 import RankTable from './RankTable'
+import { useMediaQuery } from 'react-responsive'
 
 const style__Rank = css`
   background: transparent;
@@ -109,6 +110,7 @@ const RankSection: React.FC = () => {
   const { campaignId, currentContributorQuery, refetchCount } = useMeta()
   const { current: perPage } = useRef(10)
   const [page, setPage] = useState(1)
+  const isXS = useMediaQuery({ minWidth: 0, maxWidth: 1024 })
 
   const { data } = useQuery<GetContributorsResponse>(
     ['getRank', { campaignId, page, perPage, refetchCount }],
@@ -129,18 +131,22 @@ const RankSection: React.FC = () => {
 
     const rankBase = (page - 1) * perPage + 1
 
-    data?.contributors.forEach((i, idx) => {
+    return data?.contributors.map((i, idx) => {
       Object.keys(i).forEach((ii) => {
         if (!i[ii]) {
           i[ii] = '-'
         }
       })
       i.rank = rankBase + idx
-      return i
-    })
 
-    return data?.contributors
-  }, [page, data?.contributors])
+      return {
+        ...i,
+        addressFormat: isXS
+          ? i?.address?.slice?.(0, 6) + '...' + i?.address?.slice?.(-6)
+          : i?.address,
+      }
+    })
+  }, [page, data?.contributors, isXS])
 
   return (
     <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
