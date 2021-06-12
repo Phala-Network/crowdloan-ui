@@ -33,6 +33,7 @@ import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
 import { useIntl } from 'gatsby-plugin-intl'
+import * as Sentry from '@sentry/browser'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -346,6 +347,7 @@ const StakeActionSection: React.FC = () => {
         )
       } catch (error) {
         console.warn(error)
+        Sentry.captureException(error)
         setToast({
           text: 'Invalid referrer.',
           type: 'error',
@@ -390,6 +392,7 @@ const StakeActionSection: React.FC = () => {
       }
     ).catch((error: any) => {
       console.warn(error)
+      Sentry.captureException(error)
       const text = error.message.includes('1010')
         ? t('insufficientFee')
         : 'Invalid referrer.'
@@ -567,24 +570,33 @@ const StakeActionSection: React.FC = () => {
             />
           )}
         </div>
-        <Button
-          disabled={
-            stakeActionButtonDisabled ||
-            disableStakeButtonByCheckEndBLock ||
-            buttonDisabledBecauseOfStakeValue
-          }
-          effect={false}
-          className="ActionBtn"
-          onClick={tryContribute}
-        >
-          {buttonDisabledBecauseOfStakeValue
-            ? t('InsufficientBalance')
-            : stakeLeastAlert
-            ? t('pleaseSupportAtLeast')
-            : balance
-            ? t('StakeActionSection.ToContribute')
-            : t('connectWallet')}
-        </Button>
+        {balance && (
+          <Button
+            disabled={
+              stakeActionButtonDisabled ||
+              disableStakeButtonByCheckEndBLock ||
+              buttonDisabledBecauseOfStakeValue
+            }
+            effect={false}
+            className="ActionBtn"
+            onClick={tryContribute}
+          >
+            {buttonDisabledBecauseOfStakeValue
+              ? t('InsufficientBalance')
+              : stakeLeastAlert
+              ? t('pleaseSupportAtLeast')
+              : t('StakeActionSection.ToContribute')}
+          </Button>
+        )}
+        {!balance && (
+          <Button
+            effect={false}
+            className="ActionBtn"
+            onClick={() => openWeb3Modal()}
+          >
+            {t('connectWallet')}
+          </Button>
+        )}
       </StakeActionForm>
     </Section>
   )
