@@ -405,7 +405,7 @@ const StakeActionSection: React.FC = () => {
     })
   }, [tx, txWaiting, currentAccount])
 
-  const setMaxStakeNumber = () => setStakeInput(getBalance())
+  // const setMaxStakeNumber = () => setStakeInput(getBalance())
 
   const getBalance = () => {
     const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
