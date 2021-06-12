@@ -76,18 +76,23 @@ const TableWrap = styled.div`
 const TableFooter = styled.div`
   display: flex;
   background: rgba(0, 0, 0, 0.2);
-  height: 80px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 10px 30px;
   align-items: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+
+  @media (max-width: 680px) {
+    display: block;
+  }
+
   & > .left {
+    padding: 8px 6px 12px 6px;
     flex-grow: 1;
     font-size: 14px;
     line-height: 20px;
     color: rgba(255, 255, 255, 0.9);
   }
+
   & nav {
     text-align: right;
     li {
@@ -156,6 +161,7 @@ const RankSection: React.FC = () => {
           <div className="left">
             {t('myRanking')}：{currentContributorQuery.data?.meta?.rank || '-'}
           </div>
+
           <Pagination count={totalPage} onChange={setPage}>
             <Pagination.Next>
               <ChevronRight />
