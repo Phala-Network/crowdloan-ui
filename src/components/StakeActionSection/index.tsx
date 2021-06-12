@@ -310,7 +310,7 @@ const StakeActionSection: React.FC = () => {
 
     const txs = []
     const referrerInputValue = referrerInput.state.trim()
-    if (referrerInputValue) {
+    if (referrerInputValue && !referrer) {
       try {
         txs.push(
           createReferrerRemarkTx({
