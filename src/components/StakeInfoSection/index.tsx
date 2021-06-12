@@ -258,23 +258,23 @@ const StakeInfoSection: React.FC = () => {
           const params0 = params[0]
           const params1 = params[1]
 
-          let tooltip = `${params1.dataIndex === 0 ? 'TBA' : params1.value[0]}`
+          let tooltip = params1?.dataIndex === 0 ? 'TBA' : params1?.value?.[0]
 
-          if (params0.value?.[1]) {
+          if (params0?.value?.[1]) {
             tooltip += `
               <br/>
-              ${params0.marker}
+              ${params0?.marker}
               <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
-                ${params0.value?.[1]}
+                ${params0?.value?.[1]}
               </span>
             `
           }
 
           tooltip += `
             <br/>
-            ${params1.marker}
+            ${params1?.marker}
             <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
-              ${params1.value?.[1]}
+              ${params1?.value?.[1]}
             </span>
           `
 
