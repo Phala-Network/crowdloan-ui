@@ -1,21 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import {
-  Input,
-  Button,
-  useInput,
-  useToasts,
-  useModal,
-  Modal,
-  Fieldset,
-  Divider,
-  Description,
-  Spacer,
-} from '@geist-ui/react'
+import { Input, Button, useInput, useToasts, useModal } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
-import { useCallback, useEffect, useState } from 'react'
 import { usePolkadotApi } from '@/utils/polkadot'
 import Demical from 'decimal.js'
 import { useI18n } from '@/i18n'
@@ -28,12 +16,9 @@ import useCheckEndBlock from '@/hooks/useCheckEndBlock'
 import Calculator from './Calculator'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
 import Referrer from './Referrer'
-import ModalTitle from '@/components/ModalTitle'
-import NormalButton from '@/components/NormalButton'
-import ModalActions from '@/components/ModalActions'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
-import { useIntl } from 'gatsby-plugin-intl'
 import * as Sentry from '@sentry/browser'
+import ConfirmModal from './ConfirmModal'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -220,26 +205,14 @@ const StakeActionForm = styled.div`
   }
 `
 
-const ModalLine = styled.p`
-  word-break: initial;
-  word-wrap: break-word;
-  text-align: left;
-  font-size: 0.9rem;
-`
-
 const StakeActionSection: React.FC = () => {
   const { t } = useI18n()
-  const {
-    currentAccount,
-    currentInjector,
-    openModal: openWeb3Modal,
-  } = useWeb3()
+  const { currentAccount, openModal: openWeb3Modal } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
   const balance = useBalance(currentAccount?.address)
   const invitorInfoDialogModal = useModal()
 
   const {
-    refetch,
     currentContributorQuery,
     campaignQuery: { data: campaign },
   } = useMeta()
@@ -249,7 +222,6 @@ const StakeActionSection: React.FC = () => {
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
   const [stakeInput, setStakeInput] = useState(10)
-  const { locale } = useIntl()
   const referrerInput = useInput('')
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
   const [
@@ -273,6 +245,7 @@ const StakeActionSection: React.FC = () => {
 
   const [tx, setTx] = useState(null)
   const [txPaymentInfo, setTxPaymentInfo] = useState(null)
+
   useEffect(() => {
     if (!(api && tx && currentAccount)) {
       setTxPaymentInfo(null)
@@ -282,8 +255,9 @@ const StakeActionSection: React.FC = () => {
       setTxPaymentInfo(await tx.paymentInfo(currentAccount.address))
     })()
   }, [currentAccount, tx, api, setTxPaymentInfo])
+
   const [txWaiting, setTxWaiting] = useState(false)
-  const [txValue, setTxValue] = useState(null)
+  const [txValue, setTxValue] = useState<string>(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
   const [stakeActionButtonDisabled, setStakeActionButtonDisabled] =
     useState(false)
@@ -373,39 +347,7 @@ const StakeActionSection: React.FC = () => {
     accountCallbackRef.current = tryContribute
   }, [tryContribute])
 
-  const trySubmitTx = useCallback(() => {
-    setTxWaiting(true)
-    tx.signAndSend(
-      currentAccount.address,
-      { signer: currentInjector.signer },
-      ({ status }) => {
-        if (status.isInBlock) {
-          setTimeout(() => {
-            setTxWaiting(false)
-            confirmModal.setVisible(false)
-            stakeSuccessModal.setVisible(true)
-            refetch()
-          }, 6000)
-        } else {
-          console.warn(`Current status: ${status.type}`)
-        }
-      }
-    ).catch((error: any) => {
-      console.warn(error)
-      Sentry.captureException(error)
-      const text = error.message.includes('1010')
-        ? t('insufficientFee')
-        : 'Invalid referrer.'
-      setTxWaiting(false)
-      setToast({
-        text,
-        type: 'error',
-        delay: 6000,
-      })
-    })
-  }, [tx, txWaiting, currentAccount])
-
-  const setMaxStakeNumber = () => setStakeInput(getBalance())
+  // const setMaxStakeNumber = () => setStakeInput(getBalance())
 
   const getBalance = () => {
     const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
@@ -431,80 +373,16 @@ const StakeActionSection: React.FC = () => {
       <StakeSuccessModal modalProps={stakeSuccessModal} />
       <InvitorInfoModal modal={invitorInfoDialogModal} />
 
-      <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
-        <ModalTitle {...confirmModal.bindings}>{t('PleaseConfirm')}</ModalTitle>
-        <Modal.Subtitle></Modal.Subtitle>
-        <Fieldset>
-          <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
-            {locale === 'zh' && (
-              <ModalLine>
-                您将在 Kusama 插槽拍卖中支持 Khala {txValue}{' '}
-                ，如果竞拍成功，您的 KSM
-                将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
-                {referrerInput.state.trim()
-                  ? `您的邀请人是 ${referrerInput.state.trim()}；`
-                  : null}
-                您的 PHA 奖励将在 Khala 赢得一个插槽并成功运行为平行链时释放
-                34％
-                到您的的地址。剩余的66％将在11个月内线性释放。交易市场动荡不定，您应独自承担本网站上进行的任何交易和非交易活动，本网站信息不代表财务建议。
-              </ModalLine>
-            )}
-            {locale === 'en' && (
-              <ModalLine>
-                You will contribute {txValue} for Khala in the Kusama Slot
-                Auction, If Khala wins, your KSM will be unlocked at the end of
-                the lease period, if it does not win, it will be unbonded
-                immediately after the auction ends;{' '}
-                {referrerInput.state.trim()
-                  ? `Your referrer is ${referrerInput.state.trim()}; `
-                  : null}
-                When Khala wins a slot and runs as parachain, 34% of the PHA
-                rewards vest to your addresses immediately, with the remaining
-                66% vesting monthly over 11 months.Market prices are volatile
-                and shift quickly; you are responsible for your own trading
-                decisions. Information on this website is not financial advice.
-              </ModalLine>
-            )}
-          </Fieldset.Content>
-          <Divider />
-          <Fieldset.Content
-            style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
-          >
-            <Description
-              title="Contribution Value"
-              content={txValue || '...'}
-            />
-            <Divider volume={0} />
-            <Description
-              title="Estimated Fee"
-              content={
-                txPaymentInfo ? txPaymentInfo.partialFee.toHuman() : '...'
-              }
-            />
-          </Fieldset.Content>
-        </Fieldset>
-        <ModalActions>
-          <NormalButton
-            auto
-            disabled={txWaiting}
-            onClick={
-              txWaiting ? undefined : () => confirmModal.setVisible(false)
-            }
-          >
-            {t('cancel')}
-          </NormalButton>
-          <Spacer x={0.5}></Spacer>
-          <NormalButton
-            auto
-            primary
-            loading={txWaiting}
-            disabled={txWaiting}
-            onClick={txWaiting ? undefined : trySubmitTx}
-          >
-            {t('ok')}
-          </NormalButton>
-        </ModalActions>
-      </Modal>
+      <ConfirmModal
+        tx={tx}
+        txWaiting={txWaiting}
+        txValue={txValue}
+        txPaymentInfo={txPaymentInfo}
+        referrerInput={referrerInput}
+        confirmModal={confirmModal}
+        stakeSuccessModal={stakeSuccessModal}
+        setTxWaiting={setTxWaiting}
+      />
 
       <StakeActionInputWrapper>
         <div className="wrap">
