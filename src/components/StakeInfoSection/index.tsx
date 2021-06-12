@@ -441,9 +441,7 @@ const StakeInfoSection: React.FC = () => {
             },
             {
               name: t('affiliationReward'),
-              value:
-                currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount,
+              value: promotionRewardAmount,
               after: 'PHA',
             },
           ].map(({ name, value, after }) => {
