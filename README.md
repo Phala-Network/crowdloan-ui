@@ -18,9 +18,7 @@ https://github.com/Phala-Network/crowdloan-ui
 
 https://app.netlify.com/teams/phala/overview
 
-## Test Account
-
-5CamWSbitWL4k7BpUJHLojgmhDhXRNHtGCBGW1J93wepogxV
+## Config
 
 GATSBY_BACKEND_ENDPOINT=https://crowdloan-api.phala.network
 GATSBY_POLKADOT_ENDPOINT=wss://kusama-rpc.polkadot.io
