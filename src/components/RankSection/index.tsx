@@ -106,6 +106,12 @@ const TableFooter = styled.div`
         background: #03ffff;
         border-radius: 4px;
       }
+
+      &:hover {
+        background: #00d0d0 !important;
+        color: #333 !important;
+        font-weight: bold;
+      }
     }
   }
 `
