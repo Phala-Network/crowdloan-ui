@@ -80,7 +80,7 @@ const StakeActionInputWrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 16px;
+    padding: 0px 12px;
     height: 72px;
     left: 16px;
     right: 16px;
@@ -125,15 +125,10 @@ const StakeActionInputWrapper = styled.div`
   }
 
   & .Unit {
+    margin-right: 2px;
     font-weight: 600;
     font-size: 28px;
-    line-height: 39px;
     color: rgba(255, 255, 255, 0.9);
-  }
-
-  & .InputPostfix {
-    display: flex;
-    align-items: center;
   }
 `
 
