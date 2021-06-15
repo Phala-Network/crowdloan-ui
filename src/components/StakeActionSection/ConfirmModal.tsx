@@ -18,6 +18,7 @@ import {
   useInput,
   useModal,
 } from '@geist-ui/react'
+import gtag from '../../utils/gtag'
 
 type Props = {
   txWaiting: boolean
@@ -55,6 +56,11 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const [, setToast] = useToasts()
 
   const trySubmitTx = useCallback(() => {
+    gtag('click', {
+      position: 'staking confirm modal',
+      type: 'Submit',
+    })
+
     setTxWaiting(true)
     tx.signAndSend(
       currentAccount.address,

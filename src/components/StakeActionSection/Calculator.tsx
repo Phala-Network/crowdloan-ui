@@ -12,6 +12,7 @@ import TextTooltip from '@/components/TextTooltip'
 import InputNumber from '@/components/InputNumber'
 import NumberDisplay from '@/components/NumberDisplay'
 import useSoftTop from '../../hooks/useSoftTop'
+import gtag from '../../utils/gtag'
 
 const StakeActionInfoWrapper = styled.div`
   width: 100%;
@@ -262,6 +263,14 @@ const Calculator: React.FC<{
       <div className="Title">
         <div>{t('calculate')}</div>
         <TextTooltip
+          onVisibleChange={(visible: boolean) => {
+            if (visible) {
+              gtag('hover', {
+                position: 'calculate',
+                type: 'Calculate Icon',
+              })
+            }
+          }}
           style={{ marginLeft: 5 }}
           text={[
             t('calculatePopInfo1'),

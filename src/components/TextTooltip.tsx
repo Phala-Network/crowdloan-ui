@@ -31,13 +31,14 @@ type Props = {
 } & Partial<TooltipProps>
 
 const TextTooltip: React.FC<Props> = (props) => {
-  const { text = [], ...others } = props
+  const { text = [], onVisibleChange, ...others } = props
   const [visible, setVisible] = useState(false)
   const isXS = useMediaQuery({ minWidth: 640 })
   const [, setHidden] = useBodyScroll()
 
   useEffect(() => {
     setHidden(visible)
+    onVisibleChange?.(visible)
   }, [visible])
 
   const content = (
@@ -51,6 +52,7 @@ const TextTooltip: React.FC<Props> = (props) => {
   if (isXS) {
     return (
       <Tooltip
+        onVisibleChange={onVisibleChange}
         text={content}
         type="dark"
         placement="bottomStart"

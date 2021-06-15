@@ -19,6 +19,7 @@ import Referrer from './Referrer'
 import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
 import * as Sentry from '@sentry/browser'
 import ConfirmModal from './ConfirmModal'
+import gtag from '../../utils/gtag'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -396,6 +397,12 @@ const StakeActionSection: React.FC = () => {
             onChange={(value) => {
               return setStakeInput(parseFloat((value || 0).toFixed(8)))
             }}
+            onClick={() => {
+              gtag('click', {
+                position: 'stake action section',
+                type: 'Staking Input',
+              })
+            }}
           />
 
           <div className="InputPostfix">
@@ -431,6 +438,12 @@ const StakeActionSection: React.FC = () => {
                 '%d',
                 parseFloat(referrerRewardAmount.toFixed(2)).toString()
               )}
+              onClick={() => {
+                gtag('click', {
+                  position: 'stake action section',
+                  type: 'Inviter Input',
+                })
+              }}
             />
           )}
         </div>
@@ -443,7 +456,13 @@ const StakeActionSection: React.FC = () => {
             }
             effect={false}
             className="ActionBtn"
-            onClick={tryContribute}
+            onClick={() => {
+              gtag('click', {
+                position: 'stake action section',
+                type: 'Stake Action Button',
+              })
+              tryContribute()
+            }}
           >
             {buttonDisabledBecauseOfStakeValue
               ? t('InsufficientBalance')
@@ -456,7 +475,13 @@ const StakeActionSection: React.FC = () => {
           <Button
             effect={false}
             className="ActionBtn"
-            onClick={() => openWeb3Modal()}
+            onClick={() => {
+              openWeb3Modal()
+              gtag('click', {
+                position: 'stake action section',
+                type: 'Connect Wallet',
+              })
+            }}
           >
             {t('connectWallet')}
           </Button>
