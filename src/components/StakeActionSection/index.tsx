@@ -225,6 +225,10 @@ const StakeActionSection: React.FC = () => {
     buttonDisabledBecauseOfStakeValue,
     setButtonDisabledBecauseOfStakeValue,
   ] = useState(false)
+  const [
+    buttonDisabledBecauseOfCantInviteSelf,
+    setbuttonDisabledBecauseOfCantInviteSelf,
+  ] = useState(false)
 
   const accountCallbackRef = useRef(null)
 
@@ -262,9 +266,14 @@ const StakeActionSection: React.FC = () => {
 
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
-
     setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
   }, [stakeInput, balance])
+
+  useEffect(() => {
+    setbuttonDisabledBecauseOfCantInviteSelf(
+      currentAccount?.address === referrerInput?.state
+    )
+  }, [currentAccount?.address, referrerInput?.state])
 
   const tryContribute = useCallback(async () => {
     if (stakeInput < 0.1) {
@@ -465,7 +474,9 @@ const StakeActionSection: React.FC = () => {
               tryContribute()
             }}
           >
-            {buttonDisabledBecauseOfStakeValue
+            {buttonDisabledBecauseOfCantInviteSelf
+              ? t('notAllowBindYourself')
+              : buttonDisabledBecauseOfStakeValue
               ? t('InsufficientBalance')
               : stakeLeastAlert
               ? t('pleaseSupportAtLeast')

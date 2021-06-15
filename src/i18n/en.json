@@ -164,5 +164,6 @@
   "alert": "Alert",
   "install": "Install",
   "pleaseInstallText": "No polkadot{.js} extension found, please install it first",
-  "twitterShareText": "Support Khala's Crowdloan in Kusama Slot Auction! Each $KSM contributed will earn 100 $PHA on a slot win! Participate link "
+  "twitterShareText": "Support Khala's Crowdloan in Kusama Slot Auction! Each $KSM contributed will earn 100 $PHA on a slot win! Participate link ",
+  "notAllowBindYourself": "Can't invite yourself"
 }
