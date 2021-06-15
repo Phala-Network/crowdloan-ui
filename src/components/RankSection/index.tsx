@@ -131,7 +131,7 @@ const RankSection: React.FC = () => {
   )
 
   const totalPage = useMemo(
-    () => data?.pagination?.totalPage || 1,
+    () => data?.pagination?.totalPage || 2,
     [data?.pagination?.totalPage]
   )
 
