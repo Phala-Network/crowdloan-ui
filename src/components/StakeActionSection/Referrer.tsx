@@ -2,14 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 const ReferrerText = styled.div`
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding-left: 6px;
+  flex: 1;
+  text-align: right;
 `
 
 const Referrer: React.FC<{ value: string }> = ({ value }) => {
+  if (!value) return null
+
   return <ReferrerText>{value}</ReferrerText>
 }
 

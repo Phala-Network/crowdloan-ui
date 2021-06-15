@@ -20,6 +20,7 @@ import getReferralAddressFromURL from '@/utils/getReferralAddressFromURL'
 import * as Sentry from '@sentry/browser'
 import ConfirmModal from './ConfirmModal'
 import gtag from '../../utils/gtag'
+import sliceAddress from '../../utils/sliceAddress'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -429,7 +430,7 @@ const StakeActionSection: React.FC = () => {
             style={{ marginLeft: 3, cursor: 'pointer' }}
             size={16}
           />
-          {referrer && <Referrer value={referrer} />}
+          {referrer && <Referrer value={sliceAddress(referrer)} />}
           {!referrer && (
             <Input
               {...referrerInput.bindings}
