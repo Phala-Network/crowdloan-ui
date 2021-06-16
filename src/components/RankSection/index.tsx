@@ -9,6 +9,7 @@ import { useMeta } from '@/utils/meta'
 import { GetContributorsResponse } from '@/utils/request'
 import RankTable from './RankTable'
 import { useMediaQuery } from 'react-responsive'
+import sliceAddress from '../../utils/sliceAddress'
 
 const style__Rank = css`
   background: transparent;
@@ -152,9 +153,7 @@ const RankSection: React.FC = () => {
 
       return {
         ...i,
-        addressFormat: isXS
-          ? i?.address?.slice?.(0, 6) + '...' + i?.address?.slice?.(-6)
-          : i?.address,
+        addressFormat: isXS ? sliceAddress(i?.address) : i?.address,
       }
     })
   }, [page, data?.contributors, isXS])
@@ -168,7 +167,12 @@ const RankSection: React.FC = () => {
             {t('myRanking')}：{currentContributorQuery.data?.meta?.rank || '-'}
           </div>
 
-          <Pagination count={totalPage} onChange={setPage}>
+          <Pagination
+            style={{ textAlign: 'center' }}
+            size={isXS ? 'mini' : 'medium'}
+            count={totalPage}
+            onChange={setPage}
+          >
             <Pagination.Next>
               <ChevronRight />
             </Pagination.Next>
