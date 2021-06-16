@@ -15,6 +15,7 @@ import ContributionList from '@/components/ContributionList'
 import ModalTitle from '@/components/ModalTitle'
 import MoreIcon from './MoreIcon'
 import toFixed from '@/utils/toFixed'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -238,6 +239,7 @@ const NoticeCard = styled.div`
 
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
+  const { locale } = useIntl()
   const { dayjs, currentContributorQuery } = useMeta()
   const { currentAccount } = useWeb3()
   const listModal = useModal()
@@ -511,6 +513,7 @@ const StakeInfoSection: React.FC = () => {
         <span className="title">{t('rewardVest')}</span>
         <div className="info">{t('rewardVestTip')}</div>
         <ReactECharts
+          opts={{ locale }}
           option={chartOptions}
           style={{
             height: 'auto',

@@ -6,6 +6,7 @@ import { useI18n } from '@/i18n'
 import { useMeta } from '@/utils/meta'
 import { GetCampaignResponse, GetCompetitorsResponse } from '@/utils/request'
 import { useQuery } from 'react-query'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const style__AuctionChartSection = css`
   display: flex;
@@ -88,6 +89,7 @@ const AuctionChart = styled.div`
 
 const AuctionChartSection: React.FC = () => {
   const { t } = useI18n()
+  const { locale } = useIntl()
   const { campaignQuery: campaign } = useMeta()
 
   const campaignData = React.useMemo<GetCampaignResponse>(
@@ -189,6 +191,7 @@ const AuctionChartSection: React.FC = () => {
         </div>
 
         <ReactECharts
+          opts={{ locale }}
           option={chartOptions}
           style={{
             height: 'auto',

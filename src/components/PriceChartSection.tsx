@@ -8,6 +8,7 @@ import { useMeta } from '@/utils/meta'
 import TextTooltip from '@/components/TextTooltip'
 import { useI18n } from '@/i18n'
 import dayjs from 'dayjs'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const PriceChart = styled.div`
   width: 100%;
@@ -173,6 +174,7 @@ const defaultChartOptions = {
 const PriceChartSection: React.FC = () => {
   const { price } = useMeta()
   const { t } = useI18n()
+  const { locale } = useIntl()
 
   const ksmData = React.useMemo<GetPriceResponse>(
     () => price?.ksmQuery?.data,
@@ -311,6 +313,7 @@ const PriceChartSection: React.FC = () => {
         </div>
 
         <ReactECharts
+          opts={{ locale }}
           option={chartOptions}
           style={{
             height: 'auto',
