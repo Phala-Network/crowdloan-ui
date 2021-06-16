@@ -199,7 +199,7 @@ const RankSection: React.FC = () => {
 
             {!isXS && (
               <>
-                跳至
+                {t('Go to')}
                 <div style={{ margin: 8 }}>
                   <Input
                     onChange={(e) => jump(e.currentTarget.value)}
@@ -207,7 +207,7 @@ const RankSection: React.FC = () => {
                     style={{ width: 16 }}
                   ></Input>
                 </div>
-                页
+                {t('page')}
               </>
             )}
           </div>
