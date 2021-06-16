@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Pagination } from '@geist-ui/react'
+import { Input, Pagination } from '@geist-ui/react'
 import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from '@/i18n'
 import { useQuery } from 'react-query'
@@ -158,6 +158,14 @@ const RankSection: React.FC = () => {
     })
   }, [page, data?.contributors, isXS])
 
+  function jump(value: string): void {
+    const page = parseInt(value)
+
+    if (Number.isInteger(page) && page > 0 && page < totalPage) {
+      setPage(page)
+    }
+  }
+
   return (
     <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
       <TableWrap>
@@ -167,19 +175,42 @@ const RankSection: React.FC = () => {
             {t('myRanking')}：{currentContributorQuery.data?.meta?.rank || '-'}
           </div>
 
-          <Pagination
-            style={{ textAlign: 'center' }}
-            size={isXS ? 'mini' : 'medium'}
-            count={totalPage}
-            onChange={setPage}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <Pagination.Next>
-              <ChevronRight />
-            </Pagination.Next>
-            <Pagination.Previous>
-              <ChevronLeft />
-            </Pagination.Previous>
-          </Pagination>
+            <Pagination
+              style={{ textAlign: 'center' }}
+              size={isXS ? 'mini' : 'medium'}
+              count={totalPage}
+              page={page}
+              onChange={setPage}
+            >
+              <Pagination.Next>
+                <ChevronRight />
+              </Pagination.Next>
+              <Pagination.Previous>
+                <ChevronLeft />
+              </Pagination.Previous>
+            </Pagination>
+
+            {!isXS && (
+              <>
+                跳至
+                <div style={{ margin: 8 }}>
+                  <Input
+                    onChange={(e) => jump(e.currentTarget.value)}
+                    size="small"
+                    style={{ width: 16 }}
+                  ></Input>
+                </div>
+                页
+              </>
+            )}
+          </div>
         </TableFooter>
       </TableWrap>
     </Section>
