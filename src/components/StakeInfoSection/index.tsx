@@ -347,28 +347,22 @@ const StakeInfoSection: React.FC = () => {
         {
           type: 'line',
           showSymbol: true,
-          hoverAnimation: false,
           lineStyle: { color: '#03FFFF' },
           itemStyle: {
-            normal: {
-              color: '#03FFFF',
-              borderColor: 'rgba(255, 255, 255, 0.9)',
-              borderWidth: 1,
-            },
+            color: '#03FFFF',
+            borderColor: 'rgba(255, 255, 255, 0.9)',
+            borderWidth: 1,
           },
           data: localData2,
         },
         {
           type: 'line',
           showSymbol: true,
-          hoverAnimation: false,
           lineStyle: { color: 'rgba(255, 255, 255, 0.9)' },
           itemStyle: {
-            normal: {
-              color: 'rgba(255, 255, 255, 0.9)',
-              borderColor: 'rgba(255, 255, 255, 0.9)',
-              borderWidth: 1,
-            },
+            color: 'rgba(255, 255, 255, 0.9)',
+            borderColor: 'rgba(255, 255, 255, 0.9)',
+            borderWidth: 1,
           },
           data: localData,
         },

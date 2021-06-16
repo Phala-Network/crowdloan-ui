@@ -145,7 +145,6 @@ const AuctionChartSection: React.FC = () => {
           type: 'line',
           itemStyle: { color: '#03FFFF' },
           showSymbol: false,
-          hoverAnimation: false,
           yAxisIndex: 0,
           data: campaignData?.meta?.contributionChart,
         },
