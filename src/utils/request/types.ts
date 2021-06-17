@@ -159,6 +159,7 @@ export type GetContributorResponse = {
   meta: {
     rank: number
     latestContributions: {
+      onChainHash: number
       amount: number
       rewardAmount: number
       timestamp: string

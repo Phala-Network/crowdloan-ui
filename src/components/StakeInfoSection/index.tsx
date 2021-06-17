@@ -384,7 +384,11 @@ const StakeInfoSection: React.FC = () => {
           return (
             <>
               {rowData.rowValue?.amount?.toFixed(2) + ' KSM'}
-              <div className="link-icon"></div>
+              <a
+                href={`https://kusama.subscan.io/block/${rowData.rowValue?.onChainHash}`}
+              >
+                <div className="link-icon"></div>
+              </a>
             </>
           )
         },
