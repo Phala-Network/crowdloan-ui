@@ -139,6 +139,15 @@ export default function useInvitorAction(): {
       return
     }
 
+    if (currentAccount.address === invitorValue) {
+      setReferrerCheck(false)
+      setToast({
+        text: t('notAllowBindYourself'),
+        type: 'error',
+      })
+      return
+    }
+
     const txs = []
 
     try {
@@ -164,7 +173,14 @@ export default function useInvitorAction(): {
         type: 'error',
       })
     }
-  }, [invitor, initialized, api, campaignData, currentAccount, isLoading])
+  }, [
+    invitor,
+    initialized,
+    api,
+    campaignData,
+    currentAccount?.address,
+    isLoading,
+  ])
 
   return {
     referrer,

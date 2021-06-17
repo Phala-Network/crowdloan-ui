@@ -11,13 +11,14 @@ import useTwitterLink from '@/hooks/useTwitterLink'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
+import gtag from '../../utils/gtag'
 
 type Props = {
   modalProps: ReturnType<typeof useModal>
   blockId?: string
 }
 
-const Link = styled.a`
+const Link = styled.span`
   color: ${(props) => props.theme.yg01};
 
   &:hover {
@@ -50,6 +51,24 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
     refetch()
   }, [modalProps.visible])
 
+  const openTwitter = () => {
+    gtag('click', {
+      position: 'staking success modal',
+      type: 'Twitter Link',
+    })
+
+    window.open(twitterLink)
+  }
+
+  const openDetail = () => {
+    gtag('click', {
+      position: 'staking success modal',
+      type: 'Detail Link',
+    })
+
+    window.open(link)
+  }
+
   return (
     <Modal {...modalProps.bindings}>
       <ModalTitle {...modalProps.bindings}>{t('success')}</ModalTitle>
@@ -58,16 +77,12 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
           <div>
             <div>感谢您的支持！</div>
             <div>
-              <Link target="_blank" href={link}>
-                点击
-              </Link>
+              <Link onClick={openDetail}>点击</Link>
               可查看本笔支持详情
             </div>
             <Divider></Divider>
             <div>
-              <Link target="_blank" href={twitterLink}>
-                发推
-              </Link>{' '}
+              <Link onClick={openTwitter}>发推</Link>{' '}
               邀请您的朋友贡献，您将获得他们支持奖励 0.5％ 的等值奖励。
             </div>
           </div>
@@ -77,18 +92,14 @@ const StakeSuccessModal: React.FC<Props> = (props) => {
           <div>
             <div>Thanks for your support！</div>
             <div>
-              <Link target="_blank" href={link}>
-                Click
-              </Link>{' '}
-              to view the support details.
+              <Link onClick={openDetail}>Click</Link> to view the support
+              details.
             </div>
             <Divider></Divider>
             <div>
-              <Link target="_blank" href={twitterLink}>
-                Tweet
-              </Link>{' '}
-              to invite your friends to contribute and you will each receive an
-              additional reward: an extra 0.5% on the additional contribution.
+              <Link onClick={openTwitter}>Tweet</Link> to invite your friends to
+              contribute and you will each receive an additional reward: an
+              extra 0.5% on the additional contribution.
             </div>
           </div>
         )}

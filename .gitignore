@@ -111,6 +111,7 @@ dist
 
 .env*
 !.env.development
+!.env.production
 
 # gatsby files
 .cache/

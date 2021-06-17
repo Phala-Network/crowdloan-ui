@@ -10,6 +10,7 @@ import { ConnectWallet } from '@/components/ConnectWallet'
 import MobileMenu from './MobileMenu'
 import { useMediaQuery } from 'react-responsive'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
+import gtag from '../../utils/gtag'
 
 const Logo = styled.img`
   height: 40px;
@@ -121,6 +122,11 @@ const AffiliationProgram = ({
       onClick={() => {
         invitorInfoDialogModal.setVisible(true)
         setIsOpened?.(false)
+        gtag('click', {
+          text: t('affiliationProgram'),
+          position: 'navbar',
+          type: 'Referral Rewards',
+        })
       }}
     >
       {t('affiliationProgram')}

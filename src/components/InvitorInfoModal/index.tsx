@@ -12,6 +12,7 @@ import Medal from './Medal'
 import ContributorInfo from './ContributorInfo'
 import useSoftTop from '../../hooks/useSoftTop'
 import ReferrerTable from './ReferrerTable'
+import gtag from '../../utils/gtag'
 
 type Props = {
   modal: ReturnType<typeof useModal>
@@ -70,7 +71,14 @@ const InvitorInfoModal: React.FC<Props> = ({ modal }) => {
                         <NormalButton
                           primary
                           loading={txWaiting}
-                          onClick={tryInvite}
+                          onClick={() => {
+                            tryInvite()
+                            gtag('click', {
+                              text: t('ok'),
+                              position: 'invitor info modal',
+                              type: 'Bind Button',
+                            })
+                          }}
                         >
                           {t('ok')}
                         </NormalButton>

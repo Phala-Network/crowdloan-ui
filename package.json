@@ -64,6 +64,7 @@
     "start": "yarn dev",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "dev:production": "GATSBY_ACTIVE_ENV=production yarn dev",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js"

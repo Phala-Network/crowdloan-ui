@@ -14,6 +14,8 @@ import InvitorInfoDialog from '@/components/InvitorInfoModal'
 import ContributionList from '@/components/ContributionList'
 import ModalTitle from '@/components/ModalTitle'
 import MoreIcon from './MoreIcon'
+import toFixed from '@/utils/toFixed'
+import { useIntl } from 'gatsby-plugin-intl'
 
 const style__StakeInfoSection = css`
   display: flex;
@@ -237,6 +239,7 @@ const NoticeCard = styled.div`
 
 const StakeInfoSection: React.FC = () => {
   const { t } = useI18n()
+  const { locale } = useIntl()
   const { dayjs, currentContributorQuery } = useMeta()
   const { currentAccount } = useWeb3()
   const listModal = useModal()
@@ -258,23 +261,23 @@ const StakeInfoSection: React.FC = () => {
           const params0 = params[0]
           const params1 = params[1]
 
-          let tooltip = `${params1.dataIndex === 0 ? 'TBA' : params1.value[0]}`
+          let tooltip = params1?.dataIndex === 0 ? 'TBA' : params1?.value?.[0]
 
-          if (params0.value?.[1]) {
+          if (params0?.value?.[1]) {
             tooltip += `
               <br/>
-              ${params0.marker}
+              ${params0?.marker}
               <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
-                ${params0.value?.[1]}
+                ${params0?.value?.[1]}
               </span>
             `
           }
 
           tooltip += `
             <br/>
-            ${params1.marker}
+            ${params1?.marker}
             <span style="margin-left:10px;float:right;font-size:14px;color:white;font-weight:900">
-              ${params1.value?.[1]}
+              ${params1?.value?.[1]}
             </span>
           `
 
@@ -344,28 +347,22 @@ const StakeInfoSection: React.FC = () => {
         {
           type: 'line',
           showSymbol: true,
-          hoverAnimation: false,
           lineStyle: { color: '#03FFFF' },
           itemStyle: {
-            normal: {
-              color: '#03FFFF',
-              borderColor: 'rgba(255, 255, 255, 0.9)',
-              borderWidth: 1,
-            },
+            color: '#03FFFF',
+            borderColor: 'rgba(255, 255, 255, 0.9)',
+            borderWidth: 1,
           },
           data: localData2,
         },
         {
           type: 'line',
           showSymbol: true,
-          hoverAnimation: false,
           lineStyle: { color: 'rgba(255, 255, 255, 0.9)' },
           itemStyle: {
-            normal: {
-              color: 'rgba(255, 255, 255, 0.9)',
-              borderColor: 'rgba(255, 255, 255, 0.9)',
-              borderWidth: 1,
-            },
+            color: 'rgba(255, 255, 255, 0.9)',
+            borderColor: 'rgba(255, 255, 255, 0.9)',
+            borderWidth: 1,
           },
           data: localData,
         },
@@ -375,7 +372,6 @@ const StakeInfoSection: React.FC = () => {
 
   const latestContributions =
     currentContributorQuery?.data?.meta?.latestContributions
-  const contributorAmount = currentContributorQuery?.data?.contributor?.amount
 
   const tableData = React.useMemo(() => {
     return latestContributions?.map((item) => {
@@ -383,12 +379,16 @@ const StakeInfoSection: React.FC = () => {
         ...item,
         amountWithIcon: (
           actions: any,
-          rowData: { rowValue: { amount: number } }
+          rowData: { rowValue: { amount: number; onChainHash: number } }
         ) => {
           return (
             <>
               {rowData.rowValue?.amount?.toFixed(2) + ' KSM'}
-              <div className="link-icon"></div>
+              <a
+                href={`https://kusama.subscan.io/block/${rowData.rowValue?.onChainHash}`}
+              >
+                <div className="link-icon"></div>
+              </a>
             </>
           )
         },
@@ -397,6 +397,12 @@ const StakeInfoSection: React.FC = () => {
       }
     })
   }, [latestContributions])
+
+  const {
+    amount: contributorAmount = 0,
+    rewardAmount = 0,
+    promotionRewardAmount = 0,
+  } = currentContributorQuery?.data?.contributor || {}
 
   return (
     <Section
@@ -412,19 +418,17 @@ const StakeInfoSection: React.FC = () => {
           <div className="Amount Gr">
             <span className="Title">{t('yourContribute')}</span>
             <p className="Number">
-              {contributorAmount || (currentAccount ? '0' : '-')}{' '}
-              <span className="Unit">KSM</span>
+              {currentAccount ? toFixed(contributorAmount) : '-'}
+              <span className="Unit"> KSM</span>
             </p>
           </div>
           <div className="Amount Yg">
             <span className="Title">{t('yourTotalReward')}</span>
             <p className="Number">
-              {(currentContributorQuery?.data?.contributor?.rewardAmount || 0) +
-                currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount ||
-                0 ||
-                (currentAccount ? '0' : '-')}{' '}
-              <span className="Unit">PHA</span>
+              {currentAccount
+                ? toFixed(rewardAmount + promotionRewardAmount)
+                : '-'}
+              <span className="Unit"> PHA</span>
             </p>
           </div>
         </div>
@@ -437,9 +441,7 @@ const StakeInfoSection: React.FC = () => {
             },
             {
               name: t('affiliationReward'),
-              value:
-                currentContributorQuery?.data?.contributor
-                  ?.promotionRewardAmount,
+              value: promotionRewardAmount,
               after: 'PHA',
             },
           ].map(({ name, value, after }) => {
@@ -509,6 +511,7 @@ const StakeInfoSection: React.FC = () => {
         <span className="title">{t('rewardVest')}</span>
         <div className="info">{t('rewardVestTip')}</div>
         <ReactECharts
+          opts={{ locale }}
           option={chartOptions}
           style={{
             height: 'auto',

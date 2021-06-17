@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import Section from '@/components/Section'
-import { Pagination } from '@geist-ui/react'
+import { Input, Pagination } from '@geist-ui/react'
 import { ChevronLeft, ChevronRight } from '@geist-ui/react-icons'
 import { useI18n } from '@/i18n'
 import { useQuery } from 'react-query'
@@ -9,6 +9,7 @@ import { useMeta } from '@/utils/meta'
 import { GetContributorsResponse } from '@/utils/request'
 import RankTable from './RankTable'
 import { useMediaQuery } from 'react-responsive'
+import sliceAddress from '../../utils/sliceAddress'
 
 const style__Rank = css`
   background: transparent;
@@ -76,18 +77,23 @@ const TableWrap = styled.div`
 const TableFooter = styled.div`
   display: flex;
   background: rgba(0, 0, 0, 0.2);
-  height: 80px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 10px 30px;
   align-items: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+
+  @media (max-width: 680px) {
+    display: block;
+  }
+
   & > .left {
+    padding: 8px 6px 12px 6px;
     flex-grow: 1;
     font-size: 14px;
     line-height: 20px;
     color: rgba(255, 255, 255, 0.9);
   }
+
   & nav {
     text-align: right;
     li {
@@ -100,6 +106,12 @@ const TableFooter = styled.div`
       &.active {
         background: #03ffff;
         border-radius: 4px;
+      }
+
+      &:hover {
+        background: #00d0d0 !important;
+        color: #333 !important;
+        font-weight: bold;
       }
     }
   }
@@ -120,7 +132,7 @@ const RankSection: React.FC = () => {
   )
 
   const totalPage = useMemo(
-    () => data?.pagination?.totalPage || 1,
+    () => data?.pagination?.totalPage || 2,
     [data?.pagination?.totalPage]
   )
 
@@ -141,12 +153,18 @@ const RankSection: React.FC = () => {
 
       return {
         ...i,
-        addressFormat: isXS
-          ? i?.address?.slice?.(0, 6) + '...' + i?.address?.slice?.(-6)
-          : i?.address,
+        addressFormat: isXS ? sliceAddress(i?.address) : i?.address,
       }
     })
   }, [page, data?.contributors, isXS])
+
+  function jump(value: string): void {
+    const page = parseInt(value)
+
+    if (Number.isInteger(page) && page > 0 && page < totalPage) {
+      setPage(page)
+    }
+  }
 
   return (
     <Section className="" xs={24} md={24} lg={24} innerStyle={style__Rank}>
@@ -156,14 +174,43 @@ const RankSection: React.FC = () => {
           <div className="left">
             {t('myRanking')}：{currentContributorQuery.data?.meta?.rank || '-'}
           </div>
-          <Pagination count={totalPage} onChange={setPage}>
-            <Pagination.Next>
-              <ChevronRight />
-            </Pagination.Next>
-            <Pagination.Previous>
-              <ChevronLeft />
-            </Pagination.Previous>
-          </Pagination>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Pagination
+              style={{ textAlign: 'center' }}
+              size={isXS ? 'mini' : 'medium'}
+              count={totalPage}
+              page={page}
+              onChange={setPage}
+            >
+              <Pagination.Next>
+                <ChevronRight />
+              </Pagination.Next>
+              <Pagination.Previous>
+                <ChevronLeft />
+              </Pagination.Previous>
+            </Pagination>
+
+            {!isXS && (
+              <>
+                {t('Go to')}
+                <div style={{ margin: 8 }}>
+                  <Input
+                    onChange={(e) => jump(e.currentTarget.value)}
+                    size="small"
+                    style={{ width: 16 }}
+                  ></Input>
+                </div>
+                {t('page')}
+              </>
+            )}
+          </div>
         </TableFooter>
       </TableWrap>
     </Section>
