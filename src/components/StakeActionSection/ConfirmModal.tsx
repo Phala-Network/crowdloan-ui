@@ -80,8 +80,11 @@ const ConfirmModal: React.FC<Props> = (props) => {
     ).catch((error: any) => {
       console.warn(error)
       Sentry.captureException(error)
+
       const text = error.message.includes('1010')
         ? t('insufficientFee')
+        : error.message.includes('Cancelled')
+        ? t('you canceled the contribution')
         : 'Invalid referrer.'
       setTxWaiting(false)
       setToast({

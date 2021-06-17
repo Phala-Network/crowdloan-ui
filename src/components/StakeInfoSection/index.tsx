@@ -379,7 +379,7 @@ const StakeInfoSection: React.FC = () => {
         ...item,
         amountWithIcon: (
           actions: any,
-          rowData: { rowValue: { amount: number } }
+          rowData: { rowValue: { amount: number; onChainHash: number } }
         ) => {
           return (
             <>
