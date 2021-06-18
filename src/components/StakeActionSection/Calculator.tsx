@@ -13,6 +13,7 @@ import InputNumber from '@/components/InputNumber'
 import NumberDisplay from '@/components/NumberDisplay'
 import useSoftTop from '../../hooks/useSoftTop'
 import gtag from '../../utils/gtag'
+import toFixed from '../../utils/toFixed'
 
 const StakeActionInfoWrapper = styled.div`
   width: 100%;
@@ -241,17 +242,18 @@ const Calculator: React.FC<{
   }, [stakingReward, ksmPrice])
 
   const currentPhaApy = useMemo(() => {
-    if (!(phaPrice && ksmPrice && timeDelta)) {
+    if (!(phaPrice && ksmPrice)) {
       return
     }
-    return parseFloat(
-      (
-        ((phaPrice * 365 * (hasReferrer ? 100.5 : 100)) /
-          (ksmPrice * timeDelta)) *
-        100
-      ).toFixed(2)
-    )
-  }, [phaPrice, ksmPrice, timeDelta])
+
+    const base = hasReferrer ? 100.5 : 100
+
+    // 365 * ( PHA币价 * 100.5) / KSM价格 / 48 * 7
+    const apy = (365 * phaPrice * base) / ksmPrice / (48 * 7)
+
+    // %
+    return toFixed(apy * 100)
+  }, [phaPrice, ksmPrice])
 
   const moreIncome = useMemo(
     () => contributingIncome - stakingIncome,
