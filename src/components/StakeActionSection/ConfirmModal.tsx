@@ -19,6 +19,8 @@ import {
   useModal,
 } from '@geist-ui/react'
 import gtag from '../../utils/gtag'
+import queryString from 'query-string'
+import dayjs from 'dayjs'
 
 type Props = {
   txWaiting: boolean
@@ -72,6 +74,14 @@ const ConfirmModal: React.FC<Props> = (props) => {
             confirmModal.setVisible(false)
             stakeSuccessModal.setVisible(true)
             refetch()
+
+            const qs = queryString.parse(location.search)
+
+            gtag('stake success', {
+              address: currentAccount?.address,
+              datetime: dayjs(new Date()).toISOString(),
+              ...qs,
+            })
           }, 6000)
         } else {
           console.warn(`Current status: ${status.type}`)
