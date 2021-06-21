@@ -2,10 +2,7 @@ import { useMeta } from '@/utils/meta'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 
-export default function useReleasingData(
-  totalAmount = 0,
-  hasReferrer = false
-): [string, number][] {
+export default function useReleasingData(totalAmount = 0): [string, number][] {
   const {
     campaignQuery: { data: campaign, isLoading },
   } = useMeta()
@@ -15,7 +12,7 @@ export default function useReleasingData(
     if (totalAmount === 0 || isLoading) return
     if (!campaign?.meta?.estimateFirstReleasingIn) return
 
-    const baseTotalAmount = totalAmount * (hasReferrer ? 101.5 : 101)
+    const baseTotalAmount = totalAmount
 
     const _data = []
     const {
