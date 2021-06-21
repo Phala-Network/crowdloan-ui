@@ -77,12 +77,15 @@ const ConfirmModal: React.FC<Props> = (props) => {
 
             const qs = queryString.parse(location.search)
 
-            gtag('stake success', {
-              txValue,
-              address: currentAccount?.address,
-              datetime: dayjs(new Date()).toISOString(),
-              ...qs,
-            })
+            gtag(
+              'stake-success-' +
+                JSON.stringify({
+                  txValue,
+                  address: currentAccount?.address,
+                  datetime: dayjs(new Date()).toISOString(),
+                  ...qs,
+                })
+            )
           }, 6000)
         } else {
           console.warn(`Current status: ${status.type}`)
