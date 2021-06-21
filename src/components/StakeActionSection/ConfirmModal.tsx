@@ -83,6 +83,16 @@ const ConfirmModal: React.FC<Props> = (props) => {
               datetime: dayjs(new Date()).toISOString(),
               ...qs,
             })
+
+            Sentry.captureMessage(
+              'stake success ' +
+                JSON.stringify({
+                  address: currentAccount?.address,
+                  txValue,
+                  datetime: dayjs(new Date()).toISOString(),
+                  ...qs,
+                })
+            )
           }, 6000)
         } else {
           console.warn(`Current status: ${status.type}`)
