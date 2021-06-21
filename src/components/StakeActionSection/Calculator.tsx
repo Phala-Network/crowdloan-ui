@@ -246,13 +246,13 @@ const Calculator: React.FC<{
       return
     }
 
-    const base = hasReferrer ? 100.5 : 100
+    const base = hasReferrer ? 101.5 : 101
 
     // 365 * ( PHA币价 * 100.5) / KSM价格 / 48 * 7
     const apy = (365 * phaPrice * base) / ksmPrice / (48 * 7)
 
     // %
-    return toFixed(apy * 100)
+    return toFixed(apy * 100, 2)
   }, [phaPrice, ksmPrice])
 
   const moreIncome = useMemo(
