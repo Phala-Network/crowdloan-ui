@@ -45,10 +45,16 @@ const PageLoading: React.FC = () => {
 
 const CalculatorContextProvider: React.FC = (props) => {
   const [contributingReward, setContributingReward] = useState(0)
+  const [hasReferrer, setHasReferrer] = useState(false)
 
   return (
     <CalculatorContext.Provider
-      value={{ contributingReward, setContributingReward }}
+      value={{
+        contributingReward,
+        setContributingReward,
+        hasReferrer,
+        setHasReferrer,
+      }}
     >
       {props.children}
     </CalculatorContext.Provider>

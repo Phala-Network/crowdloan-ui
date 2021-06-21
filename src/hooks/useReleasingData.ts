@@ -2,7 +2,10 @@ import { useMeta } from '@/utils/meta'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 
-export default function useReleasingData(totalAmount = 0): [string, number][] {
+export default function useReleasingData(
+  totalAmount = 0,
+  hasReferrer = false
+): [string, number][] {
   const {
     campaignQuery: { data: campaign, isLoading },
   } = useMeta()
@@ -11,6 +14,8 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
   useEffect(() => {
     if (totalAmount === 0 || isLoading) return
     if (!campaign?.meta?.estimateFirstReleasingIn) return
+
+    const baseTotalAmount = totalAmount * (hasReferrer ? 101.5 : 101)
 
     const _data = []
     const {
@@ -21,7 +26,7 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
       estimateReleasingDaysInterval,
     } = campaign.meta
 
-    let releasingAmount = (firstReleasingPercentage / 100) * totalAmount
+    let releasingAmount = (firstReleasingPercentage / 100) * baseTotalAmount
     let releasingDate = dayjs(estimateFirstReleasingIn)
 
     // first day
@@ -37,7 +42,7 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
     do {
       // add releasing amount
       releasingAmount +=
-        (estimateReleasingPercentagePerInterval / 100) * totalAmount
+        (estimateReleasingPercentagePerInterval / 100) * baseTotalAmount
 
       // add date
       releasingDate = releasingDate.add(estimateReleasingDaysInterval, 'day')
@@ -52,7 +57,7 @@ export default function useReleasingData(totalAmount = 0): [string, number][] {
     // last day
     _data.push([
       dayjs(estimateEndReleasingIn).format('YYYY-MM-DD'),
-      parseFloat(totalAmount.toFixed(4)),
+      parseFloat(baseTotalAmount.toFixed(4)),
     ])
 
     setData(_data)

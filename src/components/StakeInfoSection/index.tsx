@@ -243,11 +243,13 @@ const StakeInfoSection: React.FC = () => {
   const { dayjs, currentContributorQuery } = useMeta()
   const { currentAccount } = useWeb3()
   const listModal = useModal()
-  const { contributingReward } = React.useContext(CalculatorContext)
-  const localData = useReleasingData(contributingReward)
+  const { contributingReward, hasReferrer } =
+    React.useContext(CalculatorContext)
+  const localData = useReleasingData(contributingReward, hasReferrer)
   const localData2 = useReleasingData(
     currentContributorQuery?.data?.contributor?.rewardAmount +
-      currentContributorQuery?.data?.contributor?.promotionRewardAmount
+      currentContributorQuery?.data?.contributor?.promotionRewardAmount,
+    hasReferrer
   )
 
   const invitorInfoDialogModal = useModal()

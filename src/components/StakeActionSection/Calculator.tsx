@@ -147,7 +147,8 @@ const Calculator: React.FC<{
 }> = ({ ksmAmountInput, hasReferrer, onChange }) => {
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
-  const { setContributingReward } = useContext(CalculatorContext)
+  const { setContributingReward, setHasReferrer } =
+    useContext(CalculatorContext)
   const { isSoftTop } = useSoftTop()
   const shouldShowCalculator = !isSoftTop
 
@@ -157,6 +158,10 @@ const Calculator: React.FC<{
   useEffect(() => {
     onChange({ referrerRewardAmount })
   }, [referrerRewardAmount])
+
+  useEffect(() => {
+    setHasReferrer(hasReferrer)
+  }, [hasReferrer])
 
   const timeDelta = useMemo(() => {
     const endDate = campaignQuery?.data?.meta?.estimateEndReleasingIn
