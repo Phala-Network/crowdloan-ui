@@ -42,7 +42,7 @@ const ModalLine = styled.p`
   font-size: 0.9rem;
 `
 
-const pdfFileUrl = '/files/Khala Network - Parachain Slot Campaign TCs.pdf'
+const pdfFileUrl = '/files/Khala-Network-Parachain-Slot-Campaign-T&Cs.pdf'
 
 const ConfirmModal: React.FC<Props> = (props) => {
   const {
