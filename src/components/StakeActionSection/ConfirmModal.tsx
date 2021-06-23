@@ -130,7 +130,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
                 ? `您的邀请人是 ${referrerInput.state.trim()}；`
                 : null}
               您的 PHA 奖励将在 Khala 赢得一个插槽并成功运行为平行链时释放 34％
-              到您的的地址。剩余的66％将在11个月内线性释放。交易市场动荡不定，您应独自承担本网站上进行的任何交易和非交易活动，本网站信息不代表财务建议。
+              到您的的地址。剩余的66％将在11个月内线性释放。
             </ModalLine>
           )}
           {locale === 'en' && (
@@ -144,9 +144,8 @@ const ConfirmModal: React.FC<Props> = (props) => {
                 : null}
               When Khala wins a slot and runs as parachain, 34% of the PHA
               rewards vest to your addresses immediately, with the remaining 66%
-              vesting monthly over 11 months.Market prices are volatile and
-              shift quickly; you are responsible for your own trading decisions.
-              Information on this website is not financial advice.
+              vesting monthly over 11 months. Market prices are volatile and
+              shift quickly.
             </ModalLine>
           )}
         </Fieldset.Content>
