@@ -7,7 +7,7 @@ const Wrap = styled.div`
   justify-content: flex-end;
 `
 
-const ModalActions: React.FC = (props) => {
+const ModalActions: React.FC<React.ComponentProps<typeof Wrap>> = (props) => {
   const { children, ...others } = props
   return <Wrap {...others}>{children}</Wrap>
 }

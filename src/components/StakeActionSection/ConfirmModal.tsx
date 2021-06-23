@@ -1,4 +1,10 @@
-import React, { useCallback, SetStateAction, Dispatch } from 'react'
+import React, {
+  useCallback,
+  SetStateAction,
+  Dispatch,
+  useState,
+  useEffect,
+} from 'react'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
@@ -17,16 +23,23 @@ import {
   useToasts,
   useInput,
   useModal,
+  Checkbox,
 } from '@geist-ui/react'
 import gtag from '../../utils/gtag'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
+import Link from '../Link'
+import { BalanceOf, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+import { useBalance } from '../../utils/polkadot/hooks'
+import { SubmittableExtrinsic } from '@polkadot/api/types'
+import { ISubmittableResult } from '@polkadot/types/types'
+import Decimal from 'decimal.js'
 
 type Props = {
   txWaiting: boolean
-  txValue: string
-  txPaymentInfo: any
-  tx: any
+  txValue: BalanceOf
+  txPaymentInfo: RuntimeDispatchInfo
+  tx: SubmittableExtrinsic<'promise', ISubmittableResult>
   referrerInput: ReturnType<typeof useInput>
   confirmModal: ReturnType<typeof useModal>
   stakeSuccessModal: ReturnType<typeof useModal>
@@ -39,6 +52,8 @@ const ModalLine = styled.p`
   text-align: left;
   font-size: 0.9rem;
 `
+
+const pdfFileUrl = '/files/Khala-Network-Parachain-Slot-Campaign-T&Cs.pdf'
 
 const ConfirmModal: React.FC<Props> = (props) => {
   const {
@@ -56,8 +71,63 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const { currentAccount, currentInjector } = useWeb3()
   const { refetch } = useMeta()
   const [, setToast] = useToasts()
+  const [checkbox, setCheckbox] = useState(false)
+  const balance = useBalance(currentAccount?.address)
+  const txValueToHuman = txValue?.toHuman?.()
+  const [insufficientBalance, setInsufficientBalance] = useState(true)
+
+  useEffect(() => {
+    if (!txValue || !balance || !txPaymentInfo?.partialFee) {
+      return
+    }
+
+    const FeeDecimal = new Decimal(txPaymentInfo?.partialFee?.toString())
+    const valueDecimal = new Decimal(txValue?.toString())
+    const balanceDecimal = new Decimal(balance?.toString())
+    const balanceCheckResult = valueDecimal
+      .add(FeeDecimal)
+      .greaterThan(balanceDecimal)
+
+    setInsufficientBalance(balanceCheckResult)
+  }, [txPaymentInfo, txValue, balance])
 
   const trySubmitTx = useCallback(() => {
+    if (insufficientBalance) {
+      setToast({
+        text: t('insufficientFee'),
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    }
+
+    if (!checkbox) {
+      setToast({
+        text:
+          locale === 'en'
+            ? 'You need read and agree to the terms and conditions'
+            : '您需要阅读并同意条款和条件',
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    } else {
+      gtag('checkbox', {
+        position: 'staking confirm modal',
+        type: 'terms and conditions',
+        checked: checkbox,
+      })
+
+      Sentry.captureMessage(
+        'checkbox ' +
+          JSON.stringify({
+            address: currentAccount?.address,
+            datetime: dayjs(new Date()).toISOString(),
+            checked: checkbox,
+          })
+      )
+    }
+
     gtag('click', {
       position: 'staking confirm modal',
       type: 'Submit',
@@ -78,9 +148,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
             const qs = queryString.parse(location.search)
 
             gtag('stake success', {
-              txValue,
+              txValue: txValueToHuman,
               address: currentAccount?.address,
               datetime: dayjs(new Date()).toISOString(),
+              checked: checkbox,
               ...qs,
             })
 
@@ -88,7 +159,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
               'stake success ' +
                 JSON.stringify({
                   address: currentAccount?.address,
-                  txValue,
+                  txValue: txValueToHuman,
                   datetime: dayjs(new Date()).toISOString(),
                   ...qs,
                 })
@@ -114,7 +185,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
         delay: 6000,
       })
     })
-  }, [tx, txWaiting, currentAccount])
+  }, [tx, txWaiting, currentAccount, checkbox, insufficientBalance])
 
   return (
     <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
@@ -124,18 +195,19 @@ const ConfirmModal: React.FC<Props> = (props) => {
         <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
           {locale === 'zh' && (
             <ModalLine>
-              您将在 Kusama 插槽拍卖中支持 Khala {txValue} ，如果竞拍成功，您的
-              KSM 将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
+              您将在 Kusama 插槽拍卖中支持 Khala {txValueToHuman}{' '}
+              ，如果竞拍成功，您的 KSM
+              将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
               {referrerInput.state.trim()
                 ? `您的邀请人是 ${referrerInput.state.trim()}；`
                 : null}
               您的 PHA 奖励将在 Khala 赢得一个插槽并成功运行为平行链时释放 34％
-              到您的的地址。剩余的66％将在11个月内线性释放。交易市场动荡不定，您应独自承担本网站上进行的任何交易和非交易活动，本网站信息不代表财务建议。
+              到您的的地址。剩余的66％将在11个月内线性释放。
             </ModalLine>
           )}
           {locale === 'en' && (
             <ModalLine>
-              You will contribute {txValue} for Khala in the Kusama Slot
+              You will contribute {txValueToHuman} for Khala in the Kusama Slot
               Auction, If Khala wins, your KSM will be unlocked at the end of
               the lease period, if it does not win, it will be unbonded
               immediately after the auction ends;{' '}
@@ -144,9 +216,8 @@ const ConfirmModal: React.FC<Props> = (props) => {
                 : null}
               When Khala wins a slot and runs as parachain, 34% of the PHA
               rewards vest to your addresses immediately, with the remaining 66%
-              vesting monthly over 11 months.Market prices are volatile and
-              shift quickly; you are responsible for your own trading decisions.
-              Information on this website is not financial advice.
+              vesting monthly over 11 months. Market prices are volatile and
+              shift quickly.
             </ModalLine>
           )}
         </Fieldset.Content>
@@ -154,7 +225,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
         <Fieldset.Content
           style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
         >
-          <Description title="Contribution Value" content={txValue || '...'} />
+          <Description
+            title="Contribution Value"
+            content={txValueToHuman || '...'}
+          />
           <Divider volume={0} />
           <Description
             title="Estimated Fee"
@@ -162,7 +236,30 @@ const ConfirmModal: React.FC<Props> = (props) => {
           />
         </Fieldset.Content>
       </Fieldset>
-      <ModalActions>
+      <div style={{ marginTop: 20, textAlign: 'right' }}>
+        <Checkbox
+          checked={checkbox}
+          onChange={(e) => setCheckbox(e.target.checked)}
+        >
+          {locale === 'zh' && (
+            <span>
+              我已阅读并同意{' '}
+              <Link href={pdfFileUrl} target="__blank">
+                条款和条件
+              </Link>
+            </span>
+          )}
+          {locale === 'en' && (
+            <span>
+              I have read and agree to the{' '}
+              <Link href={pdfFileUrl} target="__blank">
+                terms and conditions
+              </Link>
+            </span>
+          )}
+        </Checkbox>
+      </div>
+      <ModalActions style={{ marginTop: 8 }}>
         <NormalButton
           auto
           disabled={txWaiting}
