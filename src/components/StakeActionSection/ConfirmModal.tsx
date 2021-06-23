@@ -65,7 +65,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const trySubmitTx = useCallback(() => {
     if (!checkbox) {
       setToast({
-        text: 'You need read and agree to the terms and conditions',
+        text:
+          locale === 'en'
+            ? 'You need read and agree to the terms and conditions'
+            : '您需要阅读并同意条款和条件',
         type: 'error',
         delay: 6000,
       })
