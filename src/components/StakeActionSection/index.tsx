@@ -276,7 +276,8 @@ const StakeActionSection: React.FC = () => {
   }, [currentAccount?.address, referrerInput?.state])
 
   const tryContribute = useCallback(async () => {
-    if (stakeInput < 0.1) {
+    // todo
+    if (stakeInput < 0.00001) {
       setStakeLeastAlert(true)
       return
     } else {
@@ -400,7 +401,8 @@ const StakeActionSection: React.FC = () => {
         <div className="InputWrap">
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
-            min={0.1}
+            // todo
+            min={0.01}
             max={9999999999}
             placeholder="0"
             value={stakeInput}

@@ -1,4 +1,4 @@
-import React, { useCallback, SetStateAction, Dispatch } from 'react'
+import React, { useCallback, SetStateAction, Dispatch, useState } from 'react'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
@@ -17,10 +17,12 @@ import {
   useToasts,
   useInput,
   useModal,
+  Checkbox,
 } from '@geist-ui/react'
 import gtag from '../../utils/gtag'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
+import Link from '../Link'
 
 type Props = {
   txWaiting: boolean
@@ -40,6 +42,8 @@ const ModalLine = styled.p`
   font-size: 0.9rem;
 `
 
+const pdfFileUrl = '/files/Khala Network - Parachain Slot Campaign TCs.pdf'
+
 const ConfirmModal: React.FC<Props> = (props) => {
   const {
     txWaiting,
@@ -56,8 +60,33 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const { currentAccount, currentInjector } = useWeb3()
   const { refetch } = useMeta()
   const [, setToast] = useToasts()
+  const [checkbox, setCheckbox] = useState(false)
 
   const trySubmitTx = useCallback(() => {
+    if (!checkbox) {
+      setToast({
+        text: 'You need read and agree to the terms and conditions',
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    } else {
+      gtag('checkbox', {
+        position: 'staking confirm modal',
+        type: 'terms and conditions',
+        checked: checkbox,
+      })
+
+      Sentry.captureMessage(
+        'stake success ' +
+          JSON.stringify({
+            address: currentAccount?.address,
+            datetime: dayjs(new Date()).toISOString(),
+            checked: checkbox,
+          })
+      )
+    }
+
     gtag('click', {
       position: 'staking confirm modal',
       type: 'Submit',
@@ -114,7 +143,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
         delay: 6000,
       })
     })
-  }, [tx, txWaiting, currentAccount])
+  }, [tx, txWaiting, currentAccount, checkbox])
 
   return (
     <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
@@ -161,7 +190,30 @@ const ConfirmModal: React.FC<Props> = (props) => {
           />
         </Fieldset.Content>
       </Fieldset>
-      <ModalActions>
+      <div style={{ marginTop: 20, textAlign: 'right' }}>
+        <Checkbox
+          checked={checkbox}
+          onChange={(e) => setCheckbox(e.target.checked)}
+        >
+          {locale === 'zh' && (
+            <span>
+              我已阅读并同意{' '}
+              <Link href={pdfFileUrl} target="__blank">
+                条款和条件
+              </Link>
+            </span>
+          )}
+          {locale === 'en' && (
+            <span>
+              I have read and agree to the{' '}
+              <Link href={pdfFileUrl} target="__blank">
+                terms and conditions
+              </Link>
+            </span>
+          )}
+        </Checkbox>
+      </div>
+      <ModalActions style={{ marginTop: 8 }}>
         <NormalButton
           auto
           disabled={txWaiting}

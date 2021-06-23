@@ -7,6 +7,7 @@ import { GetAnnouncementsResponse } from '@/utils/request/types'
 import Section from '@/components/Section'
 import { useLocalStorage } from 'react-use'
 import { useI18n } from '@/i18n'
+import Link from './Link'
 
 type Props = any
 
@@ -47,15 +48,6 @@ const CloseIcon = styled.div`
   }
   &:active {
     transform: scale(0.9);
-  }
-`
-
-const Link = styled.a`
-  color: ${(props) => props.theme.yg01};
-  text-decoration-line: underline;
-
-  &:hover {
-    opacity: 0.8;
   }
 `
 
