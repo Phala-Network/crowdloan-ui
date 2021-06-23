@@ -78,7 +78,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
       })
 
       Sentry.captureMessage(
-        'stake success ' +
+        'checkbox ' +
           JSON.stringify({
             address: currentAccount?.address,
             datetime: dayjs(new Date()).toISOString(),
@@ -110,6 +110,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
               txValue,
               address: currentAccount?.address,
               datetime: dayjs(new Date()).toISOString(),
+              checked: checkbox,
               ...qs,
             })
 
