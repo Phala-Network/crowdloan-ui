@@ -21,6 +21,7 @@ import * as Sentry from '@sentry/browser'
 import ConfirmModal from './ConfirmModal'
 import gtag from '../../utils/gtag'
 import sliceAddress from '../../utils/sliceAddress'
+import { BalanceOf } from '@polkadot/types/interfaces'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -244,7 +245,7 @@ const StakeActionSection: React.FC = () => {
     }
   }, [referrer])
 
-  const [tx, setTx] = useState(null)
+  const [tx, setTx] = useState<ReturnType<typeof api.tx.utility.batch>>(null)
   const [txPaymentInfo, setTxPaymentInfo] = useState(null)
 
   useEffect(() => {
@@ -253,12 +254,13 @@ const StakeActionSection: React.FC = () => {
       return
     }
     ;(async () => {
-      setTxPaymentInfo(await tx.paymentInfo(currentAccount.address))
+      const runtimeDispatchInfo = await tx.paymentInfo(currentAccount.address)
+      setTxPaymentInfo(runtimeDispatchInfo)
     })()
   }, [currentAccount, tx, api, setTxPaymentInfo])
 
   const [txWaiting, setTxWaiting] = useState(false)
-  const [txValue, setTxValue] = useState<string>(null)
+  const [txValue, setTxValue] = useState<BalanceOf>(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
   const [stakeActionButtonDisabled, setStakeActionButtonDisabled] =
     useState(false)
@@ -311,7 +313,7 @@ const StakeActionSection: React.FC = () => {
         .toString()
     )
 
-    setTxValue(txValue.toHuman())
+    setTxValue(txValue)
 
     const paraId = parseInt(campaign.campaign.parachainId)
 
@@ -407,7 +409,7 @@ const StakeActionSection: React.FC = () => {
             placeholder="0"
             value={stakeInput}
             onChange={(value) => {
-              return setStakeInput(parseFloat((value || 0).toFixed(8)))
+              return setStakeInput(parseFloat((value || 0).toFixed(10)))
             }}
             onClick={() => {
               gtag('click', {

@@ -1,4 +1,10 @@
-import React, { useCallback, SetStateAction, Dispatch, useState } from 'react'
+import React, {
+  useCallback,
+  SetStateAction,
+  Dispatch,
+  useState,
+  useEffect,
+} from 'react'
 import ModalTitle from '@/components/ModalTitle'
 import NormalButton from '@/components/NormalButton'
 import ModalActions from '@/components/ModalActions'
@@ -23,12 +29,17 @@ import gtag from '../../utils/gtag'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
 import Link from '../Link'
+import { BalanceOf, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+import { useBalance } from '../../utils/polkadot/hooks'
+import { SubmittableExtrinsic } from '@polkadot/api/types'
+import { ISubmittableResult } from '@polkadot/types/types'
+import Decimal from 'decimal.js'
 
 type Props = {
   txWaiting: boolean
-  txValue: string
-  txPaymentInfo: any
-  tx: any
+  txValue: BalanceOf
+  txPaymentInfo: RuntimeDispatchInfo
+  tx: SubmittableExtrinsic<'promise', ISubmittableResult>
   referrerInput: ReturnType<typeof useInput>
   confirmModal: ReturnType<typeof useModal>
   stakeSuccessModal: ReturnType<typeof useModal>
@@ -61,8 +72,35 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const { refetch } = useMeta()
   const [, setToast] = useToasts()
   const [checkbox, setCheckbox] = useState(false)
+  const balance = useBalance(currentAccount?.address)
+  const txValueToHuman = txValue?.toHuman?.()
+  const [insufficientBalance, setInsufficientBalance] = useState(true)
+
+  useEffect(() => {
+    if (!txValue || !balance || !txPaymentInfo?.partialFee) {
+      return
+    }
+
+    const FeeDecimal = new Decimal(txPaymentInfo?.partialFee?.toString())
+    const valueDecimal = new Decimal(txValue?.toString())
+    const balanceDecimal = new Decimal(balance?.toString())
+    const balanceCheckResult = valueDecimal
+      .add(FeeDecimal)
+      .greaterThan(balanceDecimal)
+
+    setInsufficientBalance(balanceCheckResult)
+  }, [txPaymentInfo, txValue, balance])
 
   const trySubmitTx = useCallback(() => {
+    if (insufficientBalance) {
+      setToast({
+        text: t('insufficientFee'),
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    }
+
     if (!checkbox) {
       setToast({
         text:
@@ -110,7 +148,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
             const qs = queryString.parse(location.search)
 
             gtag('stake success', {
-              txValue,
+              txValue: txValueToHuman,
               address: currentAccount?.address,
               datetime: dayjs(new Date()).toISOString(),
               checked: checkbox,
@@ -121,7 +159,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
               'stake success ' +
                 JSON.stringify({
                   address: currentAccount?.address,
-                  txValue,
+                  txValue: txValueToHuman,
                   datetime: dayjs(new Date()).toISOString(),
                   ...qs,
                 })
@@ -147,7 +185,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
         delay: 6000,
       })
     })
-  }, [tx, txWaiting, currentAccount, checkbox])
+  }, [tx, txWaiting, currentAccount, checkbox, insufficientBalance])
 
   return (
     <Modal {...confirmModal.bindings} disableBackdropClick={txWaiting}>
@@ -157,8 +195,9 @@ const ConfirmModal: React.FC<Props> = (props) => {
         <Fieldset.Content style={{ width: '100%', paddingBottom: 0 }}>
           {locale === 'zh' && (
             <ModalLine>
-              您将在 Kusama 插槽拍卖中支持 Khala {txValue} ，如果竞拍成功，您的
-              KSM 将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
+              您将在 Kusama 插槽拍卖中支持 Khala {txValueToHuman}{' '}
+              ，如果竞拍成功，您的 KSM
+              将在租期结束后解锁，如果失败，拍卖结束后立即解锁；
               {referrerInput.state.trim()
                 ? `您的邀请人是 ${referrerInput.state.trim()}；`
                 : null}
@@ -168,7 +207,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
           )}
           {locale === 'en' && (
             <ModalLine>
-              You will contribute {txValue} for Khala in the Kusama Slot
+              You will contribute {txValueToHuman} for Khala in the Kusama Slot
               Auction, If Khala wins, your KSM will be unlocked at the end of
               the lease period, if it does not win, it will be unbonded
               immediately after the auction ends;{' '}
@@ -186,7 +225,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
         <Fieldset.Content
           style={{ width: '100%', paddingTop: 0, textAlign: 'left' }}
         >
-          <Description title="Contribution Value" content={txValue || '...'} />
+          <Description
+            title="Contribution Value"
+            content={txValueToHuman || '...'}
+          />
           <Divider volume={0} />
           <Description
             title="Estimated Fee"
