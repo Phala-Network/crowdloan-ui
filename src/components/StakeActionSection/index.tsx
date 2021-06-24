@@ -204,7 +204,7 @@ const StakeActionForm = styled.div`
 `
 
 const StakeActionSection: React.FC = () => {
-  const MIN = 0.01
+  const MIN = 0.1
   const { t } = useI18n()
   const { currentAccount, openModal: openWeb3Modal } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
