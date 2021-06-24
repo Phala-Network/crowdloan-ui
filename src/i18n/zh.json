@@ -1,4 +1,7 @@
 {
+  "Switch": "切换",
+  "switch": "切换",
+  "Rpc Switch": "节点切换",
   "InsufficientBalance": "余额不足",
   "ReferrerTable.Account": "账户",
   "ReferrerTable.ContributedKSM": "支持量",

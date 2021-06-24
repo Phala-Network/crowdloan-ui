@@ -23,9 +23,8 @@ const _defaultValue: PolkadotApiContextValue = {
   api: null,
   initialized: false,
 }
-export const PolkadotApiContext = createContext<PolkadotApiContextValue>(
-  _defaultValue
-)
+export const PolkadotApiContext =
+  createContext<PolkadotApiContextValue>(_defaultValue)
 
 const _PolkadotApiProvider: React.FC = ({ children }) => {
   const [initCount, setInitCount] = useState<number>(-1)
@@ -47,7 +46,9 @@ const _PolkadotApiProvider: React.FC = ({ children }) => {
     }
     let unsub
     ;(async () => {
-      const wsProvider = new WsProvider(process.env.GATSBY_POLKADOT_ENDPOINT)
+      const wsProvider = new WsProvider(
+        localStorage.getItem('rpc') || process.env.GATSBY_POLKADOT_ENDPOINT
+      )
       const _api = await ApiPromise.create({
         provider: wsProvider,
         typesBundle,

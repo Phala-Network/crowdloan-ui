@@ -11,6 +11,7 @@ import MobileMenu from './MobileMenu'
 import { useMediaQuery } from 'react-responsive'
 import InvitorInfoModal from '@/components/InvitorInfoModal'
 import gtag from '../../utils/gtag'
+import RpcSwitchModal from '../RpcSwitchModal'
 
 const Logo = styled.img`
   height: 40px;
@@ -148,6 +149,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     maxWidth: 900,
   })
   const invitorInfoDialogModal = useModal()
+  const rpcSwitchModal = useModal()
 
   const aboutKhalaLink = (
     <Link target="_blank" href={t('aboutKhalaLink')}>
@@ -165,6 +167,15 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     <Link target="_blank" href="https://t.me/phalanetwork">
       Telegram
     </Link>
+  )
+
+  const rpcSwitchModalLink = (
+    <div
+      style={{ cursor: 'pointer' }}
+      onClick={() => rpcSwitchModal.setVisible(true)}
+    >
+      {t('Rpc Switch')}
+    </div>
   )
 
   const affiliationProgram = (
@@ -192,6 +203,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
     <>
       <AccountModal {...modalBindings} />
       <InvitorInfoModal modal={invitorInfoDialogModal} />
+      <RpcSwitchModal modal={rpcSwitchModal}></RpcSwitchModal>
       <NavbarWrapper>
         <Logo src={logo} />
         {!showMobileMenuByMediaQuery && (
@@ -200,6 +212,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             <li>{learnSlotAuctionLink}</li>
             {locale === 'en' && <li>{tgLink}</li>}
             {hasAffiliationProgramLink && <li>{affiliationProgram}</li>}
+            <li>{rpcSwitchModalLink}</li>
             {createLocalLinks('li')}
 
             <li>
@@ -215,6 +228,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             learnSlotAuctionLink,
             locale === 'en' ? tgLink : null,
             hasAffiliationProgramLink ? affiliationProgram : null,
+            rpcSwitchModalLink,
             ...createLocalLinks('div'),
           ]}
           show={showMobileMenuByMediaQuery}
