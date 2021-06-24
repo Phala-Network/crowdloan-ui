@@ -74,7 +74,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const [checkbox, setCheckbox] = useState(false)
   const balance = useBalance(currentAccount?.address)
   const txValueToHuman = txValue?.toHuman?.()
-  const [insufficientBalance, setInsufficientBalance] = useState(true)
+  const [insufficientBalance, setInsufficientBalance] = useState(false)
 
   useEffect(() => {
     if (!txValue || !balance || !txPaymentInfo?.partialFee) {
@@ -92,14 +92,15 @@ const ConfirmModal: React.FC<Props> = (props) => {
   }, [txPaymentInfo, txValue, balance])
 
   const trySubmitTx = useCallback(() => {
-    if (insufficientBalance) {
-      setToast({
-        text: t('insufficientFee'),
-        type: 'error',
-        delay: 6000,
-      })
-      return
-    }
+    // test
+    // if (insufficientBalance) {
+    //   setToast({
+    //     text: t('insufficientFee'),
+    //     type: 'error',
+    //     delay: 6000,
+    //   })
+    //   return
+    // }
 
     if (!checkbox) {
       setToast({

@@ -204,6 +204,7 @@ const StakeActionForm = styled.div`
 `
 
 const StakeActionSection: React.FC = () => {
+  const MIN = 0.1
   const { t } = useI18n()
   const { currentAccount, openModal: openWeb3Modal } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
@@ -278,7 +279,7 @@ const StakeActionSection: React.FC = () => {
   }, [currentAccount?.address, referrerInput?.state])
 
   const tryContribute = useCallback(async () => {
-    if (stakeInput < 0.1) {
+    if (stakeInput < MIN) {
       setStakeLeastAlert(true)
       return
     } else {
@@ -402,7 +403,7 @@ const StakeActionSection: React.FC = () => {
         <div className="InputWrap">
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
-            min={0.1}
+            min={MIN}
             max={999999999}
             placeholder="0"
             value={stakeInput}
