@@ -26,7 +26,7 @@ const RpcSwitchModal: React.FC<Props> = (props) => {
 
   return (
     <Modal {...modal.bindings}>
-      <ModalTitle {...modal.bindings}>Switch</ModalTitle>
+      <ModalTitle {...modal.bindings}>{t('Switch')}</ModalTitle>
       <Modal.Content>
         <Radio.Group
           value={value}
@@ -43,7 +43,7 @@ const RpcSwitchModal: React.FC<Props> = (props) => {
       </Modal.Content>
       <ModalActions>
         <NormalButton primary auto onClick={ok}>
-          {t('ok')}
+          {t('switch')}
         </NormalButton>
       </ModalActions>
     </Modal>

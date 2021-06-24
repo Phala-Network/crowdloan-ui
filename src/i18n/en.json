@@ -1,4 +1,7 @@
 {
+  "Switch": "Switch",
+  "switch": "switch",
+  "Rpc Switch": "Rpc Switch",
   "InsufficientBalance": "Insufficient Balance",
   "ReferrerTable.Account": "Account",
   "ReferrerTable.ContributedKSM": "Contributed KSM",

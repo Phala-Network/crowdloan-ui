@@ -174,7 +174,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
       style={{ cursor: 'pointer' }}
       onClick={() => rpcSwitchModal.setVisible(true)}
     >
-      Rpc Switch
+      {t('Rpc Switch')}
     </div>
   )
 
