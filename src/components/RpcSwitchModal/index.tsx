@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Radio, useModal } from '@geist-ui/react'
 import { useI18n } from '@/i18n'
 import ModalTitle from '@/components/ModalTitle'
@@ -11,16 +11,20 @@ type Props = {
   blockId?: string
 }
 
+const getLocalRpc = () =>
+  localStorage.getItem('rpc') || process.env.GATSBY_POLKADOT_ENDPOINT
+
 const RpcSwitchModal: React.FC<Props> = (props) => {
   const { modal } = props
   const { t } = useI18n()
-  const [value, setValue] = useState<string>(
-    localStorage.getItem('rpc') || process.env.GATSBY_POLKADOT_ENDPOINT
-  )
+  const [value, setValue] = useState<string>(getLocalRpc())
+
+  useEffect(() => {
+    setValue(getLocalRpc())
+  }, [modal.visible])
 
   const ok = () => {
     localStorage.setItem('rpc', value)
-
     window.location.reload()
   }
 

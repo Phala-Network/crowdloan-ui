@@ -210,9 +210,9 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           <Menu color={color}>
             <li>{aboutKhalaLink}</li>
             <li>{learnSlotAuctionLink}</li>
-            <li>{rpcSwitchModalLink}</li>
             {locale === 'en' && <li>{tgLink}</li>}
             {hasAffiliationProgramLink && <li>{affiliationProgram}</li>}
+            <li>{rpcSwitchModalLink}</li>
             {createLocalLinks('li')}
 
             <li>
@@ -226,9 +226,9 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           items={[
             aboutKhalaLink,
             learnSlotAuctionLink,
-            rpcSwitchModalLink,
             locale === 'en' ? tgLink : null,
             hasAffiliationProgramLink ? affiliationProgram : null,
+            rpcSwitchModalLink,
             ...createLocalLinks('div'),
           ]}
           show={showMobileMenuByMediaQuery}
