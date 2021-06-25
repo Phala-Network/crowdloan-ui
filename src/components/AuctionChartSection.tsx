@@ -122,7 +122,7 @@ const AuctionChartSection: React.FC = () => {
         {
           top: '5px',
           right: '45px',
-          left: '16px',
+          left: '0px',
           bottom: '24px',
         },
       ],
