@@ -107,7 +107,8 @@ const AuctionChartSection: React.FC = () => {
   const contributionChart = campaignData?.meta?.contributionChart || []
 
   const chartOptions = React.useMemo(() => {
-    const [, maxValue] = contributionChart[contributionChart.length - 1]
+    let [, maxValue] = contributionChart[contributionChart.length - 1]
+    maxValue = maxValue > 30000 ? maxValue : 30000
 
     return {
       tooltip: {
@@ -138,7 +139,7 @@ const AuctionChartSection: React.FC = () => {
       },
       yAxis: [
         {
-          show: false,
+          show: true,
           splitLine: {
             show: true,
             lineStyle: {
@@ -146,9 +147,19 @@ const AuctionChartSection: React.FC = () => {
               type: 'dashed',
             },
           },
-          max: maxValue > 30000 ? maxValue : 30000,
+          axisLabel: {
+            formatter(value) {
+              if (value === 30000) {
+                return '\n30,000\n1:150'
+              } else {
+                return '1:120'
+              }
+            },
+          },
+          max: maxValue,
           position: 'right',
           name: 'PHA',
+          interval: maxValue,
           type: 'value',
         },
       ],
@@ -165,6 +176,7 @@ const AuctionChartSection: React.FC = () => {
             label: {
               color: 'rgba(255, 255, 255, 0.4)',
               borderWidth: 0,
+              formatter: () => '',
             },
             symbol: ['none', 'none'],
             data: [
