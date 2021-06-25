@@ -30,7 +30,7 @@ const AuctionChart = styled.div`
 
     .Amount {
       font-weight: 600;
-      margin-left: 13px;
+      margin-left: 6px;
     }
   }
 
@@ -104,7 +104,12 @@ const AuctionChartSection: React.FC = () => {
     }
   )
 
+  const contributionChart = campaignData?.meta?.contributionChart || []
+
   const chartOptions = React.useMemo(() => {
+    let [, maxValue] = contributionChart[contributionChart.length - 1]
+    maxValue = maxValue > 30000 ? maxValue : 30000
+
     return {
       tooltip: {
         trigger: 'axis',
@@ -116,9 +121,9 @@ const AuctionChartSection: React.FC = () => {
       },
       grid: [
         {
-          top: '0px',
-          left: '16px',
-          right: '16px',
+          top: '5px',
+          right: '45px',
+          left: '0px',
           bottom: '24px',
         },
       ],
@@ -132,25 +137,58 @@ const AuctionChartSection: React.FC = () => {
           },
         },
       },
-      yAxis: {
-        show: false,
-        name: 'PHA',
-        type: 'value',
-        splitLine: { show: false },
-        axisPointer: { show: false },
-      },
+      yAxis: [
+        {
+          show: true,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              opacity: 0.1,
+              type: 'dashed',
+            },
+          },
+          axisLabel: {
+            formatter(value) {
+              if (value === 30000) {
+                return '\n30,000\n1:150'
+              } else {
+                return '1:120'
+              }
+            },
+          },
+          max: maxValue,
+          position: 'right',
+          name: 'PHA',
+          interval: maxValue,
+          type: 'value',
+        },
+      ],
       series: [
         {
+          yAxisIndex: 0,
           name: 'PHA',
           type: 'line',
           itemStyle: { color: '#03FFFF' },
           showSymbol: false,
-          yAxisIndex: 0,
-          data: campaignData?.meta?.contributionChart,
+          data: contributionChart,
+          markLine: {
+            silent: true,
+            label: {
+              color: 'rgba(255, 255, 255, 0.4)',
+              borderWidth: 0,
+              formatter: () => '',
+            },
+            symbol: ['none', 'none'],
+            data: [
+              {
+                yAxis: 30000,
+              },
+            ],
+          },
         },
       ],
     }
-  }, [campaignData?.meta?.contributionChart])
+  }, [contributionChart])
 
   return (
     <Section
