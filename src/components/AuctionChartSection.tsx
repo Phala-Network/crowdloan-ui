@@ -104,7 +104,11 @@ const AuctionChartSection: React.FC = () => {
     }
   )
 
+  const contributionChart = campaignData?.meta?.contributionChart || []
+
   const chartOptions = React.useMemo(() => {
+    const [, maxValue] = contributionChart[contributionChart.length - 1]
+
     return {
       tooltip: {
         trigger: 'axis',
@@ -116,9 +120,9 @@ const AuctionChartSection: React.FC = () => {
       },
       grid: [
         {
-          top: '0px',
+          top: '5px',
+          right: '45px',
           left: '16px',
-          right: '16px',
           bottom: '24px',
         },
       ],
@@ -132,25 +136,47 @@ const AuctionChartSection: React.FC = () => {
           },
         },
       },
-      yAxis: {
-        show: false,
-        name: 'PHA',
-        type: 'value',
-        splitLine: { show: false },
-        axisPointer: { show: false },
-      },
+      yAxis: [
+        {
+          show: false,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              opacity: 0.1,
+              type: 'dashed',
+            },
+          },
+          max: maxValue > 30000 ? maxValue : 30000,
+          position: 'right',
+          name: 'PHA',
+          type: 'value',
+        },
+      ],
       series: [
         {
+          yAxisIndex: 0,
           name: 'PHA',
           type: 'line',
           itemStyle: { color: '#03FFFF' },
           showSymbol: false,
-          yAxisIndex: 0,
-          data: campaignData?.meta?.contributionChart,
+          data: contributionChart,
+          markLine: {
+            silent: true,
+            label: {
+              color: 'rgba(255, 255, 255, 0.4)',
+              borderWidth: 0,
+            },
+            symbol: ['none', 'none'],
+            data: [
+              {
+                yAxis: 30000,
+              },
+            ],
+          },
         },
       ],
     }
-  }, [campaignData?.meta?.contributionChart])
+  }, [contributionChart])
 
   return (
     <Section
