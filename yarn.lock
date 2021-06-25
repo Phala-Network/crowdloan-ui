@@ -2805,10 +2805,15 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.11.6.tgz#df929d1bb2eee5afdda598a41930fe50b43eaa6a"
   integrity sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==
 
-"@types/node@^14.14.10", "@types/node@^14.14.35":
+"@types/node@^14.14.10":
   version "14.17.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.3.tgz#6d327abaa4be34a74e421ed6409a0ae2f47f4c3d"
   integrity sha512-e6ZowgGJmTuXa3GyaPbTGxX17tnThl2aSSizrFthQ7m9uLGZBXiGhgE55cjRZTF5kjZvYn9EOPOMljdjwbflxw==
+
+"@types/node@^14.14.35":
+  version "14.17.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.4.tgz#218712242446fc868d0e007af29a4408c7765bc0"
+  integrity sha512-8kQ3+wKGRNN0ghtEn7EGps/B8CzuBz1nXZEIGGLP2GnwbqYn4dbTs7k+VKLTq1HvZLRCIDtN3Snx1Ege8B7L5A==
 
 "@types/node@^8.5.7":
   version "8.10.66"
@@ -4785,12 +4790,7 @@ core-js-pure@^3.15.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.15.1.tgz#8356f6576fa2aa8e54ca6fe02620968ff010eed7"
   integrity sha512-OZuWHDlYcIda8sJLY4Ec6nWq2hRjlyCqCZ+jCflyleMkVt3tPedDVErvHslyS2nbO+SlBFMSBJYvtLMwxnrzjA==
 
-core-js@^3.11.0:
-  version "3.13.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.13.1.tgz#30303fabd53638892062d8b4e802cac7599e9fb7"
-  integrity sha512-JqveUc4igkqwStL2RTRn/EPFGBOfEZHxJl/8ej1mXJR75V3go2mFF4bmUYkEIT1rveHKnkUlcJX/c+f1TyIovQ==
-
-core-js@^3.9.0:
+core-js@^3.11.0, core-js@^3.9.0:
   version "3.15.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.15.1.tgz#6c08ab88abdf56545045ccf5fd81f47f407e7f1a"
   integrity sha512-h8VbZYnc9pDzueiS2610IULDkpFFPunHwIpl8yRwFahAEEdSpHlTy3h3z3rKq5h11CaUdBEeRViu9AYvbxiMeg==
@@ -13463,9 +13463,9 @@ vary@^1, vary@~1.1.2:
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
 vconsole@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/vconsole/-/vconsole-3.7.0.tgz#7b347fc635eb09646bb50f0ce0cbfba1852af1b1"
-  integrity sha512-wPZuQgwzgc4OFMgsXT/ZF3yzgG+CGfGvHK/38P41U4cDzgHe78kNtOhJ+V0HCS7NApo2liAg2npEqZV4q4qiCw==
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/vconsole/-/vconsole-3.8.1.tgz#b9bd28451277b11615e85e3b54b680473694b3a1"
+  integrity sha512-Et2JlSRTdrXIlj28DjIuLH6fV+KoEf7E3mhKlVjREWZKHKUI7lO21Cef/JszXaLez1RreHwpRNWONcWpbWS6JA==
   dependencies:
     copy-text-to-clipboard "^3.0.1"
     core-js "^3.11.0"
