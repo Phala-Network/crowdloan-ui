@@ -255,7 +255,7 @@ const Calculator: React.FC<{
 
     const base = ReachingActivityGoal
       ? hasReferrer
-        ? 150.6
+        ? 150.75
         : 150
       : hasReferrer
       ? 120.6
