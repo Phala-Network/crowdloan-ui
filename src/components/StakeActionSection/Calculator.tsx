@@ -214,11 +214,13 @@ const Calculator: React.FC<{
   const contributingReward = useMemo(() => {
     if (!ksmAmount) return
 
-    const normalRewardAmount = ksmAmount * 100
-    const referrerRewardAmount = hasReferrer ? ksmAmount * 0.5 : 0
+    const normalRewardAmount = ksmAmount * (ReachingActivityGoal ? 150 : 120)
+    const referrerRewardAmount = hasReferrer
+      ? ksmAmount * (ReachingActivityGoal ? 0.75 : 0.6)
+      : 0
 
     return parseFloat((normalRewardAmount + referrerRewardAmount).toFixed(9))
-  }, [ksmAmount, hasReferrer])
+  }, [ksmAmount, hasReferrer, ReachingActivityGoal])
 
   useEffect(() => {
     if (ksmAmount) setReferrerRewardAmount(ksmAmount * 0.5)
@@ -266,7 +268,7 @@ const Calculator: React.FC<{
 
     // %
     return toFixed(apy * 100, 2)
-  }, [phaPrice, ksmPrice])
+  }, [phaPrice, ksmPrice, ReachingActivityGoal])
 
   const moreIncome = useMemo(
     () => contributingIncome - stakingIncome,
