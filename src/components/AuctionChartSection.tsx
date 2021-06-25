@@ -30,7 +30,7 @@ const AuctionChart = styled.div`
 
     .Amount {
       font-weight: 600;
-      margin-left: 13px;
+      margin-left: 6px;
     }
   }
 

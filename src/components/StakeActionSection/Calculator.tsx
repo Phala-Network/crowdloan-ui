@@ -14,7 +14,7 @@ import NumberDisplay from '@/components/NumberDisplay'
 import useSoftTop from '../../hooks/useSoftTop'
 import gtag from '../../utils/gtag'
 import toFixed from '../../utils/toFixed'
-import { useActivity22 } from '../../hooks/useActivity22'
+import useReachingActivityGoal from '../../hooks/useReachingActivityGoal'
 
 const StakeActionInfoWrapper = styled.div`
   width: 100%;
@@ -146,12 +146,12 @@ const Calculator: React.FC<{
   hasReferrer: boolean
   onChange: ({ referrerRewardAmount: number }) => void
 }> = ({ ksmAmountInput, hasReferrer, onChange }) => {
-  const activity22Active = useActivity22()
   const { t } = useI18n()
   const { price, campaignQuery, dayjs } = useMeta()
   const { setContributingReward, setHasReferrer } =
     useContext(CalculatorContext)
   const { isSoftTop } = useSoftTop()
+  const ReachingActivityGoal = useReachingActivityGoal()
   const shouldShowCalculator = !isSoftTop
 
   // just for external display
@@ -253,13 +253,13 @@ const Calculator: React.FC<{
       return
     }
 
-    const base = activity22Active
+    const base = ReachingActivityGoal
       ? hasReferrer
-        ? 101.5
-        : 101
+        ? 150.6
+        : 150
       : hasReferrer
-      ? 100.5
-      : 100
+      ? 120.6
+      : 120
 
     // 365 * ( PHA币价 * 100.5) / KSM价格 / 48 * 7
     const apy = (365 * phaPrice * base) / ksmPrice / (48 * 7)
