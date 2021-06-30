@@ -5,7 +5,7 @@ export default function useReachingActivityGoal(): boolean {
   const { campaignQuery } = useMeta()
 
   return React.useMemo<boolean>(
-    () => campaignQuery?.data?.campaign?.raisedAmount > 30000,
+    () => campaignQuery?.data?.campaign?.raisedAmount >= 30000,
     [campaignQuery]
   )
 }

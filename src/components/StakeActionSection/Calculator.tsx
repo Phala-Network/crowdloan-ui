@@ -151,7 +151,7 @@ const Calculator: React.FC<{
   const { setContributingReward, setHasReferrer } =
     useContext(CalculatorContext)
   const { isSoftTop } = useSoftTop()
-  const ReachingActivityGoal = useReachingActivityGoal()
+  const reachingActivityGoal = useReachingActivityGoal()
   const shouldShowCalculator = !isSoftTop
 
   // just for external display
@@ -214,13 +214,13 @@ const Calculator: React.FC<{
   const contributingReward = useMemo(() => {
     if (!ksmAmount) return
 
-    const normalRewardAmount = ksmAmount * (ReachingActivityGoal ? 150 : 120)
+    const normalRewardAmount = ksmAmount * (reachingActivityGoal ? 150 : 120)
     const referrerRewardAmount = hasReferrer
-      ? ksmAmount * (ReachingActivityGoal ? 0.75 : 0.6)
+      ? ksmAmount * (reachingActivityGoal ? 0.75 : 0.6)
       : 0
 
     return parseFloat((normalRewardAmount + referrerRewardAmount).toFixed(9))
-  }, [ksmAmount, hasReferrer, ReachingActivityGoal])
+  }, [ksmAmount, hasReferrer, reachingActivityGoal])
 
   useEffect(() => {
     if (ksmAmount) setReferrerRewardAmount(ksmAmount * 0.5)
@@ -255,7 +255,7 @@ const Calculator: React.FC<{
       return
     }
 
-    const base = ReachingActivityGoal
+    const base = reachingActivityGoal
       ? hasReferrer
         ? 150.75
         : 150
@@ -263,12 +263,11 @@ const Calculator: React.FC<{
       ? 120.6
       : 120
 
-    // 365 * ( PHA币价 * 100.5) / KSM价格 / 48 * 7
     const apy = (365 * phaPrice * base) / ksmPrice / (48 * 7)
 
     // %
     return toFixed(apy * 100, 2)
-  }, [phaPrice, ksmPrice, ReachingActivityGoal])
+  }, [phaPrice, ksmPrice, reachingActivityGoal])
 
   const moreIncome = useMemo(
     () => contributingIncome - stakingIncome,
