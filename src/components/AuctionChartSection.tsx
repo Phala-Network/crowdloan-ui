@@ -159,7 +159,7 @@ const AuctionChartSection: React.FC = () => {
           max: maxValue,
           position: 'right',
           name: 'PHA',
-          interval: maxValue,
+          interval: 30000,
           type: 'value',
         },
       ],
