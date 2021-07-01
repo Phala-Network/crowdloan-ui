@@ -98,8 +98,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
       return
     }
 
+    setTxWaiting(true)
     tx.paymentInfo(currentAccount.address).then((runtimeDispatchInfo) => {
       setTxPaymentInfo(runtimeDispatchInfo)
+      setTxWaiting(false)
     })
   }, [currentAccount, tx, api, setTxPaymentInfo])
 
@@ -228,8 +230,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
                 : null}
               When Khala wins a slot and runs as parachain, 34% of the PHA
               rewards vest to your addresses immediately, with the remaining 66%
-              vesting monthly over 11 months. Market prices are volatile and
-              shift quickly.
+              vesting monthly over 11 months.
             </ModalLine>
           )}
         </Fieldset.Content>
