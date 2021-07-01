@@ -22,6 +22,8 @@ import ConfirmModal from './ConfirmModal'
 import gtag from '../../utils/gtag'
 import sliceAddress from '../../utils/sliceAddress'
 import { BalanceOf } from '@polkadot/types/interfaces'
+import { SubmittableExtrinsic } from '@polkadot/api/types'
+import { ISubmittableResult } from '@polkadot/types/types'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -112,26 +114,31 @@ const StakeActionInputWrapper = styled.div`
     width: 100%;
   }
 
-  & .Label {
-    width: 40px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    right: 72px;
-    top: 8.5px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #03ffff;
-    border-radius: 4px;
-    margin: 0px 8px;
-    font-size: 12px;
-    cursor: pointer;
-  }
+  & .InputPostfix {
+    display: flex;
+    align-items: center;
 
-  & .Unit {
-    margin-right: 2px;
-    font-weight: 600;
-    font-size: 28px;
-    color: rgba(255, 255, 255, 0.9);
+    .Label {
+      width: 40px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      color: #03ffff;
+      border-radius: 4px;
+      margin: 0px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .Unit {
+      margin-right: 2px;
+      font-weight: 600;
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.9);
+      display: inline-block;
+    }
   }
 `
 
@@ -204,7 +211,7 @@ const StakeActionForm = styled.div`
 `
 
 const StakeActionSection: React.FC = () => {
-  const MIN = 0.1
+  const MIN = 0.01
   const { t } = useI18n()
   const { currentAccount, openModal: openWeb3Modal } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
@@ -246,22 +253,10 @@ const StakeActionSection: React.FC = () => {
     }
   }, [referrer])
 
-  const [tx, setTx] = useState<ReturnType<typeof api.tx.utility.batch>>(null)
-  const [txPaymentInfo, setTxPaymentInfo] = useState(null)
-
-  useEffect(() => {
-    if (!(api && tx && currentAccount)) {
-      setTxPaymentInfo(null)
-      return
-    }
-    ;(async () => {
-      const runtimeDispatchInfo = await tx.paymentInfo(currentAccount.address)
-      setTxPaymentInfo(runtimeDispatchInfo)
-    })()
-  }, [currentAccount, tx, api, setTxPaymentInfo])
-
   const [txWaiting, setTxWaiting] = useState(false)
   const [txValue, setTxValue] = useState<BalanceOf>(null)
+  const [tx, setTx] =
+    useState<SubmittableExtrinsic<'promise', ISubmittableResult>>(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
   const [stakeActionButtonDisabled, setStakeActionButtonDisabled] =
     useState(false)
@@ -309,7 +304,7 @@ const StakeActionSection: React.FC = () => {
     const txValue = api.createType(
       'BalanceOf',
       new Demical('1' + '0'.repeat(tokenDecimals as number))
-        .mul(contributeValue)
+        .mul(contributeValue.minus(0.00005))
         .toString()
     )
 
@@ -356,10 +351,9 @@ const StakeActionSection: React.FC = () => {
     accountCallbackRef.current = tryContribute
   }, [tryContribute])
 
-  // const setMaxStakeNumber = () => setStakeInput(getBalance())
-
+  const setMaxStakeNumber = () => setStakeInput(getBalance())
   const getBalance = () => {
-    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
+    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON?.()?.[0] || 12
     const result = new Demical(balance?.toString?.() || '0')
       .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
@@ -386,7 +380,6 @@ const StakeActionSection: React.FC = () => {
         tx={tx}
         txWaiting={txWaiting}
         txValue={txValue}
-        txPaymentInfo={txPaymentInfo}
         referrerInput={referrerInput}
         confirmModal={confirmModal}
         stakeSuccessModal={stakeSuccessModal}
@@ -419,11 +412,11 @@ const StakeActionSection: React.FC = () => {
           />
 
           <div className="InputPostfix">
-            {/* {balance && balance.toString() !== '0' && (
+            {balance && balance.toString() !== '0' && (
               <span className="Label" onClick={setMaxStakeNumber}>
                 {t('max')}
               </span>
-            )} */}
+            )}
 
             <span className="Unit">KSM</span>
           </div>

@@ -34,11 +34,11 @@ import { useBalance } from '../../utils/polkadot/hooks'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
 import { ISubmittableResult } from '@polkadot/types/types'
 import Decimal from 'decimal.js'
+import { usePolkadotApi } from '../../utils/polkadot'
 
 type Props = {
   txWaiting: boolean
   txValue: BalanceOf
-  txPaymentInfo: RuntimeDispatchInfo
   tx: SubmittableExtrinsic<'promise', ISubmittableResult>
   referrerInput: ReturnType<typeof useInput>
   confirmModal: ReturnType<typeof useModal>
@@ -58,9 +58,8 @@ const pdfFileUrl = '/files/Khala-Network-Parachain-Slot-Campaign-T&Cs.pdf'
 const ConfirmModal: React.FC<Props> = (props) => {
   const {
     txWaiting,
-    txValue,
-    txPaymentInfo,
     tx,
+    txValue,
     referrerInput,
     confirmModal,
     setTxWaiting,
@@ -73,8 +72,10 @@ const ConfirmModal: React.FC<Props> = (props) => {
   const [, setToast] = useToasts()
   const [checkbox, setCheckbox] = useState(false)
   const balance = useBalance(currentAccount?.address)
-  const txValueToHuman = txValue?.toHuman?.()
   const [insufficientBalance, setInsufficientBalance] = useState(false)
+  const [txPaymentInfo, setTxPaymentInfo] = useState<RuntimeDispatchInfo>(null)
+  const { api } = usePolkadotApi()
+  const txValueToHuman = txValue?.toHuman?.()
 
   useEffect(() => {
     if (!txValue || !balance || !txPaymentInfo?.partialFee) {
@@ -90,6 +91,17 @@ const ConfirmModal: React.FC<Props> = (props) => {
 
     setInsufficientBalance(insufficientBalance)
   }, [txPaymentInfo, txValue, balance])
+
+  useEffect(() => {
+    if (!(api && tx && currentAccount)) {
+      setTxPaymentInfo(null)
+      return
+    }
+
+    tx.paymentInfo(currentAccount.address).then((runtimeDispatchInfo) => {
+      setTxPaymentInfo(runtimeDispatchInfo)
+    })
+  }, [currentAccount, tx, api, setTxPaymentInfo])
 
   const trySubmitTx = useCallback(() => {
     if (insufficientBalance) {
@@ -227,12 +239,20 @@ const ConfirmModal: React.FC<Props> = (props) => {
         >
           <Description
             title="Contribution Value"
-            content={txValueToHuman || '...'}
+            content={
+              (new Decimal(txValue?.toString()).div(10 ** 12) || '...') + ' KSM'
+            }
           />
           <Divider volume={0} />
           <Description
             title="Estimated Fee"
-            content={txPaymentInfo ? txPaymentInfo.partialFee.toHuman() : '...'}
+            content={
+              (txPaymentInfo
+                ? new Decimal(txPaymentInfo?.partialFee?.toString()).div(
+                    10 ** 12
+                  )
+                : '...') + ' KSM'
+            }
           />
         </Fieldset.Content>
       </Fieldset>
