@@ -102,6 +102,7 @@ const StakeActionInputWrapper = styled.div`
   & .input-wrapper {
     border: none !important;
   }
+
   & input {
     font-size: 36px !important;
     line-height: 50px !important;
