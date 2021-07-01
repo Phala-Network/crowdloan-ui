@@ -84,23 +84,22 @@ const ConfirmModal: React.FC<Props> = (props) => {
     const FeeDecimal = new Decimal(txPaymentInfo?.partialFee?.toString())
     const valueDecimal = new Decimal(txValue?.toString())
     const balanceDecimal = new Decimal(balance?.toString())
-    const balanceCheckResult = valueDecimal
+    const insufficientBalance = valueDecimal
       .add(FeeDecimal)
       .greaterThan(balanceDecimal)
 
-    setInsufficientBalance(balanceCheckResult)
+    setInsufficientBalance(insufficientBalance)
   }, [txPaymentInfo, txValue, balance])
 
   const trySubmitTx = useCallback(() => {
-    // test
-    // if (insufficientBalance) {
-    //   setToast({
-    //     text: t('insufficientFee'),
-    //     type: 'error',
-    //     delay: 6000,
-    //   })
-    //   return
-    // }
+    if (insufficientBalance) {
+      setToast({
+        text: t('insufficientFee'),
+        type: 'error',
+        delay: 6000,
+      })
+      return
+    }
 
     if (!checkbox) {
       setToast({
