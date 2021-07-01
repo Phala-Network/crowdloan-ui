@@ -5,7 +5,7 @@ import { Input, Button, useInput, useToasts, useModal } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
 import { usePolkadotApi } from '@/utils/polkadot'
-import Demical from 'decimal.js'
+import Decimal from 'decimal.js'
 import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
@@ -299,11 +299,11 @@ const StakeActionSection: React.FC = () => {
       return
     }
 
-    const contributeValue = new Demical(contributeInputValue)
+    const contributeValue = new Decimal(contributeInputValue)
     const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
     const txValue = api.createType(
       'BalanceOf',
-      new Demical('1' + '0'.repeat(tokenDecimals as number))
+      new Decimal('1' + '0'.repeat(tokenDecimals as number))
         .mul(contributeValue.minus(0.00005))
         .toString()
     )
@@ -353,9 +353,9 @@ const StakeActionSection: React.FC = () => {
 
   const setMaxStakeNumber = () => setStakeInput(getBalance())
   const getBalance = () => {
-    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON?.()?.[0] || 12
-    const result = new Demical(balance?.toString?.() || '0')
-      .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
+    const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
+    const result = new Decimal(balance?.toString?.() || '0')
+      .div(new Decimal('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
     return result

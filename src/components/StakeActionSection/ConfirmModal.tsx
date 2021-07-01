@@ -240,7 +240,11 @@ const ConfirmModal: React.FC<Props> = (props) => {
           <Description
             title="Contribution Value"
             content={
-              (new Decimal(txValue?.toString()).div(10 ** 12) || '...') + ' KSM'
+              ((txValue &&
+                new Decimal(txValue?.toString()).div(
+                  new Decimal('1' + '0'.repeat(12))
+                )) ||
+                '...') + ' KSM'
             }
           />
           <Divider volume={0} />
@@ -249,7 +253,7 @@ const ConfirmModal: React.FC<Props> = (props) => {
             content={
               (txPaymentInfo
                 ? new Decimal(txPaymentInfo?.partialFee?.toString()).div(
-                    10 ** 12
+                    new Decimal('1' + '0'.repeat(12))
                   )
                 : '...') + ' KSM'
             }
