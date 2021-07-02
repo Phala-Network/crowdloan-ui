@@ -151,8 +151,10 @@ const AuctionChartSection: React.FC = () => {
             formatter(value) {
               if (value === 30000) {
                 return '\n30,000\n1:150'
-              } else {
+              } else if (value === 0) {
                 return '1:120'
+              } else {
+                return ''
               }
             },
           },
