@@ -225,6 +225,9 @@ const StakeActionSection: React.FC = () => {
   } = useMeta()
 
   const referrer = currentContributorQuery?.data?.contributor?.referrer
+  const maxStakingNumber = campaign?.campaign?.raisedAmount
+    ? 150000 - campaign.campaign.raisedAmount
+    : 150000
   const [, setToast] = useToasts()
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
@@ -266,6 +269,10 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
     setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
+
+    if (stakeInput > maxStakingNumber) {
+      setStakeInput(maxStakingNumber)
+    }
   }, [stakeInput, balance])
 
   useEffect(() => {
@@ -398,7 +405,7 @@ const StakeActionSection: React.FC = () => {
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
             min={MIN}
-            max={999999999}
+            max={maxStakingNumber}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => {
