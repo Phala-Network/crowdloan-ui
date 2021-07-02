@@ -79,7 +79,7 @@
   "dataSource": "Data source",
   "lastUpdated": "Last updated: ",
   "priceLastUpdated": "Price last updated: ",
-  "coinGechoLink": "https://www.coingecko.com/en/coins/phala-network",
+  "coinGeckoLink": "https://www.coingecko.com/en/coins/phala-network",
   "stakingrewardsLink": "https://www.stakingrewards.com/earn/kusama",
   "pleaseSupportAtLeast": "Please contribute at least 0.1 KSM",
   "transactionConfirmationTitle": "Transaction Confirmation",
