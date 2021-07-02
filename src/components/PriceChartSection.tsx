@@ -224,9 +224,9 @@ const PriceChartSection: React.FC = () => {
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href={t('coinGechoLink')}
+                      href={t('coinGeckoLink')}
                     >
-                      CoinGecho
+                      CoinGecko
                     </a>
                   </div>,
                   <div key="ksmData.lastUpdatedAt">
@@ -282,9 +282,9 @@ const PriceChartSection: React.FC = () => {
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href={t('coinGechoLink')}
+                      href={t('coinGeckoLink')}
                     >
-                      CoinGecho
+                      CoinGecko
                     </a>
                   </div>,
                   <div key="phaData.lastUpdatedAt">

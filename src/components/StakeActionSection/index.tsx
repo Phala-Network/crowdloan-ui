@@ -5,7 +5,7 @@ import { Input, Button, useInput, useToasts, useModal } from '@geist-ui/react'
 import { useWeb3 } from '@/utils/web3'
 import { useBalance } from '@/utils/polkadot/hooks'
 import { usePolkadotApi } from '@/utils/polkadot'
-import Demical from 'decimal.js'
+import Decimal from 'decimal.js'
 import { useI18n } from '@/i18n'
 import { decodeAddress } from '@polkadot/util-crypto'
 import { useMeta } from '@/utils/meta'
@@ -22,6 +22,8 @@ import ConfirmModal from './ConfirmModal'
 import gtag from '../../utils/gtag'
 import sliceAddress from '../../utils/sliceAddress'
 import { BalanceOf } from '@polkadot/types/interfaces'
+import { SubmittableExtrinsic } from '@polkadot/api/types'
+import { ISubmittableResult } from '@polkadot/types/types'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -100,6 +102,7 @@ const StakeActionInputWrapper = styled.div`
   & .input-wrapper {
     border: none !important;
   }
+
   & input {
     font-size: 36px !important;
     line-height: 50px !important;
@@ -112,26 +115,31 @@ const StakeActionInputWrapper = styled.div`
     width: 100%;
   }
 
-  & .Label {
-    width: 40px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    right: 72px;
-    top: 8.5px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #03ffff;
-    border-radius: 4px;
-    margin: 0px 8px;
-    font-size: 12px;
-    cursor: pointer;
-  }
+  & .InputPostfix {
+    display: flex;
+    align-items: center;
 
-  & .Unit {
-    margin-right: 2px;
-    font-weight: 600;
-    font-size: 28px;
-    color: rgba(255, 255, 255, 0.9);
+    .Label {
+      width: 40px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      color: #03ffff;
+      border-radius: 4px;
+      margin: 0px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .Unit {
+      margin-right: 2px;
+      font-weight: 600;
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.9);
+      display: inline-block;
+    }
   }
 `
 
@@ -217,6 +225,9 @@ const StakeActionSection: React.FC = () => {
   } = useMeta()
 
   const referrer = currentContributorQuery?.data?.contributor?.referrer
+  const maxStakingNumber = campaign?.campaign?.raisedAmount
+    ? 150000 - campaign.campaign.raisedAmount
+    : 150000
   const [, setToast] = useToasts()
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
@@ -246,22 +257,10 @@ const StakeActionSection: React.FC = () => {
     }
   }, [referrer])
 
-  const [tx, setTx] = useState<ReturnType<typeof api.tx.utility.batch>>(null)
-  const [txPaymentInfo, setTxPaymentInfo] = useState(null)
-
-  useEffect(() => {
-    if (!(api && tx && currentAccount)) {
-      setTxPaymentInfo(null)
-      return
-    }
-    ;(async () => {
-      const runtimeDispatchInfo = await tx.paymentInfo(currentAccount.address)
-      setTxPaymentInfo(runtimeDispatchInfo)
-    })()
-  }, [currentAccount, tx, api, setTxPaymentInfo])
-
   const [txWaiting, setTxWaiting] = useState(false)
   const [txValue, setTxValue] = useState<BalanceOf>(null)
+  const [tx, setTx] =
+    useState<SubmittableExtrinsic<'promise', ISubmittableResult>>(null)
   const [stakeLeastAlert, setStakeLeastAlert] = useState(false)
   const [stakeActionButtonDisabled, setStakeActionButtonDisabled] =
     useState(false)
@@ -270,6 +269,10 @@ const StakeActionSection: React.FC = () => {
   useEffect(() => {
     setStakeActionButtonDisabled(!stakeInput)
     setButtonDisabledBecauseOfStakeValue(stakeInput > getBalance())
+
+    if (stakeInput > maxStakingNumber) {
+      setStakeInput(maxStakingNumber)
+    }
   }, [stakeInput, balance])
 
   useEffect(() => {
@@ -304,12 +307,12 @@ const StakeActionSection: React.FC = () => {
       return
     }
 
-    const contributeValue = new Demical(contributeInputValue)
+    const contributeValue = new Decimal(contributeInputValue)
     const tokenDecimals = chainInfo.tokenDecimals.toJSON() || 12
     const txValue = api.createType(
       'BalanceOf',
-      new Demical('1' + '0'.repeat(tokenDecimals as number))
-        .mul(contributeValue)
+      new Decimal('1' + '0'.repeat(tokenDecimals as number))
+        .mul(contributeValue.minus(0.00005))
         .toString()
     )
 
@@ -356,12 +359,11 @@ const StakeActionSection: React.FC = () => {
     accountCallbackRef.current = tryContribute
   }, [tryContribute])
 
-  // const setMaxStakeNumber = () => setStakeInput(getBalance())
-
+  const setMaxStakeNumber = () => setStakeInput(getBalance())
   const getBalance = () => {
     const tokenDecimals = chainInfo?.tokenDecimals?.toJSON() || 12
-    const result = new Demical(balance?.toString?.() || '0')
-      .div(new Demical('1' + '0'.repeat(tokenDecimals as number)))
+    const result = new Decimal(balance?.toString?.() || '0')
+      .div(new Decimal('1' + '0'.repeat(tokenDecimals as number)))
       .toNumber()
 
     return result
@@ -386,7 +388,6 @@ const StakeActionSection: React.FC = () => {
         tx={tx}
         txWaiting={txWaiting}
         txValue={txValue}
-        txPaymentInfo={txPaymentInfo}
         referrerInput={referrerInput}
         confirmModal={confirmModal}
         stakeSuccessModal={stakeSuccessModal}
@@ -404,7 +405,7 @@ const StakeActionSection: React.FC = () => {
           <RcInputNumber
             style={{ width: 'calc(100% - 120px)' }}
             min={MIN}
-            max={999999999}
+            max={maxStakingNumber}
             placeholder="0"
             value={stakeInput}
             onChange={(value) => {
@@ -419,11 +420,11 @@ const StakeActionSection: React.FC = () => {
           />
 
           <div className="InputPostfix">
-            {/* {balance && balance.toString() !== '0' && (
+            {balance && balance.toString() !== '0' && (
               <span className="Label" onClick={setMaxStakeNumber}>
                 {t('max')}
               </span>
-            )} */}
+            )}
 
             <span className="Unit">KSM</span>
           </div>
