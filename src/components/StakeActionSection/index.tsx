@@ -213,6 +213,7 @@ const StakeActionForm = styled.div`
 
 const StakeActionSection: React.FC = () => {
   const MIN = 0.1
+  const STAKING_LIMIT = 100000
   const { t } = useI18n()
   const { currentAccount, openModal: openWeb3Modal } = useWeb3()
   const { api, initialized, chainInfo } = usePolkadotApi()
@@ -226,8 +227,8 @@ const StakeActionSection: React.FC = () => {
 
   const referrer = currentContributorQuery?.data?.contributor?.referrer
   const maxStakingNumber = campaign?.campaign?.raisedAmount
-    ? 150000 - campaign.campaign.raisedAmount
-    : 150000
+    ? STAKING_LIMIT - campaign.campaign.raisedAmount
+    : STAKING_LIMIT
   const [, setToast] = useToasts()
   const confirmModal = useModal()
   const stakeSuccessModal = useModal()
