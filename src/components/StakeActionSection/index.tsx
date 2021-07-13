@@ -24,6 +24,7 @@ import sliceAddress from '../../utils/sliceAddress'
 import { BalanceOf } from '@polkadot/types/interfaces'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
 import { ISubmittableResult } from '@polkadot/types/types'
+import NoMoreReward from './NoMoreReward'
 
 const createReferrerRemark = ({ paraId, api, referrer }) => {
   const refAcc = api.createType('AccountId', referrer)
@@ -372,6 +373,18 @@ const StakeActionSection: React.FC = () => {
   const onCalculatorChange = ({ referrerRewardAmount }) => {
     setReferrerRewardAmount(referrerRewardAmount)
   }
+
+  return (
+    <Section
+      className="StakeActionSection"
+      xs={24}
+      md={12}
+      lg={8}
+      innerStyle={style__StakeActionSection}
+    >
+      <NoMoreReward />
+    </Section>
+  )
 
   return (
     <Section
