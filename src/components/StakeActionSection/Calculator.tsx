@@ -11,7 +11,6 @@ import { useMeta } from '@/utils/meta'
 import TextTooltip from '@/components/TextTooltip'
 import InputNumber from '@/components/InputNumber'
 import NumberDisplay from '@/components/NumberDisplay'
-import useSoftTop from '../../hooks/useSoftTop'
 import gtag from '../../utils/gtag'
 import toFixed from '../../utils/toFixed'
 import useReachingActivityGoal from '../../hooks/useReachingActivityGoal'
@@ -150,9 +149,8 @@ const Calculator: React.FC<{
   const { price, campaignQuery, dayjs } = useMeta()
   const { setContributingReward, setHasReferrer } =
     useContext(CalculatorContext)
-  const { isSoftTop } = useSoftTop()
   const reachingActivityGoal = useReachingActivityGoal()
-  const shouldShowCalculator = !isSoftTop
+  const shouldShowCalculator = false
 
   // just for external display
   const [referrerRewardAmount, setReferrerRewardAmount] = useState(0)
