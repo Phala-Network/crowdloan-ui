@@ -1,3 +1,5 @@
+import { ApiPromise, WsProvider } from '@polkadot/api'
+import type { ChainProperties } from '@polkadot/types/interfaces'
 import React, {
   createContext,
   useCallback,
@@ -7,10 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { ApiPromise, WsProvider } from '@polkadot/api'
-import { typesChain, typesBundle } from '@polkadot/apps-config/api'
-import type { ChainProperties } from '@polkadot/types/interfaces'
-import types from './types.json'
+import { SubstrateNetworkOptions, substrates } from '../app-config'
 
 export type PolkadotApiContextValue = {
   api?: ApiPromise
@@ -29,7 +28,11 @@ export const PolkadotApiContext =
 const _PolkadotApiProvider: React.FC = ({ children }) => {
   const [initCount, setInitCount] = useState<number>(-1)
   const [initialized, setInitialized] = useState<boolean>(false)
-  const [chainInfo, setChainInfo] = useState<ChainProperties>()
+  const [chainInfo] = useState<ChainProperties>()
+
+  const options = substrates['khala'] as SubstrateNetworkOptions
+  const endpoint = options?.endpoint
+  const registryTypes = options?.typedefs
 
   const initialize = useCallback(() => {
     setInitCount(initCount + 1)
@@ -47,18 +50,20 @@ const _PolkadotApiProvider: React.FC = ({ children }) => {
     let unsub
     ;(async () => {
       const wsProvider = new WsProvider(
-        localStorage.getItem('rpc') || process.env.GATSBY_POLKADOT_ENDPOINT
+        endpoint //localStorage.getItem('rpc') || process.env.GATSBY_POLKADOT_ENDPOINT
       )
       const _api = await ApiPromise.create({
         provider: wsProvider,
-        typesBundle,
-        typesChain,
-        types,
+        // typesBundle,
+        // typesChain,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        types: registryTypes,
       })
       setApi(_api)
       await _api.isReady
       setInitialized(true)
-      setChainInfo(await _api.registry.getChainProperties())
+      // setChainInfo(await _api.registry.getChainProperties())
     })()
     return () => unsub && unsub()
   }, [initCount])
